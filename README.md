@@ -1,1 +1,4 @@
-# TODO app
+# feature/icon
+
+added icon and app name
+
