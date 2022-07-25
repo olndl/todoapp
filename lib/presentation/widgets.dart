@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
 class Todo extends StatefulWidget {
   const Todo({Key? key, required this.text}) : super(key: key);
   final String text;
@@ -11,7 +10,6 @@ class Todo extends StatefulWidget {
 }
 
 class _TodoState extends State<Todo> {
-
   @override
   Widget build(BuildContext context) {
     return ListTile(

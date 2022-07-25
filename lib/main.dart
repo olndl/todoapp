@@ -23,20 +23,21 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: lightThemeData,
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: AllLocale.supportedLocales,
-      locale: _locale,
-      builder: (context, child) {
-        Size size = MediaQuery.of(context).size;
-        return TaskHomePage(size: size,);
-      }
-    );
+        debugShowCheckedModeBanner: false,
+        theme: lightThemeData,
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: AllLocale.supportedLocales,
+        locale: _locale,
+        builder: (context, child) {
+          Size size = MediaQuery.of(context).size;
+          return TaskHomePage(
+            size: size,
+          );
+        });
   }
 }
