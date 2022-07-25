@@ -18,14 +18,13 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  var _locale = AllLocale.en;
-  var _isDark = false;
+  final _locale = AllLocale.ru;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeApp.theme(_isDark),
+      theme: lightThemeData,
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -34,8 +33,10 @@ class _MyAppState extends State<MyApp> {
       ],
       supportedLocales: AllLocale.supportedLocales,
       locale: _locale,
-      builder: (context, child) =>
-          TaskHomePage(),
+      builder: (context, child) {
+        Size size = MediaQuery.of(context).size;
+        return TaskHomePage(size: size,);
+      }
     );
   }
 }

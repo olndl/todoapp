@@ -1,14 +1,79 @@
 import 'package:flutter/material.dart';
 
-class ThemeApp {
-  static const _defaultFontFamily = 'Roboto';
+import '../constants/colors.dart';
 
-  static ThemeData theme(bool isDark) {
-    final brightness = isDark ? Brightness.dark : Brightness.light;
-    final theme = ThemeData(
-      brightness: brightness,
-      fontFamily: _defaultFontFamily,
-    );
-    return theme.copyWith(iconTheme: theme.iconTheme.copyWith(size: 32));
-  }
-}
+ThemeData lightThemeData = ThemeData(
+  brightness: Brightness.light,
+  scaffoldBackgroundColor: ColorApp.backLightPrimary,
+  primaryColor: ColorApp.backLightSecondary,
+  primarySwatch: Colors.green,
+  indicatorColor: Colors.blue,
+  iconTheme: const IconThemeData(color: Colors.blue),
+  visualDensity: VisualDensity.adaptivePlatformDensity,
+  appBarTheme: const AppBarTheme(
+    color: ColorApp.backLightPrimary,
+    iconTheme: IconThemeData(
+      color: Colors.grey,
+    ),
+  ),
+  fontFamily: 'Roboto',
+  textTheme: const TextTheme(
+    headline5: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
+    subtitle2: TextStyle(
+      fontSize: 20.0,
+    ),
+    button: TextStyle(
+      fontSize: 14.0,
+    ),
+    bodyText1: TextStyle(
+      fontSize: 16.0,
+    ),
+    subtitle1: TextStyle(fontSize: 14.0),
+  ),
+  cardTheme: const CardTheme(
+    color: ColorApp.backLightSecondary,
+    shape: RoundedRectangleBorder(
+      side: BorderSide(color: ColorApp.backLightSecondary, width: 1),
+    ),
+  ),
+  floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: Colors.blue, foregroundColor: Colors.white),
+);
+
+ThemeData darkThemeData = ThemeData(
+  brightness: Brightness.dark,
+  scaffoldBackgroundColor: ColorApp.backDarkPrimary,
+  primaryColor: ColorApp.backDarkSecondary,
+  primarySwatch: Colors.green,
+  indicatorColor: Colors.blue,
+  iconTheme: const IconThemeData(color: Colors.grey),
+  visualDensity: VisualDensity.adaptivePlatformDensity,
+  appBarTheme: const AppBarTheme(
+    color: ColorApp.backDarkPrimary,
+    iconTheme: IconThemeData(
+      color: Colors.grey,
+    ),
+  ),
+  fontFamily: 'Roboto',
+  textTheme: const TextTheme(
+    headline5: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
+    subtitle2: TextStyle(
+      fontSize: 20.0,
+    ),
+    button: TextStyle(
+      fontSize: 14.0,
+    ),
+    bodyText1: TextStyle(
+      fontSize: 16.0,
+    ),
+    subtitle1: TextStyle(fontSize: 14.0),
+  ),
+  cardTheme: const CardTheme(
+    color: ColorApp.backDarkElevated,
+    shape: RoundedRectangleBorder(
+      side: BorderSide(color: ColorApp.backDarkElevated, width: 1),
+    ),
+  ),
+  floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: Colors.blue, foregroundColor: Colors.white),
+);

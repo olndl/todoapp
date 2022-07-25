@@ -1,65 +1,56 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:todoapp/core/localization/l10n/all_locales.dart';
+import 'package:todoapp/presentation/widgets.dart';
 
-import '../../core/colors/colors.dart';
+import '../../core/constants/colors.dart';
 
 class TaskHomePage extends StatefulWidget {
-  const TaskHomePage({Key? key}) : super(key: key);
+  const TaskHomePage({Key? key, required this.size}) : super(key: key);
+
+  final Size size;
 
   @override
   State<TaskHomePage> createState() => _TaskHomePageState();
 }
 
 class _TaskHomePageState extends State<TaskHomePage> {
+  final items = List<String>.generate(20, (i) => 'Item ${i + 1}');
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Мои дела',
-          style: TextStyle(color: ColorApp.labelPrimary),
+          AllLocale.of(context).tasks,
+          style: Theme.of(context).textTheme.headline5,
         ),
-        backgroundColor: ColorApp.backPrimary,
       ),
-      backgroundColor: ColorApp.backPrimary,
       body: SingleChildScrollView(
         child: Card(
-          color: ColorApp.backSecondary,
           shape: RoundedRectangleBorder(
-            side: BorderSide(color: Colors.white70, width: 1),
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(widget.size.width / 25),
           ),
-          margin: EdgeInsets.only(top: 20, left: 7, right: 7),
+          margin: EdgeInsets.only(
+            top: widget.size.height / 40,
+            left: widget.size.width / 56,
+            right: widget.size.width / 56,
+            bottom: widget.size.height / 40,
+          ),
           child: Column(
-            children: <Widget>[
-              ListTile(
-                leading: Checkbox(
-                    value: false,
-                    onChanged: (bool? value) {
-                      setState(() {});
-                    }),
-                trailing: IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.info_outline),
-                ),
-                title: Text(
-                  'Купить что-то',
-                  style: TextStyle(
-                    fontSize: 18,
-                  ),
-                ),
+            children: List<Widget>.generate(
+              20,
+              (i) => Todo(
+                text: AllLocale.of(context).buySmth + ' $i',
               ),
-            ],
+            ),
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }
-
 }
