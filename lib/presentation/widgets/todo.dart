@@ -10,14 +10,18 @@ class Todo extends StatefulWidget {
 }
 
 class _TodoState extends State<Todo> {
+
+  bool isChecked = false;
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
       leading: Checkbox(
-          value: false,
+          value: isChecked,
           onChanged: (bool? value) {
-            setState(() {});
+            setState(() {isChecked = value!;});
           }),
+      horizontalTitleGap: 3,
       trailing: IconButton(
         onPressed: () {},
         icon: const Icon(Icons.info_outline),

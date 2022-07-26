@@ -13,7 +13,7 @@ ThemeData lightThemeData = ThemeData(
   appBarTheme: const AppBarTheme(
     color: ColorApp.backLightPrimary,
     iconTheme: IconThemeData(
-      color: Colors.grey,
+      color: Colors.blue,
     ),
   ),
   fontFamily: 'Roboto',

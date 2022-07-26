@@ -3,6 +3,8 @@
     "@helloWorld": {
       "description": "The conventional newborn programmer greeting"
     },
-    "tasks": "My tasks",
-    "buySmth": "To buy something"
+    "appName": "Done",
+    "title": "My tasks",
+    "subtitle": "Completed — 5",
+    "tileTitle": "To buy something"
 }
