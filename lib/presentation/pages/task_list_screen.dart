@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todoapp/core/constants/dimension.dart';
 import 'package:todoapp/core/localization/l10n/all_locales.dart';
-import 'package:todoapp/presentation/widgets/todo.dart';
+import 'package:todoapp/presentation/widgets/task_card.dart';
 
 import '../../core/navigation/controller.dart';
 import '../../core/navigation/models.dart';
 import '../../core/navigation/routes.dart';
+import '../../data/models/todo.dart';
 import '../widgets/app_header.dart';
 
 class TaskHomePage extends StatefulWidget {
@@ -19,32 +20,16 @@ class TaskHomePage extends StatefulWidget {
 
 class _TaskHomePageState extends State<TaskHomePage> {
   var items = [
-    'Купить хлеб',
     'Сделать дз',
     'Сдать проект',
     'Сходить в гости',
-    'Найти счастье',
-    'Купить хлеб',
-    'Сделать дз',
-    'Сдать проект',
-    'Сходить в гости',
-    'Найти счастье',
-    'Купить хлеб',
-    'Сделать дз',
-    'Сдать проект',
-    'Сходить в гости',
-    'Найти счастье',
-    'Купить хлеб',
-    'Сделать дз',
-    'Сдать проект',
-    'Сходить в гости',
-    'Найти счастье'
   ];
 
   @override
   Widget build(BuildContext context) {
     final scrollController = ScrollController();
     return Scaffold(
+      backgroundColor: Color(0xfffcfaf1),
       body: CustomScrollView(slivers: [
         SliverPersistentHeader(
           pinned: true,
@@ -57,6 +42,7 @@ class _TaskHomePageState extends State<TaskHomePage> {
         )),
         SliverToBoxAdapter(
           child: Card(
+            color: Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
@@ -125,7 +111,13 @@ class _TaskHomePageState extends State<TaskHomePage> {
                           items.removeAt(index);
                         });
                       },
-                      child: Todo(text: items[index])),
+                      child: TaskCard(
+                        key: ValueKey(index),
+                        todo: Todo(DateTime.now().toString(),
+                            id: index,
+                            task: item)
+                      ),
+                  ),
                 );
               },
             ),

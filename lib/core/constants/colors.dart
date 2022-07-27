@@ -8,7 +8,7 @@ abstract class ColorApp {
 }
 
 class Light {
-  final Color backPrimary = Color(0xfff7f6f2);
+  final Color backPrimary = Color(0xfffcfaf1);
   final Color backSecondary = Color(0xffffffff);
   final Color backElevated = Color(0xffffffff);
 

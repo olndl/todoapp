@@ -9,9 +9,10 @@
     "tileTitle": "To buy something",
     "deletedTask": "Deleted",
     "undo": "Undo",
-    "save": "Save",
+    "save": "SAVE",
     "hintMessage": "What need to do...",
     "priority": "Priority",
     "completeDate": "Complete by",
-    "delete": "Delete"
+    "delete": "Delete",
+    "incorrectDate": "Invalid date. Enter again"
 }

@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
-
 import '../constants/colors.dart';
 
 ThemeData lightThemeData = ThemeData(
   brightness: Brightness.light,
   scaffoldBackgroundColor: ColorApp.lightTheme.backPrimary,
-  primaryColor: ColorApp.lightTheme.backPrimary,
-  //primarySwatch: Colors.green,
-  indicatorColor: Colors.blue,
-  iconTheme: const IconThemeData(color: Colors.blue),
+  primaryColor: ColorApp.lightTheme.colorBlue,
+  //primarySwatch: _primarySwatch,
+  indicatorColor: ColorApp.lightTheme.colorBlue,
+  iconTheme: IconThemeData(color: ColorApp.lightTheme.colorBlue),
   visualDensity: VisualDensity.adaptivePlatformDensity,
-
-  appBarTheme:  AppBarTheme(
-    backgroundColor: ColorApp.lightTheme.backPrimary,
+  appBarTheme: AppBarTheme(
+    color: ColorApp.lightTheme.backPrimary,
     iconTheme: IconThemeData(
-      color: Colors.blue,
+      color: ColorApp.lightTheme.colorBlue,
     ),
-    titleTextStyle: TextStyle(color: ColorApp.lightTheme.labelPrimary)
   ),
 
   fontFamily: 'Roboto',
