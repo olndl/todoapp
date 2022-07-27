@@ -3,5 +3,12 @@
     "appName": "Сделано",
     "title": "Мои дела",
     "subtitle": "Выполнено — 5",
-    "tileTitle": "Купить что-то"
+    "tileTitle": "Купить что-то",
+    "deletedTask": "Удалено",
+    "undo": "Отменить",
+    "save": "Сохранить",
+    "hintMessage": "Что нужно сделать...",
+    "priority": "Важность",
+    "completeDate": "Сделать до",
+    "delete": "Удалить"
 }

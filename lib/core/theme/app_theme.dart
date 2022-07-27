@@ -4,52 +4,83 @@ import '../constants/colors.dart';
 
 ThemeData lightThemeData = ThemeData(
   brightness: Brightness.light,
-  scaffoldBackgroundColor: ColorApp.backLightPrimary,
-  primaryColor: ColorApp.backLightSecondary,
-  primarySwatch: Colors.green,
+  scaffoldBackgroundColor: ColorApp.lightTheme.backPrimary,
+  primaryColor: ColorApp.lightTheme.backPrimary,
+  //primarySwatch: Colors.green,
   indicatorColor: Colors.blue,
   iconTheme: const IconThemeData(color: Colors.blue),
   visualDensity: VisualDensity.adaptivePlatformDensity,
-  appBarTheme: const AppBarTheme(
-    color: ColorApp.backLightPrimary,
+
+  appBarTheme:  AppBarTheme(
+    backgroundColor: ColorApp.lightTheme.backPrimary,
     iconTheme: IconThemeData(
       color: Colors.blue,
     ),
+    titleTextStyle: TextStyle(color: ColorApp.lightTheme.labelPrimary)
   ),
+
   fontFamily: 'Roboto',
+
   textTheme: const TextTheme(
-    headline5: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
+    // Large title 32/38
+    headline5: TextStyle(
+        fontSize: 32.0,
+        fontWeight: FontWeight.w500,
+        height: 38 / 32,
+        letterSpacing: 0,
+    ),
+    // title 20/32
+    headline6: TextStyle(
+        fontSize: 20.0,
+        fontWeight: FontWeight.w500,
+        height: 32 / 20,
+        letterSpacing: .5
+    ),
     subtitle2: TextStyle(
       fontSize: 20.0,
     ),
     button: TextStyle(
-      fontSize: 14.0,
+        fontSize: 14.0,
+        fontWeight: FontWeight.w500,
+        height: 24 / 14,
+        letterSpacing: .16
     ),
     bodyText1: TextStyle(
-      fontSize: 16.0,
+        fontSize: 16.0,
+        fontWeight: FontWeight.normal,
+        height: 20 / 16,
+        letterSpacing: 0
     ),
-    subtitle1: TextStyle(fontSize: 14.0),
+    subtitle1: TextStyle(
+        fontSize: 14.0,
+        fontWeight: FontWeight.normal,
+        height: 20 / 14,
+        letterSpacing: 0
+    ),
   ),
-  cardTheme: const CardTheme(
-    color: ColorApp.backLightSecondary,
+ // listTileTheme: (),
+
+  cardTheme: CardTheme(
+    color: ColorApp.lightTheme.backPrimary,
     shape: RoundedRectangleBorder(
-      side: BorderSide(color: ColorApp.backLightSecondary, width: 1),
+      side: BorderSide(color: ColorApp.lightTheme.backSecondary, width: 1),
     ),
   ),
-  floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: Colors.blue, foregroundColor: Colors.white),
+
+  floatingActionButtonTheme:  FloatingActionButtonThemeData(
+      backgroundColor: ColorApp.lightTheme.colorBlue, foregroundColor: ColorApp.lightTheme.colorWhite),
 );
 
 ThemeData darkThemeData = ThemeData(
   brightness: Brightness.dark,
-  scaffoldBackgroundColor: ColorApp.backDarkPrimary,
-  primaryColor: ColorApp.backDarkSecondary,
+  scaffoldBackgroundColor: ColorApp.darkTheme.backPrimary,
+  primaryColor: ColorApp.darkTheme.backSecondary,
   primarySwatch: Colors.green,
   indicatorColor: Colors.blue,
   iconTheme: const IconThemeData(color: Colors.grey),
   visualDensity: VisualDensity.adaptivePlatformDensity,
-  appBarTheme: const AppBarTheme(
-    color: ColorApp.backDarkPrimary,
+  appBarTheme: AppBarTheme(
+    color: ColorApp.darkTheme.backPrimary,
     iconTheme: IconThemeData(
       color: Colors.grey,
     ),
@@ -68,12 +99,12 @@ ThemeData darkThemeData = ThemeData(
     ),
     subtitle1: TextStyle(fontSize: 14.0),
   ),
-  cardTheme: const CardTheme(
-    color: ColorApp.backDarkElevated,
+  cardTheme: CardTheme(
+    color: ColorApp.darkTheme.backElevated,
     shape: RoundedRectangleBorder(
-      side: BorderSide(color: ColorApp.backDarkElevated, width: 1),
+      side: BorderSide(color: ColorApp.darkTheme.backElevated, width: 1),
     ),
   ),
-  floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: Colors.blue, foregroundColor: Colors.white),
+  floatingActionButtonTheme:  FloatingActionButtonThemeData(
+      backgroundColor: ColorApp.darkTheme.colorBlue, foregroundColor: ColorApp.darkTheme.colorWhite),
 );

@@ -5,9 +5,8 @@ import '../../core/constants/colors.dart';
 import '../../core/localization/l10n/all_locales.dart';
 
 class AppHeader extends SliverPersistentHeaderDelegate {
-  final Size size;
 
-  const AppHeader(this.size);
+  const AppHeader();
 
   @override
   Widget build(
@@ -25,7 +24,7 @@ class AppHeader extends SliverPersistentHeaderDelegate {
             duration: const Duration(milliseconds: 150),
             opacity: 1,
             child: ColoredBox(
-              color: ColorApp.backLightPrimary,
+              color: ColorApp.lightTheme.backPrimary,
             ),
           ),
           AnimatedContainer(

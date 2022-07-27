@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
+import 'package:todoapp/core/navigation/controller.dart';
 import 'package:todoapp/presentation/pages/task_editing_screen.dart';
 import 'package:todoapp/presentation/pages/task_list_screen.dart';
+import 'core/navigation/routes.dart';
 import 'core/theme/app_theme.dart';
 import 'core/localization/l10n/all_locales.dart';
 
@@ -22,22 +27,36 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: lightThemeData,
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: AllLocale.supportedLocales,
-        locale: _locale,
-        builder: (context, child) {
-          Size size = MediaQuery.of(context).size;
-          return TaskDetailsPage(size: size);
-        });
+    final navigationController = NavigationController();
+    final routeObserver = RouteObserver();
+    return Provider<NavigationController>.value(
+      value: navigationController,
+      child: Provider<RouteObserver>.value(
+        value: routeObserver,
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: lightThemeData,
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AllLocale.supportedLocales,
+          locale: _locale,
+          initialRoute: Routes.list,
+          onGenerateRoute: (settings) {
+            switch (settings.name) {
+              case Routes.list:
+                return MaterialPageRoute(builder: (_) => const TaskHomePage());
+              case Routes.details:
+                return MaterialPageRoute(
+                    builder: (_) => const TaskDetailsPage());
+            }
+          },
+          navigatorKey: navigationController.key,
+        ),
+      ),
+    );
   }
 }
-
-

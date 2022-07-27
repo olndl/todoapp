@@ -6,5 +6,12 @@
     "appName": "Done",
     "title": "My tasks",
     "subtitle": "Completed — 5",
-    "tileTitle": "To buy something"
+    "tileTitle": "To buy something",
+    "deletedTask": "Deleted",
+    "undo": "Undo",
+    "save": "Save",
+    "hintMessage": "What need to do...",
+    "priority": "Priority",
+    "completeDate": "Complete by",
+    "delete": "Delete"
 }

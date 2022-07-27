@@ -1,14 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todoapp/core/constants/dimension.dart';
 import 'package:todoapp/core/localization/l10n/all_locales.dart';
 import 'package:todoapp/presentation/widgets/todo.dart';
 
+import '../../core/navigation/controller.dart';
+import '../../core/navigation/models.dart';
+import '../../core/navigation/routes.dart';
 import '../widgets/app_header.dart';
 
 class TaskHomePage extends StatefulWidget {
-  const TaskHomePage({Key? key, required this.size}) : super(key: key);
-
-  final Size size;
+  const TaskHomePage({Key? key}) : super(key: key);
 
   @override
   State<TaskHomePage> createState() => _TaskHomePageState();
@@ -45,11 +48,11 @@ class _TaskHomePageState extends State<TaskHomePage> {
       body: CustomScrollView(slivers: [
         SliverPersistentHeader(
           pinned: true,
-          delegate: AppHeader(widget.size),
+          delegate: AppHeader(),
         ),
         SliverToBoxAdapter(
             child: Padding(
-          padding: EdgeInsets.only(left: widget.size.width / 4.95),
+          padding: EdgeInsets.only(left: Dim.width(context) / 4.95),
           child: Text(AllLocale.of(context).subtitle),
         )),
         SliverToBoxAdapter(
@@ -58,15 +61,15 @@ class _TaskHomePageState extends State<TaskHomePage> {
               borderRadius: BorderRadius.circular(10),
             ),
             margin: EdgeInsets.only(
-              top: widget.size.height / 40,
-              left: widget.size.width / 56,
-              right: widget.size.width / 56,
-              bottom: widget.size.height / 40,
+              top: Dim.height(context) / 40,
+              left: Dim.width(context) / 56,
+              right: Dim.width(context) / 56,
+              bottom: Dim.height(context) / 40,
             ),
             child: ListView.builder(
               padding: EdgeInsets.only(
-                  top: widget.size.height / 100,
-                  bottom: widget.size.height / 100),
+                  top: Dim.height(context) / 100,
+                  bottom: Dim.height(context) / 100),
               controller: scrollController,
               shrinkWrap: true,
               itemCount: items.length,
@@ -106,9 +109,10 @@ class _TaskHomePageState extends State<TaskHomePage> {
                           final snackbarController =
                               ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text('Deleted ${item}'),
+                              content: Text(
+                                  '${AllLocale.of(context).deletedTask} ${item}'),
                               action: SnackBarAction(
-                                  label: 'Undo',
+                                  label: AllLocale.of(context).undo,
                                   onPressed: () => delete = false),
                             ),
                           );
@@ -129,7 +133,9 @@ class _TaskHomePageState extends State<TaskHomePage> {
         ),
       ]),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          context.read<NavigationController>().navigateTo(Routes.details);
+        },
         child: const Icon(Icons.add),
       ),
     );
