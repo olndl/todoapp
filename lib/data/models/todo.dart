@@ -1,9 +1,15 @@
 class Todo {
   final int id;
+  final int prio;
   final String task;
-  final String datetime;
+  final String? datetime;
 
-  Todo(this.datetime, {required this.id, required this.task});
+  Todo({
+    required this.datetime,
+    required this.id,
+    required this.task,
+    this.prio = 0,
+  });
 
   String getTodoTitle() {
     if (task.length > 95) {
@@ -17,7 +23,7 @@ class Todo {
     return task;
   }
 
-  String getDate() {
+  String? getDate() {
     return datetime;
   }
 }

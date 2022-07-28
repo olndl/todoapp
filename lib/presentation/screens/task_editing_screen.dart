@@ -7,18 +7,16 @@ import 'package:todoapp/core/localization/l10n/all_locales.dart';
 
 import '../../core/constants/dimension.dart';
 import '../../core/navigation/controller.dart';
-import '../../core/navigation/routes.dart';
 
-class TaskDetailsPage extends StatefulWidget {
-  const TaskDetailsPage({Key? key}) : super(key: key);
+class TaskDetailsScreen extends StatefulWidget {
+  const TaskDetailsScreen({Key? key}) : super(key: key);
 
   @override
-  State<TaskDetailsPage> createState() => _TaskDetailsPageState();
+  State<TaskDetailsScreen> createState() => _TaskDetailsScreenState();
 }
 
-class _TaskDetailsPageState extends State<TaskDetailsPage> {
+class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
   bool isSwitched = false;
-  final DateTime _selectedDate = DateTime.now();
 
   TextEditingController dateInput = TextEditingController();
 

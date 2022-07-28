@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -6,23 +8,22 @@ import 'package:todoapp/core/localization/l10n/all_locales.dart';
 import 'package:todoapp/presentation/widgets/task_card.dart';
 
 import '../../core/navigation/controller.dart';
-import '../../core/navigation/models.dart';
 import '../../core/navigation/routes.dart';
 import '../../data/models/todo.dart';
 import '../widgets/app_header.dart';
 
-class TaskHomePage extends StatefulWidget {
-  const TaskHomePage({Key? key}) : super(key: key);
+class TaskHomeScreen extends StatefulWidget {
+  const TaskHomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<TaskHomePage> createState() => _TaskHomePageState();
+  State<TaskHomeScreen> createState() => _TaskHomeScreenState();
 }
 
-class _TaskHomePageState extends State<TaskHomePage> {
+class _TaskHomeScreenState extends State<TaskHomeScreen> {
   var items = [
-    'Сделать дз',
-    'Сдать проект',
-    'Сходить в гости',
+    Todo(datetime: DateTime.now().toString(), id:1, task: 'Сделать дз', prio: 0),
+    Todo(datetime: null, id:2, task: 'Сдать проект', prio: 1),
+    Todo(datetime: null, id:3, task: 'Сдать проект', prio: 2),
   ];
 
   @override
@@ -30,8 +31,9 @@ class _TaskHomePageState extends State<TaskHomePage> {
     final scrollController = ScrollController();
     return Scaffold(
       backgroundColor: Color(0xfffcfaf1),
-      body: CustomScrollView(slivers: [
-        SliverPersistentHeader(
+      body: CustomScrollView(
+          slivers: [
+        const SliverPersistentHeader(
           pinned: true,
           delegate: AppHeader(),
         ),
@@ -64,7 +66,7 @@ class _TaskHomePageState extends State<TaskHomePage> {
                 return ClipRRect(
                   clipBehavior: Clip.hardEdge,
                   child: Dismissible(
-                      key: Key(item),
+                      key: Key(item.task),
                       background: Container(
                           color: Colors.green,
                           alignment: Alignment.centerLeft,
@@ -113,9 +115,7 @@ class _TaskHomePageState extends State<TaskHomePage> {
                       },
                       child: TaskCard(
                         key: ValueKey(index),
-                        todo: Todo(DateTime.now().toString(),
-                            id: index,
-                            task: item)
+                        todo: item
                       ),
                   ),
                 );

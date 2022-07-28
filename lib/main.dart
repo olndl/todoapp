@@ -5,8 +5,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:todoapp/core/navigation/controller.dart';
-import 'package:todoapp/presentation/pages/task_editing_screen.dart';
-import 'package:todoapp/presentation/pages/task_list_screen.dart';
+import 'package:todoapp/presentation/screens/task_editing_screen.dart';
+import 'package:todoapp/presentation/screens/task_list_screen.dart';
+
 import 'core/navigation/routes.dart';
 import 'core/theme/app_theme.dart';
 import 'core/localization/l10n/all_locales.dart';
@@ -48,10 +49,10 @@ class _MyAppState extends State<MyApp> {
           onGenerateRoute: (settings) {
             switch (settings.name) {
               case Routes.list:
-                return MaterialPageRoute(builder: (_) => const TaskHomePage());
+                return MaterialPageRoute(builder: (_) => const TaskHomeScreen());
               case Routes.details:
                 return MaterialPageRoute(
-                    builder: (_) => const TaskDetailsPage());
+                    builder: (_) => const TaskDetailsScreen());
             }
           },
           navigatorKey: navigationController.key,
