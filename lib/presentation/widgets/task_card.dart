@@ -16,7 +16,7 @@ class TaskCard extends StatefulWidget {
 }
 
 class _TaskCardState extends State<TaskCard> {
-  int inst = 0;
+  late bool isChecked;
 
   priority(inst) {
     switch (inst) {
@@ -25,24 +25,21 @@ class _TaskCardState extends State<TaskCard> {
       case 'basic':
         return Icon(Icons.arrow_downward_sharp);
       case 'important':
-        return Row(
-          children: const [
-            Icon(
-              Icons.priority_high,
-              color: Colors.red,
-            ),
-            Icon(
-              Icons.priority_high,
-              color: Colors.red,
-            )
-          ],
+        return const Icon(
+          Icons.priority_high,
+          color: Colors.red,
         );
     }
   }
 
   @override
+  void initState() {
+    super.initState();
+    isChecked = widget.task.done;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    bool isChecked = widget.task.done;
     return ListTile(
         leading: Theme(
           data: Theme.of(context).copyWith(
@@ -84,9 +81,9 @@ class _TaskCardState extends State<TaskCard> {
               ),
         subtitle: widget.task.deadline != null
             ? Text(
-                DateFormat('dd-MMM-yyy').format(
+                DateFormat('dd MMMM yyy', 'ru').format(
                     DateTime.fromMillisecondsSinceEpoch(widget.task.deadline!)),
-                style: Theme.of(context).textTheme.subtitle1,
+            style: TextStyle(color: Colors.grey)
               )
             : null);
   }
