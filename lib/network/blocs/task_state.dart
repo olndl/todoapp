@@ -19,8 +19,8 @@ class TaskLoaded extends TaskState {
   const TaskLoaded(this.taskModel);
 }
 
-class TaskError extends TaskState {
+class TaskFailedState extends TaskState {
   final String? message;
 
-  const TaskError(this.message);
+  const TaskFailedState(this.message);
 }

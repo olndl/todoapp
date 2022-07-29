@@ -47,7 +47,7 @@ class Task {
   String text;
   String lastUpdatedBy;
   int changedAt;
-  int deadline;
+  int? deadline;
   String? color;
   bool done;
   String importance;

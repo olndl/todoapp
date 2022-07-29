@@ -13,7 +13,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
         final mList = await _apiRepository.fetchTaskList();
         emit(TaskLoaded(mList));
       } catch (e) {
-        emit(TaskError("Failed to fetch data with error $e"));
+        emit(TaskFailedState("Failed to fetch data with error $e"));
       }
     });
   }

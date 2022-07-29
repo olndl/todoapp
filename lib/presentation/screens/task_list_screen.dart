@@ -62,7 +62,7 @@ class _TaskHomeScreenState extends State<TaskHomeScreen> {
               create: (_) => _newBloc,
               child: BlocListener<TaskBloc, TaskState>(
                 listener: (context, state) {
-                  if (state is TaskError) {
+                  if (state is TaskFailedState) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(state.message!),
@@ -79,7 +79,7 @@ class _TaskHomeScreenState extends State<TaskHomeScreen> {
                     } else if (state is TaskLoaded) {
                       return _buildCard(
                           context, scrollController, state.taskModel);
-                    } else if (state is TaskError) {
+                    } else if (state is TaskFailedState) {
                       return Container(
                         child: Center(
                           child: Text("${state.message}"),

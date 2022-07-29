@@ -8,6 +8,10 @@ class ApiRepository {
   Future<TaskModel> fetchTaskList() {
     return _provider.fetchTaskList();
   }
+
+  Future<TaskModel> fetchTask(int id) {
+    return _provider.fetchTask(id);
+  }
 }
 
 class NetworkError extends Error {}

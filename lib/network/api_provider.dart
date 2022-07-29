@@ -23,4 +23,23 @@ class ApiProvider {
       throw Exception("Data not found / Connection issue");
     }
   }
+
+  Future<TaskModel> fetchTask(int id) async {
+    try{
+      Response response = await _dio.get(
+          '$_baseUrl/list/'+'$id',
+          options: Options(
+              headers: {
+                'Authorization': 'Bearer $token'
+              }
+          )
+      );
+      return TaskModel.fromJson(response.data);
+    } catch (error, stacktrace) {
+      print('Exception occured $error stackTrace: $stacktrace');
+      throw Exception("Data not found / Connection issue");
+    }
+  }
+
+
 }
