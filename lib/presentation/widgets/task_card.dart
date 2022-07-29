@@ -1,40 +1,46 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import '../../data/models/todo.dart';
+import 'package:intl/intl.dart';
+import '../../data/models/task_model.dart';
 
 class TaskCard extends StatefulWidget {
-  const TaskCard({Key? key, required this.todo}) : super(key: key);
+  const TaskCard({
+    Key? key,
+    required this.task,
+  }) : super(key: key);
 
-  final Todo todo;
+  final Task task;
 
   @override
   State<TaskCard> createState() => _TaskCardState();
 }
 
 class _TaskCardState extends State<TaskCard> {
-  bool isChecked = false;
   int inst = 0;
 
   priority(inst) {
     switch (inst) {
-      case 0:
-        return  Text('');
-      case 1:
-        return  Icon(Icons.arrow_downward_sharp);
-      case 2:
-        return  Icon(Icons.back_hand_outlined, color: Colors.red,);
+      case 'low':
+        return Text('');
+      case 'basic':
+        return Icon(Icons.arrow_downward_sharp);
+      case 'important':
+        return Icon(
+          Icons.back_hand_outlined,
+          color: Colors.red,
+        );
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    bool isChecked = widget.task.done;
     return ListTile(
       leading: Checkbox(
           value: isChecked,
           onChanged: (bool? value) {
             setState(() {
-              isChecked = value!;
+              //isChecked = value!;
             });
           }),
       horizontalTitleGap: 3,
@@ -44,23 +50,23 @@ class _TaskCardState extends State<TaskCard> {
       ),
       title: isChecked == true
           ? Text(
-              widget.todo.getTodoTitle(),
+              widget.task.getShortTask(),
               //style: Theme.of(context).textTheme.bodyText2,
               style: const TextStyle(
                   decoration: TextDecoration.lineThrough, color: Colors.grey),
             )
           : Row(
-            children: [
-              priority(widget.todo.prio),
-              Text(
-                  widget.todo.getTodoTitle(),
+              children: [
+                priority(widget.task.importance),
+                Text(
+                  widget.task.getShortTask(),
                   //style: Theme.of(context).textTheme.bodyText2,
                 ),
-            ],
-          ),
-      subtitle: (widget.todo.getDate() != null)
+              ],
+            ),
+      subtitle: (widget.task.deadline != null)
           ? Text(
-              widget.todo.getDate()!,
+              "${DateFormat('dd-MMM-yyy').format(DateTime.fromMillisecondsSinceEpoch(widget.task.deadline))}",
               style: Theme.of(context).textTheme.subtitle1,
             )
           : null,
