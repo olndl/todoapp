@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../../core/constants/colors.dart';
 import '../../core/localization/l10n/all_locales.dart';
 
@@ -49,7 +48,7 @@ class AppHeader extends SliverPersistentHeaderDelegate {
                 Theme.of(context)
                     .textTheme
                     .headline6
-                    ?.copyWith(color: Colors.blue),
+                    ?.copyWith(color: Colors.black),
                 progress,
               ),
             ),

@@ -1,23 +1,23 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:todoapp/core/navigation/controller.dart';
-import 'package:todoapp/presentation/screens/task_editing_screen.dart';
-import 'package:todoapp/presentation/screens/task_list_screen.dart';
-
+import 'core/navigation/router.dart';
 import 'core/navigation/routes.dart';
 import 'core/theme/app_theme.dart';
 import 'core/localization/l10n/all_locales.dart';
+import 'data/models/task_model.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp(
+    router: AppRouter(),
+  ));
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final AppRouter router;
+  const MyApp({Key? key, required this.router}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -46,15 +46,7 @@ class _MyAppState extends State<MyApp> {
           supportedLocales: AllLocale.supportedLocales,
           locale: _locale,
           initialRoute: Routes.list,
-          onGenerateRoute: (settings) {
-            switch (settings.name) {
-              case Routes.list:
-                return MaterialPageRoute(builder: (_) => const TaskHomeScreen());
-              case Routes.details:
-                return MaterialPageRoute(
-                    builder: (_) => const TaskDetailsScreen());
-            }
-          },
+          onGenerateRoute: widget.router.generateRoute,
           navigatorKey: navigationController.key,
         ),
       ),

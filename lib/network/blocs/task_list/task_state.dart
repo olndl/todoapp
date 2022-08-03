@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:todoapp/data/models/task_model.dart';
 
-
 abstract class TaskState extends Equatable {
   const TaskState();
 

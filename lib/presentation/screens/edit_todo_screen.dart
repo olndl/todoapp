@@ -7,9 +7,12 @@ import 'package:todoapp/core/localization/l10n/all_locales.dart';
 
 import '../../core/constants/dimension.dart';
 import '../../core/navigation/controller.dart';
+import '../../data/models/todo/todo.dart';
 
 class TaskDetailsScreen extends StatefulWidget {
-  const TaskDetailsScreen({Key? key}) : super(key: key);
+  final Todo todo;
+  final int revision;
+  const TaskDetailsScreen({Key? key, required this.todo, required this.revision}) : super(key: key);
 
   @override
   State<TaskDetailsScreen> createState() => _TaskDetailsScreenState();
@@ -126,6 +129,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                         disabledHint: Text("Нет"),
                         elevation: 8,
                         isExpanded: true,
+                        underline: Divider(),
                         items: items.map((String items) {
                           return DropdownMenuItem(
                             value: items,
@@ -146,13 +150,21 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          AllLocale
-                              .of(context)
-                              .completeDate,
-                          textAlign: TextAlign.left,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              AllLocale
+                                  .of(context)
+                                  .completeDate,
+                              textAlign: TextAlign.left,
+                            ),
+                            Text(dateInput.text,
+                              textAlign: TextAlign.left,
+                              style: TextStyle(color: ColorApp.lightTheme.colorBlue,
+                              fontSize: 14),)
+                          ],
                         ),
-
                         Switch(
                           value: isSwitched,
                           onChanged: (value) {
@@ -168,17 +180,6 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                         ),
                       ],
                     )),
-                Container(
-                  margin: EdgeInsets.all(Dim.width(context) / 25),
-                  child: TextField(
-                    controller: dateInput,
-                    style: TextStyle(color: ColorApp.lightTheme.colorBlue),
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                    ),
-                    readOnly: true,
-                  ),
-                ),
                 const Divider(
                   thickness: .8,
                 ),
