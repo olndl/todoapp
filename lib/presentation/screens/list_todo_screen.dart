@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:todoapp/core/constants/dimension.dart';
 import 'package:todoapp/core/localization/l10n/all_locales.dart';
 import '../../core/navigation/controller.dart';
@@ -19,7 +17,6 @@ class TodoListScreen extends StatefulWidget {
 }
 
 class _TodoListScreenState extends State<TodoListScreen> {
-
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<TodosCubit>(context).fetchTodos();
@@ -27,55 +24,67 @@ class _TodoListScreenState extends State<TodoListScreen> {
     final scrollController = ScrollController();
     return BlocBuilder<TodosCubit, TodosState>(
       builder: (context, state) {
-        if (!(state is TodosLoaded))
-          return Center(child: CircularProgressIndicator());
+        if (state is! TodosLoaded) {
+          return const Center(child: CircularProgressIndicator());
+        }
         final todos = state.todos;
         final revision = state.revision;
         return Scaffold(
           backgroundColor: Color(0xfffcfaf1),
           body: CustomScrollView(slivers: [
-            const SliverPersistentHeader(
-              pinned: true,
-              delegate: AppHeader(),
-            ),
-            SliverToBoxAdapter(
-                child: Padding(
-              padding: EdgeInsets.only(left: Dim.width(context) / 4.95),
-              child: Text(
-                AllLocale.of(context).subtitle,
-              ),
-            )),
-            SliverToBoxAdapter(
-              child: Card(
-                  color: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  margin: EdgeInsets.only(
-                    top: Dim.height(context) / 40,
-                    left: Dim.width(context) / 56,
-                    right: Dim.width(context) / 56,
-                    bottom: Dim.height(context) / 40,
-                  ),
-                  child:
-                      _buildCard(context, scrollController, todos, revision)),
-            ),
+            _head(),
+            _subhead(),
+            _body(scrollController, todos, revision),
           ]),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              context
-                  .read<NavigationController>()
-                  .navigateTo(Routes.ADD_TODO_ROUTE, arguments: revision);
-            },
-            child: const Icon(Icons.add),
-          ),
+          floatingActionButton: _btnAdd(revision)
         );
       },
     );
   }
 
-  Widget _buildCard(
-      BuildContext context, controller, List<Todo> todos, int revision) {
+  Widget _head() {
+    return const SliverPersistentHeader(
+      pinned: true,
+      delegate: AppHeader(),
+    );
+  }
+
+  Widget _subhead() {
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: EdgeInsets.only(left: Dim.width(context) / 4.95),
+        child: Text(
+          AllLocale.of(context).subtitle,
+        ),
+      ),
+    );
+  }
+
+  Widget _body(ScrollController scrollController, List<Todo> todos, int revision) {
+    return SliverToBoxAdapter(
+      child: _card(scrollController, todos, revision)
+    );
+  }
+
+  Widget _card(ScrollController scrollController, List<Todo> todos, int revision) {
+    return Card(
+      color: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      margin: EdgeInsets.only(
+        top: Dim.height(context) / 40,
+        left: Dim.width(context) / 56,
+        right: Dim.width(context) / 56,
+        bottom: Dim.height(context) / 40,
+      ),
+      child:
+      _bodyCard(scrollController, todos, revision),);
+  }
+
+
+
+  Widget _bodyCard(controller, List<Todo> todos, int revision) {
     return ListView.builder(
       reverse: true,
       padding: EdgeInsets.only(
@@ -87,12 +96,12 @@ class _TodoListScreenState extends State<TodoListScreen> {
         final item = todos[index];
         return ClipRRect(
             clipBehavior: Clip.hardEdge,
-            child: _todoTile(index, item, revision));
+            child: _todoBody(index, item, revision));
       },
     );
   }
 
-  Widget _todoTile(int index, Todo item, int revision) {
+  Widget _todoBody(int index, Todo item, int revision) {
     return Dismissible(
       key: Key(item.id),
       background: Container(
@@ -118,7 +127,6 @@ class _TodoListScreenState extends State<TodoListScreen> {
       ),
       confirmDismiss: (direction) async {
         if (direction == DismissDirection.startToEnd) {
-          //setState(() {});
           return false;
         } else {
           bool delete = true;
@@ -137,17 +145,17 @@ class _TodoListScreenState extends State<TodoListScreen> {
       },
       onDismissed: (direction) async {
         if (direction == DismissDirection.startToEnd) {
-            BlocProvider.of<TodosCubit>(context).changeCompletion(item, revision);
+          BlocProvider.of<TodosCubit>(context).changeCompletion(item, revision);
         }
         if (direction == DismissDirection.endToStart) {
           BlocProvider.of<TodosCubit>(context).deleteTodo(item, revision);
         }
       },
-      child: _todoCard(item, revision),
+      child: _todoTile(item, revision),
     );
   }
 
-  Widget _todoCard(Todo todo, int revision) {
+  Widget _todoTile(Todo todo, int revision) {
     return ListTile(
         onTap: () {
           context
@@ -197,20 +205,30 @@ class _TodoListScreenState extends State<TodoListScreen> {
         subtitle: todo.deadline != null
             ? Text(
                 DateFormat('dd MMMM yyy', 'ru').format(
-                    DateTime.fromMillisecondsSinceEpoch(
-                        todo.deadline! * 1000)),
+                    DateTime.fromMillisecondsSinceEpoch(todo.deadline! * 1000)),
                 style: TextStyle(color: Colors.grey))
             : null);
   }
 
   Widget _priority(String? importance) {
     return importance == "basic"
-        ? Icon(Icons.arrow_downward)
+        ? const Icon(Icons.arrow_downward)
         : (importance == "important"
-            ? Icon(
+            ? const Icon(
                 Icons.priority_high_sharp,
                 color: Colors.red,
               )
-            : Text(""));
+            : const Text(""));
+  }
+
+  Widget _btnAdd(int revision) {
+    return FloatingActionButton(
+      onPressed: () {
+        context
+            .read<NavigationController>()
+            .navigateTo(Routes.ADD_TODO_ROUTE, arguments: revision);
+      },
+      child: const Icon(Icons.add),
+    );
   }
 }
