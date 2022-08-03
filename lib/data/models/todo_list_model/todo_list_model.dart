@@ -6,14 +6,11 @@ part 'todo_list_model.g.dart';
 
 @freezed
 class TodoListModel with _$TodoListModel {
-
-  factory TodoListModel({
+  const factory TodoListModel({
     required int revision,
     required String status,
     required List<Todo> list,
   }) = _TodoListModel;
 
-  factory TodoListModel.fromJson(Map<String, dynamic> json) =>
-      _$TodoListModelFromJson(json);
-
+  factory TodoListModel.fromJson(Map<String, dynamic> json) => _$TodoListModelFromJson(json);
 }

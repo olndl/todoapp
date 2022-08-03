@@ -117,7 +117,7 @@ class __$$_TodoListModelCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_TodoListModel implements _TodoListModel {
-  _$_TodoListModel(
+  const _$_TodoListModel(
       {required this.revision,
       required this.status,
       required final List<Todo> list})
@@ -174,7 +174,7 @@ class _$_TodoListModel implements _TodoListModel {
 }
 
 abstract class _TodoListModel implements TodoListModel {
-  factory _TodoListModel(
+  const factory _TodoListModel(
       {required final int revision,
       required final String status,
       required final List<Todo> list}) = _$_TodoListModel;

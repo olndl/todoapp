@@ -6,15 +6,11 @@ part 'todo_model.g.dart';
 
 @freezed
 class TodoModel with _$TodoModel {
-
-  factory TodoModel({
-    required String status,
+  const factory TodoModel({
     required int revision,
+    required String status,
     required Todo element,
-}) = _TodoModel;
+  }) = _TodoModel;
 
-
-  factory TodoModel.fromJson(Map<String, dynamic> json) =>
-      _$TodoModelFromJson(json);
-
+  factory TodoModel.fromJson(Map<String, dynamic> json) => _$TodoModelFromJson(json);
 }

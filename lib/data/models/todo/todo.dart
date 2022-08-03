@@ -1,22 +1,23 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'todo.freezed.dart';
-
 part 'todo.g.dart';
 
 @freezed
 class Todo with _$Todo {
-  factory Todo({
+  const factory Todo({
     required String id,
-    int? createdAt,
+    @JsonKey(name: 'created_at') required int createdAt,
     required String text,
-    String? lastUpdatedBy,
-    int? changedAt,
-    int? deadline,
+    @JsonKey(name: 'last_updated_by') required String lastUpdatedBy,
+    @JsonKey(name: 'changed_at') required int changedAt,
+    required int? deadline,
     String? color,
-    @Default(false) bool done,
-    @Default("low") String importance,
+    required bool done,
+    required String importance,
   }) = _Todo;
 
   factory Todo.fromJson(Map<String, dynamic> json) => _$TodoFromJson(json);
+
 }
+

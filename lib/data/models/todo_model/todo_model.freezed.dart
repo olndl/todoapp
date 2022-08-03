@@ -20,8 +20,8 @@ TodoModel _$TodoModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$TodoModel {
-  String get status => throw _privateConstructorUsedError;
   int get revision => throw _privateConstructorUsedError;
+  String get status => throw _privateConstructorUsedError;
   Todo get element => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -34,7 +34,7 @@ mixin _$TodoModel {
 abstract class $TodoModelCopyWith<$Res> {
   factory $TodoModelCopyWith(TodoModel value, $Res Function(TodoModel) then) =
       _$TodoModelCopyWithImpl<$Res>;
-  $Res call({String status, int revision, Todo element});
+  $Res call({int revision, String status, Todo element});
 
   $TodoCopyWith<$Res> get element;
 }
@@ -49,19 +49,19 @@ class _$TodoModelCopyWithImpl<$Res> implements $TodoModelCopyWith<$Res> {
 
   @override
   $Res call({
-    Object? status = freezed,
     Object? revision = freezed,
+    Object? status = freezed,
     Object? element = freezed,
   }) {
     return _then(_value.copyWith(
-      status: status == freezed
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as String,
       revision: revision == freezed
           ? _value.revision
           : revision // ignore: cast_nullable_to_non_nullable
               as int,
+      status: status == freezed
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String,
       element: element == freezed
           ? _value.element
           : element // ignore: cast_nullable_to_non_nullable
@@ -83,7 +83,7 @@ abstract class _$$_TodoModelCopyWith<$Res> implements $TodoModelCopyWith<$Res> {
           _$_TodoModel value, $Res Function(_$_TodoModel) then) =
       __$$_TodoModelCopyWithImpl<$Res>;
   @override
-  $Res call({String status, int revision, Todo element});
+  $Res call({int revision, String status, Todo element});
 
   @override
   $TodoCopyWith<$Res> get element;
@@ -101,19 +101,19 @@ class __$$_TodoModelCopyWithImpl<$Res> extends _$TodoModelCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? status = freezed,
     Object? revision = freezed,
+    Object? status = freezed,
     Object? element = freezed,
   }) {
     return _then(_$_TodoModel(
-      status: status == freezed
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as String,
       revision: revision == freezed
           ? _value.revision
           : revision // ignore: cast_nullable_to_non_nullable
               as int,
+      status: status == freezed
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String,
       element: element == freezed
           ? _value.element
           : element // ignore: cast_nullable_to_non_nullable
@@ -125,22 +125,22 @@ class __$$_TodoModelCopyWithImpl<$Res> extends _$TodoModelCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_TodoModel implements _TodoModel {
-  _$_TodoModel(
-      {required this.status, required this.revision, required this.element});
+  const _$_TodoModel(
+      {required this.revision, required this.status, required this.element});
 
   factory _$_TodoModel.fromJson(Map<String, dynamic> json) =>
       _$$_TodoModelFromJson(json);
 
   @override
-  final String status;
-  @override
   final int revision;
+  @override
+  final String status;
   @override
   final Todo element;
 
   @override
   String toString() {
-    return 'TodoModel(status: $status, revision: $revision, element: $element)';
+    return 'TodoModel(revision: $revision, status: $status, element: $element)';
   }
 
   @override
@@ -148,8 +148,8 @@ class _$_TodoModel implements _TodoModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_TodoModel &&
-            const DeepCollectionEquality().equals(other.status, status) &&
             const DeepCollectionEquality().equals(other.revision, revision) &&
+            const DeepCollectionEquality().equals(other.status, status) &&
             const DeepCollectionEquality().equals(other.element, element));
   }
 
@@ -157,8 +157,8 @@ class _$_TodoModel implements _TodoModel {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(status),
       const DeepCollectionEquality().hash(revision),
+      const DeepCollectionEquality().hash(status),
       const DeepCollectionEquality().hash(element));
 
   @JsonKey(ignore: true)
@@ -175,18 +175,18 @@ class _$_TodoModel implements _TodoModel {
 }
 
 abstract class _TodoModel implements TodoModel {
-  factory _TodoModel(
-      {required final String status,
-      required final int revision,
+  const factory _TodoModel(
+      {required final int revision,
+      required final String status,
       required final Todo element}) = _$_TodoModel;
 
   factory _TodoModel.fromJson(Map<String, dynamic> json) =
       _$_TodoModel.fromJson;
 
   @override
-  String get status;
-  @override
   int get revision;
+  @override
+  String get status;
   @override
   Todo get element;
   @override

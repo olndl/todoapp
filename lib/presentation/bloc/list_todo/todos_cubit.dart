@@ -47,15 +47,7 @@ class TodosCubit extends Cubit<TodosState> {
 
   void changeCompletion(Todo todo, int revision) {
     final currentState = state;
-    final Todo todoWithChangedCompletion = Todo(
-        id: todo.id,
-        createdAt: todo.createdAt,
-        text: todo.text,
-        lastUpdatedBy: todo.lastUpdatedBy,
-        changedAt: todo.changedAt,
-        deadline: todo.deadline,
-        done: !todo.done,
-        importance: todo.importance);
+    final Todo todoWithChangedCompletion = todo.copyWith(done: !todo.done);
     if (currentState is TodosLoaded) {
       final revision = currentState.revision;
       final todoList =
@@ -73,15 +65,7 @@ class TodosCubit extends Cubit<TodosState> {
 
   void changeTodoText(Todo todo, String message, int revision) {
     final currentState = state;
-    final Todo todoWithChangedText = Todo(
-        id: todo.id,
-        createdAt: todo.createdAt,
-        text: message,
-        lastUpdatedBy: todo.lastUpdatedBy,
-        changedAt: todo.changedAt,
-        deadline: todo.deadline,
-        done: todo.done,
-        importance: todo.importance);
+    final Todo todoWithChangedText = todo.copyWith(text: message);
     if (currentState is TodosLoaded) {
       final revision = currentState.revision;
       final todoList =

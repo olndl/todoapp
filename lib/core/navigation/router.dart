@@ -13,6 +13,7 @@ import '../../presentation/screens/edit_todo_screen.dart';
 import '../../presentation/screens/list_todo_screen.dart';
 import 'package:todoapp/core/navigation/routes.dart';
 
+
 class AppRouter {
   late Repository repository;
   late TodosCubit todosCubit;
@@ -24,11 +25,11 @@ class AppRouter {
 
   Route? generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case "/list":
+      case "/":
         return MaterialPageRoute(
           builder: (_) => BlocProvider.value(
             value: todosCubit,
-            child: const TodoListScreen(),
+            child: TodosScreen(),
           ),
         );
       case Routes.EDIT_TODO_ROUTE:
@@ -39,7 +40,7 @@ class AppRouter {
               repository: repository,
               todosCubit: todosCubit,
             ),
-            child: TaskDetailsScreen(todo: listArgs["todo"] as Todo,
+            child: EditTodoScreen(todo: listArgs["todo"] as Todo,
               revision: listArgs["revision"] as int,),
           ),
         );

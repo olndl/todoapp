@@ -81,7 +81,6 @@ class NetworkService {
     } catch (e) {
       print('Error updating user: $e');
     }
-    return null;
   }
 
   Future<bool?> addTodo(Map bodyRequest, int revision) async {
