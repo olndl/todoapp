@@ -8,12 +8,12 @@ import 'package:todoapp/core/localization/l10n/all_locales.dart';
 
 import '../../core/constants/colors.dart';
 import '../../core/navigation/controller.dart';
-import '../../data/models/task_model.dart';
+import '../../data/models/todo/todo.dart';
 
 class TaskViewScreen extends StatefulWidget {
   const TaskViewScreen({Key? key, required this.task}) : super(key: key);
 
-  final Task task;
+  final Todo task;
 
   @override
   State<TaskViewScreen> createState() => _TaskViewScreenState();
@@ -45,7 +45,7 @@ class _TaskViewScreenState extends State<TaskViewScreen> {
     );
   }
 
-  Widget _buildCard(BuildContext context, Task task) {
+  Widget _buildCard(BuildContext context, Todo task) {
     return Column(
       children: [
         Card(

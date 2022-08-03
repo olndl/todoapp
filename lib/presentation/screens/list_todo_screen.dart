@@ -7,9 +7,7 @@ import 'package:todoapp/core/constants/dimension.dart';
 import 'package:todoapp/core/localization/l10n/all_locales.dart';
 import '../../core/navigation/controller.dart';
 import '../../core/navigation/routes.dart';
-import '../../data/models/task_model.dart';
 import '../../data/models/todo/todo.dart';
-import '../../network/blocs/task_list/task_state.dart';
 import '../bloc/list_todo/todos_cubit.dart';
 import '../widgets/app_header.dart';
 
@@ -21,16 +19,11 @@ class TodoListScreen extends StatefulWidget {
 }
 
 class _TodoListScreenState extends State<TodoListScreen> {
-  // final TaskBloc _newBloc = TaskBloc();
-  //
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _newBloc.add(GetTaskList());
-  // }
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<TodosCubit>(context).fetchTodos();
+
     final scrollController = ScrollController();
     return BlocBuilder<TodosCubit, TodosState>(
       builder: (context, state) {
@@ -125,7 +118,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
       ),
       confirmDismiss: (direction) async {
         if (direction == DismissDirection.startToEnd) {
-          setState(() {});
+          //setState(() {});
           return false;
         } else {
           bool delete = true;
@@ -142,10 +135,13 @@ class _TodoListScreenState extends State<TodoListScreen> {
           return delete;
         }
       },
-      onDismissed: (_) {
-        setState(() {
-          //items.removeAt(index);
-        });
+      onDismissed: (direction) async {
+        if (direction == DismissDirection.startToEnd) {
+            BlocProvider.of<TodosCubit>(context).changeCompletion(item, revision);
+        }
+        if (direction == DismissDirection.endToStart) {
+          BlocProvider.of<TodosCubit>(context).deleteTodo(item, revision);
+        }
       },
       child: _todoCard(item, revision),
     );
@@ -177,7 +173,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
         trailing: IconButton(
           onPressed: () {
             context.read<NavigationController>().navigateTo(
-                Routes.ADD_TODO_ROUTE,
+                Routes.EDIT_TODO_ROUTE,
                 arguments: {"todo": todo, "revision": revision});
           },
           icon: const Icon(Icons.info_outline),
@@ -202,12 +198,12 @@ class _TodoListScreenState extends State<TodoListScreen> {
             ? Text(
                 DateFormat('dd MMMM yyy', 'ru').format(
                     DateTime.fromMillisecondsSinceEpoch(
-                        todo.deadline * 1000)),
+                        todo.deadline! * 1000)),
                 style: TextStyle(color: Colors.grey))
             : null);
   }
 
-  Widget _priority(String importance) {
+  Widget _priority(String? importance) {
     return importance == "basic"
         ? Icon(Icons.arrow_downward)
         : (importance == "important"

@@ -24,7 +24,7 @@ class AppRouter {
 
   Route? generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case "/":
+      case "/list":
         return MaterialPageRoute(
           builder: (_) => BlocProvider.value(
             value: todosCubit,

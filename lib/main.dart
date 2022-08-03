@@ -7,7 +7,6 @@ import 'core/navigation/router.dart';
 import 'core/navigation/routes.dart';
 import 'core/theme/app_theme.dart';
 import 'core/localization/l10n/all_locales.dart';
-import 'data/models/task_model.dart';
 
 void main() {
   runApp(MyApp(

@@ -21,12 +21,12 @@ Todo _$TodoFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Todo {
   String get id => throw _privateConstructorUsedError;
-  int get createdAt => throw _privateConstructorUsedError;
+  int? get createdAt => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
-  String get lastUpdatedBy => throw _privateConstructorUsedError;
-  int get changedAt => throw _privateConstructorUsedError;
-  int get deadline => throw _privateConstructorUsedError;
-  String get color => throw _privateConstructorUsedError;
+  String? get lastUpdatedBy => throw _privateConstructorUsedError;
+  int? get changedAt => throw _privateConstructorUsedError;
+  int? get deadline => throw _privateConstructorUsedError;
+  String? get color => throw _privateConstructorUsedError;
   bool get done => throw _privateConstructorUsedError;
   String get importance => throw _privateConstructorUsedError;
 
@@ -41,12 +41,12 @@ abstract class $TodoCopyWith<$Res> {
       _$TodoCopyWithImpl<$Res>;
   $Res call(
       {String id,
-      int createdAt,
+      int? createdAt,
       String text,
-      String lastUpdatedBy,
-      int changedAt,
-      int deadline,
-      String color,
+      String? lastUpdatedBy,
+      int? changedAt,
+      int? deadline,
+      String? color,
       bool done,
       String importance});
 }
@@ -79,7 +79,7 @@ class _$TodoCopyWithImpl<$Res> implements $TodoCopyWith<$Res> {
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       text: text == freezed
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -87,19 +87,19 @@ class _$TodoCopyWithImpl<$Res> implements $TodoCopyWith<$Res> {
       lastUpdatedBy: lastUpdatedBy == freezed
           ? _value.lastUpdatedBy
           : lastUpdatedBy // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       changedAt: changedAt == freezed
           ? _value.changedAt
           : changedAt // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       deadline: deadline == freezed
           ? _value.deadline
           : deadline // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       color: color == freezed
           ? _value.color
           : color // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       done: done == freezed
           ? _value.done
           : done // ignore: cast_nullable_to_non_nullable
@@ -119,12 +119,12 @@ abstract class _$$_TodoCopyWith<$Res> implements $TodoCopyWith<$Res> {
   @override
   $Res call(
       {String id,
-      int createdAt,
+      int? createdAt,
       String text,
-      String lastUpdatedBy,
-      int changedAt,
-      int deadline,
-      String color,
+      String? lastUpdatedBy,
+      int? changedAt,
+      int? deadline,
+      String? color,
       bool done,
       String importance});
 }
@@ -158,7 +158,7 @@ class __$$_TodoCopyWithImpl<$Res> extends _$TodoCopyWithImpl<$Res>
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       text: text == freezed
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -166,19 +166,19 @@ class __$$_TodoCopyWithImpl<$Res> extends _$TodoCopyWithImpl<$Res>
       lastUpdatedBy: lastUpdatedBy == freezed
           ? _value.lastUpdatedBy
           : lastUpdatedBy // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       changedAt: changedAt == freezed
           ? _value.changedAt
           : changedAt // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       deadline: deadline == freezed
           ? _value.deadline
           : deadline // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       color: color == freezed
           ? _value.color
           : color // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       done: done == freezed
           ? _value.done
           : done // ignore: cast_nullable_to_non_nullable
@@ -196,36 +196,36 @@ class __$$_TodoCopyWithImpl<$Res> extends _$TodoCopyWithImpl<$Res>
 class _$_Todo implements _Todo {
   _$_Todo(
       {required this.id,
-      required this.createdAt,
+      this.createdAt,
       required this.text,
-      required this.lastUpdatedBy,
-      required this.changedAt,
-      this.deadline = 0,
-      this.color = '',
-      required this.done,
-      required this.importance});
+      this.lastUpdatedBy,
+      this.changedAt,
+      this.deadline,
+      this.color,
+      this.done = false,
+      this.importance = "low"});
 
   factory _$_Todo.fromJson(Map<String, dynamic> json) => _$$_TodoFromJson(json);
 
   @override
   final String id;
   @override
-  final int createdAt;
+  final int? createdAt;
   @override
   final String text;
   @override
-  final String lastUpdatedBy;
+  final String? lastUpdatedBy;
   @override
-  final int changedAt;
+  final int? changedAt;
+  @override
+  final int? deadline;
+  @override
+  final String? color;
   @override
   @JsonKey()
-  final int deadline;
-  @override
-  @JsonKey()
-  final String color;
-  @override
   final bool done;
   @override
+  @JsonKey()
   final String importance;
 
   @override
@@ -281,31 +281,31 @@ class _$_Todo implements _Todo {
 abstract class _Todo implements Todo {
   factory _Todo(
       {required final String id,
-      required final int createdAt,
+      final int? createdAt,
       required final String text,
-      required final String lastUpdatedBy,
-      required final int changedAt,
-      final int deadline,
-      final String color,
-      required final bool done,
-      required final String importance}) = _$_Todo;
+      final String? lastUpdatedBy,
+      final int? changedAt,
+      final int? deadline,
+      final String? color,
+      final bool done,
+      final String importance}) = _$_Todo;
 
   factory _Todo.fromJson(Map<String, dynamic> json) = _$_Todo.fromJson;
 
   @override
   String get id;
   @override
-  int get createdAt;
+  int? get createdAt;
   @override
   String get text;
   @override
-  String get lastUpdatedBy;
+  String? get lastUpdatedBy;
   @override
-  int get changedAt;
+  int? get changedAt;
   @override
-  int get deadline;
+  int? get deadline;
   @override
-  String get color;
+  String? get color;
   @override
   bool get done;
   @override

@@ -10,8 +10,7 @@ class TodoListModel with _$TodoListModel {
   factory TodoListModel({
     required int revision,
     required String status,
-    @Default([])
-    List<Todo> list,
+    required List<Todo> list,
   }) = _TodoListModel;
 
   factory TodoListModel.fromJson(Map<String, dynamic> json) =>

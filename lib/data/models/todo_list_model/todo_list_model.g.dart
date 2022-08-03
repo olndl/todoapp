@@ -10,10 +10,9 @@ _$_TodoListModel _$$_TodoListModelFromJson(Map<String, dynamic> json) =>
     _$_TodoListModel(
       revision: json['revision'] as int,
       status: json['status'] as String,
-      list: (json['list'] as List<dynamic>?)
-              ?.map((e) => Todo.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const [],
+      list: (json['list'] as List<dynamic>)
+          .map((e) => Todo.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$_TodoListModelToJson(_$_TodoListModel instance) =>

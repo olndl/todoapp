@@ -120,7 +120,7 @@ class _$_TodoListModel implements _TodoListModel {
   _$_TodoListModel(
       {required this.revision,
       required this.status,
-      final List<Todo> list = const []})
+      required final List<Todo> list})
       : _list = list;
 
   factory _$_TodoListModel.fromJson(Map<String, dynamic> json) =>
@@ -132,7 +132,6 @@ class _$_TodoListModel implements _TodoListModel {
   final String status;
   final List<Todo> _list;
   @override
-  @JsonKey()
   List<Todo> get list {
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_list);
@@ -178,7 +177,7 @@ abstract class _TodoListModel implements TodoListModel {
   factory _TodoListModel(
       {required final int revision,
       required final String status,
-      final List<Todo> list}) = _$_TodoListModel;
+      required final List<Todo> list}) = _$_TodoListModel;
 
   factory _TodoListModel.fromJson(Map<String, dynamic> json) =
       _$_TodoListModel.fromJson;
