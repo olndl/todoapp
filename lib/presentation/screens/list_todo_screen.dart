@@ -9,87 +9,7 @@ import '../../data/models/todo/todo.dart';
 import '../bloc/list_todo/todos_cubit.dart';
 import '../widgets/app_header.dart';
 
-class MyHeaderDelegate extends SliverPersistentHeaderDelegate {
-  const MyHeaderDelegate();
 
-  @override
-  Widget build(
-      BuildContext context,
-      double shrinkOffset,
-      bool overlapsContent,
-      ) {
-    final progress = shrinkOffset / maxExtent;
-
-    return Material(
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          AnimatedOpacity(
-            duration: const Duration(milliseconds: 150),
-            opacity: 1,
-            child: ColoredBox(
-              color: ColorApp.lightTheme.backPrimary,
-            ),
-          ),
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 100),
-            padding: EdgeInsets.lerp(
-              EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              EdgeInsets.only(bottom: 16),
-              progress,
-            ),
-            alignment: Alignment.lerp(
-              Alignment.bottomLeft,
-              Alignment.bottomCenter,
-              progress,
-            ),
-            child: Text(
-              'Mountains',
-              style: TextStyle.lerp(
-                Theme.of(context)
-                    .textTheme
-                    .headline4
-                    ?.copyWith(color: Colors.black),
-                Theme.of(context)
-                    .textTheme
-                    .headline6
-                    ?.copyWith(color: Colors.black),
-                progress,
-              ),
-            ),
-          ),
-          AnimatedContainer(
-              duration: const Duration(milliseconds: 100),
-              padding: EdgeInsets.lerp(
-                EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                EdgeInsets.only(bottom: 16),
-                progress,
-              ),
-              alignment: Alignment.lerp(
-                Alignment(.8, 2.35),
-                Alignment(.67, 2.2),
-                progress,
-              ),
-              child: Padding(
-                padding: EdgeInsets.only(left: 392 / 1.6),
-                child:
-                IconButton(onPressed: () {}, icon: Icon(Icons.visibility)),
-              )),
-        ],
-      ),
-    );
-  }
-
-  @override
-  double get maxExtent => 264;
-
-  @override
-  double get minExtent => 84;
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
-      true;
-}
 
 class TodosScreen extends StatefulWidget {
   const TodosScreen({Key? key}) : super(key: key);
@@ -109,42 +29,19 @@ class _TodosScreenState extends State<TodosScreen> {
           return Center(child: CircularProgressIndicator());
         final todos = state.todos;
         final revision = state.revision;
+        final completeTodo = todos.where((element) => element.done == true).length;
         final scrollController = ScrollController();
         return Scaffold(
           backgroundColor: Color(0xfffcfaf1),
           body: CustomScrollView(
               slivers: [
                 _head(),
-                _subhead(context),
+                _subhead(context, completeTodo),
                 _body(scrollController, context, todos, revision)
-                //   Column(
-                //   children: [
-                //     InkWell(
-                //       onTap: () => Navigator.pushNamed(context, Routes.ADD_TODO_ROUTE,
-                //           arguments: revision),
-                //       child: Padding(
-                //         padding: const EdgeInsets.all(10.0),
-                //         child: Icon(Icons.add),
-                //       ),
-                //     ),
-                //     Column(
-                //       children:
-                //       todos.map((e) => _todo(e, revision, context)).toList(),
-                //     ),
-                //   ],
-                // ),
               ]
           ),
           floatingActionButton: _btnAdd(revision, context),
         );
-
-        //   CustomScrollView(
-        //   slivers: [
-        //     _head(),
-        //     _subhead(context),
-        //     _body(scrollController, context, todos, revision),
-        //   ],
-        // );
       },
     );
   }
@@ -156,14 +53,14 @@ class _TodosScreenState extends State<TodosScreen> {
     );
   }
 
-  Widget _subhead(context) {
+  Widget _subhead(context, num) {
     return SliverToBoxAdapter(
       child: Padding(
         padding: EdgeInsets.only(left: Dim.width(context) / 4.95),
         child: Text(
           AllLocale
               .of(context)
-              .subtitle,
+              .subtitle+' $num',
         ),
       ),
     );
@@ -341,7 +238,7 @@ class _TodosScreenState extends State<TodosScreen> {
         subtitle: todo.deadline != null
             ? Text(
             DateFormat('dd MMMM yyy', 'ru').format(
-                DateTime.fromMillisecondsSinceEpoch(todo.deadline! * 1000)),
+                DateTime.fromMillisecondsSinceEpoch(todo.deadline!)),
             style: const TextStyle(color: Colors.grey))
             : null);
   }
