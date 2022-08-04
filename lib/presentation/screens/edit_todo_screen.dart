@@ -4,25 +4,29 @@ import '../../data/models/todo/todo.dart';
 import '../bloc/edit_todo/edit_todo_cubit.dart';
 
 
-class EditTodoScreen extends StatelessWidget {
+class EditTodoScreen extends StatefulWidget {
   final Todo todo;
   final int revision;
 
-  EditTodoScreen({Key? key, required this.todo, required this.revision})
-      : super(key: key);
+  const EditTodoScreen({Key? key, required this.todo, required this.revision}) : super(key: key);
 
+  @override
+  State<EditTodoScreen> createState() => _EditTodoScreenState();
+}
+
+class _EditTodoScreenState extends State<EditTodoScreen> {
   final _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    _controller.text = todo.text;
+    _controller.text = widget.todo.text;
 
     return BlocListener<EditTodoCubit, EditTodoState>(
       listener: (context, state) {
         if (state is TodoEdited) {
           Navigator.pop(context);
         } else if (state is EditTodoError) {
-         print(state.error);
+          print(state.error);
         }
       },
       child: Scaffold(
@@ -32,7 +36,7 @@ class EditTodoScreen extends StatelessWidget {
             InkWell(
               onTap: () {
                 BlocProvider.of<EditTodoCubit>(context)
-                    .deleteTodo(todo, revision);
+                    .deleteTodo(widget.todo, widget.revision);
               },
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
@@ -60,7 +64,7 @@ class EditTodoScreen extends StatelessWidget {
           InkWell(
               onTap: () {
                 BlocProvider.of<EditTodoCubit>(context)
-                    .updateTodo(todo, _controller.text, revision);
+                    .updateTodo(widget.todo, _controller.text, widget.revision);
               },
               child: _updateBtn(context))
         ],
@@ -85,7 +89,6 @@ class EditTodoScreen extends StatelessWidget {
     );
   }
 }
-
 
 // import 'package:flutter/cupertino.dart';
 // import 'package:flutter/material.dart';

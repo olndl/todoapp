@@ -19,7 +19,7 @@ class AddTodoCubit extends Cubit<AddTodoState> {
       emit(AddTodoError(error: "Message is empty"));
       return;
     }
-    emit(AddingTodo());
+    //emit(AddingTodo());
     todosCubit.addTodo(task);
     emit(TodoAdded());
   }

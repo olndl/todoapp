@@ -91,55 +91,62 @@ class MyHeaderDelegate extends SliverPersistentHeaderDelegate {
       true;
 }
 
-class TodosScreen extends StatelessWidget {
+class TodosScreen extends StatefulWidget {
+  const TodosScreen({Key? key}) : super(key: key);
+
+  @override
+  State<TodosScreen> createState() => _TodosScreenState();
+}
+
+class _TodosScreenState extends State<TodosScreen> {
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<TodosCubit>(context).fetchTodos();
 
     return BlocBuilder<TodosCubit, TodosState>(
-        builder: (context, state) {
-          if (!(state is TodosLoaded))
-            return Center(child: CircularProgressIndicator());
-          final todos = state.todos;
-          final revision = state.revision;
-          final scrollController = ScrollController();
-          return Scaffold(
-            backgroundColor: Color(0xfffcfaf1),
-            body: CustomScrollView(
+      builder: (context, state) {
+        if (!(state is TodosLoaded))
+          return Center(child: CircularProgressIndicator());
+        final todos = state.todos;
+        final revision = state.revision;
+        final scrollController = ScrollController();
+        return Scaffold(
+          backgroundColor: Color(0xfffcfaf1),
+          body: CustomScrollView(
               slivers: [
                 _head(),
                 _subhead(context),
                 _body(scrollController, context, todos, revision)
-              //   Column(
-              //   children: [
-              //     InkWell(
-              //       onTap: () => Navigator.pushNamed(context, Routes.ADD_TODO_ROUTE,
-              //           arguments: revision),
-              //       child: Padding(
-              //         padding: const EdgeInsets.all(10.0),
-              //         child: Icon(Icons.add),
-              //       ),
-              //     ),
-              //     Column(
-              //       children:
-              //       todos.map((e) => _todo(e, revision, context)).toList(),
-              //     ),
-              //   ],
-              // ),
-          ]
-            ),
-            floatingActionButton: _btnAdd(revision, context),
-          );
+                //   Column(
+                //   children: [
+                //     InkWell(
+                //       onTap: () => Navigator.pushNamed(context, Routes.ADD_TODO_ROUTE,
+                //           arguments: revision),
+                //       child: Padding(
+                //         padding: const EdgeInsets.all(10.0),
+                //         child: Icon(Icons.add),
+                //       ),
+                //     ),
+                //     Column(
+                //       children:
+                //       todos.map((e) => _todo(e, revision, context)).toList(),
+                //     ),
+                //   ],
+                // ),
+              ]
+          ),
+          floatingActionButton: _btnAdd(revision, context),
+        );
 
-          //   CustomScrollView(
-          //   slivers: [
-          //     _head(),
-          //     _subhead(context),
-          //     _body(scrollController, context, todos, revision),
-          //   ],
-          // );
-        },
-      );
+        //   CustomScrollView(
+        //   slivers: [
+        //     _head(),
+        //     _subhead(context),
+        //     _body(scrollController, context, todos, revision),
+        //   ],
+        // );
+      },
+    );
   }
 
   Widget _head() {

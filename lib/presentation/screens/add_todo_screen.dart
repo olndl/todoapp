@@ -2,15 +2,21 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../core/constants/dimension.dart';
+import '../../core/localization/l10n/all_locales.dart';
 import '../../data/models/todo/todo.dart';
 import '../bloc/add_todo/add_todo_cubit.dart';
 
-class AddTodoScreen extends StatelessWidget {
+class AddTodoScreen extends StatefulWidget {
   final int revision;
 
-  AddTodoScreen({Key? key, required this.revision})
-      : super(key: key);
+  const AddTodoScreen({Key? key, required this.revision}) : super(key: key);
 
+  @override
+  State<AddTodoScreen> createState() => _AddTodoScreenState();
+}
+
+class _AddTodoScreenState extends State<AddTodoScreen> {
   Random _random = Random();
   final _controller = TextEditingController();
 
@@ -25,7 +31,7 @@ class AddTodoScreen extends StatelessWidget {
           if (state is TodoAdded) {
             Navigator.pop(context);
           } else if (state is AddTodoError) {
-            print(state.error);
+            debugPrint(state.error);
           }
         },
         child: Container(
@@ -39,10 +45,23 @@ class AddTodoScreen extends StatelessWidget {
   Widget _body(context) {
     return Column(
       children: [
-        TextField(
-          autofocus: true,
-          controller: _controller,
-          decoration: InputDecoration(hintText: "Enter todo message..."),
+        Card(
+          color: Colors.white,
+          margin: EdgeInsets.all(Dim.width(context) / 25),
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          child: TextField(
+            minLines: 4,
+            maxLines: 100,
+            autofocus: true,
+            controller: _controller,
+            keyboardType: TextInputType.text,
+            decoration: InputDecoration(
+                contentPadding: EdgeInsets.all(Dim.width(context) / 20),
+                border: InputBorder.none,
+                hintText: AllLocale.of(context).hintMessage),
+            textAlign: TextAlign.left,
+          ),
         ),
         SizedBox(height: 10.0),
         InkWell(
@@ -57,7 +76,8 @@ class AddTodoScreen extends StatelessWidget {
                 deadline: DateTime.now().millisecondsSinceEpoch,
                 done: true,
                 importance: 'low');
-            BlocProvider.of<AddTodoCubit>(context).addTodo(newTask, revision);
+            BlocProvider.of<AddTodoCubit>(context)
+                .addTodo(newTask, widget.revision);
           },
           child: _addBtn(context),
         )
