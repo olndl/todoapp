@@ -43,12 +43,10 @@ class AppHeader extends SliverPersistentHeaderDelegate {
               style: TextStyle.lerp(
                 Theme.of(context)
                     .textTheme
-                    .headline4
-                    ?.copyWith(color: Colors.black),
+                    .headline4,
                 Theme.of(context)
                     .textTheme
-                    .headline6
-                    ?.copyWith(color: Colors.black),
+                    .headline6,
                 progress,
               ),
             ),

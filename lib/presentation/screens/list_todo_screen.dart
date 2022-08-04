@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import '../../core/constants/colors.dart';
 import '../../core/constants/dimension.dart';
 import '../../core/localization/l10n/all_locales.dart';
 import '../../core/navigation/routes.dart';
@@ -8,36 +9,126 @@ import '../../data/models/todo/todo.dart';
 import '../bloc/list_todo/todos_cubit.dart';
 import '../widgets/app_header.dart';
 
+class MyHeaderDelegate extends SliverPersistentHeaderDelegate {
+  const MyHeaderDelegate();
+
+  @override
+  Widget build(
+      BuildContext context,
+      double shrinkOffset,
+      bool overlapsContent,
+      ) {
+    final progress = shrinkOffset / maxExtent;
+
+    return Material(
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          AnimatedOpacity(
+            duration: const Duration(milliseconds: 150),
+            opacity: 1,
+            child: ColoredBox(
+              color: ColorApp.lightTheme.backPrimary,
+            ),
+          ),
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 100),
+            padding: EdgeInsets.lerp(
+              EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              EdgeInsets.only(bottom: 16),
+              progress,
+            ),
+            alignment: Alignment.lerp(
+              Alignment.bottomLeft,
+              Alignment.bottomCenter,
+              progress,
+            ),
+            child: Text(
+              'Mountains',
+              style: TextStyle.lerp(
+                Theme.of(context)
+                    .textTheme
+                    .headline4
+                    ?.copyWith(color: Colors.black),
+                Theme.of(context)
+                    .textTheme
+                    .headline6
+                    ?.copyWith(color: Colors.black),
+                progress,
+              ),
+            ),
+          ),
+          AnimatedContainer(
+              duration: const Duration(milliseconds: 100),
+              padding: EdgeInsets.lerp(
+                EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                EdgeInsets.only(bottom: 16),
+                progress,
+              ),
+              alignment: Alignment.lerp(
+                Alignment(.8, 2.35),
+                Alignment(.67, 2.2),
+                progress,
+              ),
+              child: Padding(
+                padding: EdgeInsets.only(left: 392 / 1.6),
+                child:
+                IconButton(onPressed: () {}, icon: Icon(Icons.visibility)),
+              )),
+        ],
+      ),
+    );
+  }
+
+  @override
+  double get maxExtent => 264;
+
+  @override
+  double get minExtent => 84;
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
+      true;
+}
+
 class TodosScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<TodosCubit>(context).fetchTodos();
 
-    return Scaffold(
-      body: BlocBuilder<TodosCubit, TodosState>(
+    return BlocBuilder<TodosCubit, TodosState>(
         builder: (context, state) {
           if (!(state is TodosLoaded))
             return Center(child: CircularProgressIndicator());
           final todos = state.todos;
           final revision = state.revision;
           final scrollController = ScrollController();
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                InkWell(
-                  onTap: () => Navigator.pushNamed(context, Routes.ADD_TODO_ROUTE,
-                      arguments: revision),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Icon(Icons.add),
-                  ),
-                ),
-                Column(
-                  children:
-                  todos.map((e) => _todo(e, revision, context)).toList(),
-                ),
-              ],
+          return Scaffold(
+            backgroundColor: Color(0xfffcfaf1),
+            body: CustomScrollView(
+              slivers: [
+                _head(),
+                _subhead(context),
+                _body(scrollController, context, todos, revision)
+              //   Column(
+              //   children: [
+              //     InkWell(
+              //       onTap: () => Navigator.pushNamed(context, Routes.ADD_TODO_ROUTE,
+              //           arguments: revision),
+              //       child: Padding(
+              //         padding: const EdgeInsets.all(10.0),
+              //         child: Icon(Icons.add),
+              //       ),
+              //     ),
+              //     Column(
+              //       children:
+              //       todos.map((e) => _todo(e, revision, context)).toList(),
+              //     ),
+              //   ],
+              // ),
+          ]
             ),
+            floatingActionButton: _btnAdd(revision, context),
           );
 
           //   CustomScrollView(
@@ -48,8 +139,7 @@ class TodosScreen extends StatelessWidget {
           //   ],
           // );
         },
-      ),
-    );
+      );
   }
 
   Widget _head() {
@@ -119,9 +209,14 @@ class TodosScreen extends StatelessWidget {
       key: Key(item.id),
       background: _fromLeftToRight(),
       secondaryBackground: _fromRightToLeft(),
-      confirmDismiss: (_) async {
-        BlocProvider.of<TodosCubit>(context).changeCompletion(item, revision);
-        return false;
+      confirmDismiss: (direction) async {
+        if (direction == DismissDirection.startToEnd) {
+          BlocProvider.of<TodosCubit>(context).changeCompletion(item, revision);
+          return false;
+        }
+        if (direction == DismissDirection.endToStart) {
+          BlocProvider.of<TodosCubit>(context).deleteTodo(item, revision);
+        }
       },
       onDismissed: (direction) =>
           _toDismissed(direction, context, item, revision),
@@ -146,12 +241,12 @@ class TodosScreen extends StatelessWidget {
 
   Widget _fromRightToLeft() {
     return Container(
-      color: Colors.green,
-      alignment: Alignment.centerLeft,
+      color: Colors.red,
+      alignment: Alignment.centerRight,
       child: const Padding(
         padding: EdgeInsets.all(15),
         child: Icon(
-          Icons.check,
+          Icons.delete,
           color: Colors.white,
         ),
       ),
@@ -198,11 +293,9 @@ class TodosScreen extends StatelessWidget {
   Widget _todoTile(Todo todo, context, int revision) {
     bool isChanged = todo.done;
     return ListTile(
-        onTap: () {
-          // context
-          //     .read<NavigationController>()
-          //     .navigateTo(Routes.view, arguments: todo);
-        },
+        onTap:() =>
+            Navigator.pushNamed(context, Routes.EDIT_TODO_ROUTE,
+                arguments: {"todo": todo, "revision": revision}),
         leading: Theme(
           data: Theme.of(context).copyWith(
             unselectedWidgetColor:
@@ -221,9 +314,7 @@ class TodosScreen extends StatelessWidget {
         ),
         horizontalTitleGap: 3,
         trailing: IconButton(
-          onPressed: () =>
-              Navigator.pushNamed(context, Routes.EDIT_TODO_ROUTE,
-                  arguments: {"todo": todo, "revision": revision}),
+          onPressed: () {},
           icon: const Icon(Icons.info_outline),
         ),
         title: todo.done == true

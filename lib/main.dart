@@ -16,6 +16,8 @@ void main() {
 
 class TodoApp extends StatelessWidget {
 
+  final _locale = AllLocale.ru;
+
   final AppRouter router;
 
   const TodoApp({Key? key, required this.router}) : super(key: key);
@@ -24,6 +26,14 @@ class TodoApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AllLocale.supportedLocales,
+          locale: _locale,
       onGenerateRoute: router.generateRoute,
     );
   }
