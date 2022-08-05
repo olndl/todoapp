@@ -12,10 +12,10 @@ class TodosCubit extends Cubit<TodosState> {
   TodosCubit({required this.repository}) : super(TodosInitial());
 
   void updateTodoListOnServer(todoList, revision) {
-    repository.fetchTodosOnServer(todoList, revision).then((tasModel) {
+    repository.fetchTodosOnServer(todoList, revision).then((taskModel) {
       emit(TodosLoaded(
-        todos: tasModel.list,
-        revision: tasModel.revision,
+        todos: taskModel.list,
+        revision: taskModel.revision,
       ));
     });
   }

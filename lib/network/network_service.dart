@@ -12,6 +12,7 @@ class NetworkService {
     try {
       Response response = await _dio.patch(
           '$_baseUrl/list/',
+          data: bodyRequest,
           options: Options(headers: {
             'Authorization': 'Bearer $token',
             'Content-Type': 'application/json',

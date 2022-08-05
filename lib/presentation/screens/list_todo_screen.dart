@@ -106,19 +106,33 @@ class _TodosScreenState extends State<TodosScreen> {
           ? -1
           : 1;
 
+  final GlobalKey<RefreshIndicatorState> _refreshIndicator = GlobalKey<RefreshIndicatorState>();
+
   Widget _bodyCard(controller, context, List<Todo> todos, int revision) {
-    return ListView.builder(
-      padding: EdgeInsets.only(
-          top: Dim.height(context) / 100, bottom: Dim.height(context) / 100),
-      controller: controller,
-      shrinkWrap: true,
-      itemCount: todos.length,
-      itemBuilder: (BuildContext context, int index) {
-        final item = todos[index];
-        return ClipRRect(
-            clipBehavior: Clip.hardEdge,
-            child: _todoBody(index, item, context, revision));
+    return RefreshIndicator(
+      key: _refreshIndicator,
+      onRefresh: () async {
+        BlocProvider.of<TodosCubit>(context).updateTodoListOnServer(todos, revision);
+        debugPrint("$revision");
       },
+      color: ColorApp.lightTheme.colorWhite,
+      backgroundColor: Colors.blue,
+      //triggerMode: RefreshIndicatorTriggerMode.anywhere,
+      strokeWidth: 4.0,
+      child: ListView.builder(
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: EdgeInsets.only(
+            top: Dim.height(context) / 100, bottom: Dim.height(context) / 100),
+        controller: controller,
+        shrinkWrap: true,
+        itemCount: todos.length,
+        itemBuilder: (BuildContext context, int index) {
+          final item = todos[index];
+          return ClipRRect(
+              clipBehavior: Clip.hardEdge,
+              child: _todoBody(index, item, context, revision));
+        },
+      ),
     );
   }
 
