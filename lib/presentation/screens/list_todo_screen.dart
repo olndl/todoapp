@@ -10,8 +10,6 @@ import '../../data/models/todo/todo.dart';
 import '../bloc/list_todo/todos_cubit.dart';
 import '../widgets/app_header.dart';
 
-
-
 class TodosScreen extends StatefulWidget {
   const TodosScreen({Key? key}) : super(key: key);
 
@@ -31,20 +29,21 @@ class _TodosScreenState extends State<TodosScreen> {
         if (!(state is TodosLoaded)) {
           return const Center(child: CircularProgressIndicator());
         }
-        final todos = state.todos;
+        //List<Todo> todos = state.todos;
+        List<Todo> todos = List.from(state.todos);
+        todos.sort(compareElement);
         final revision = state.revision;
-        final completeTodo = todos.where((element) => element.done == true).length;
-        final uncompletedTodo = todos.where((element) => element.done == false);
+        final completeTodo =
+            todos.where((element) => element.done == true).length;
+        //final uncompletedTodo = todos.where((element) => element.done == false);
         final scrollController = ScrollController();
         return Scaffold(
           backgroundColor: Color(0xfffcfaf1),
-          body: CustomScrollView(
-              slivers: [
-                _head(),
-                _subhead(context, completeTodo),
-                _body(scrollController, context, todos, revision)
-              ]
-          ),
+          body: CustomScrollView(slivers: [
+            _head(),
+            _subhead(context, completeTodo),
+            _body(scrollController, context, todos, revision)
+          ]),
           floatingActionButton: _btnAdd(revision, context),
         );
       },
@@ -63,9 +62,7 @@ class _TodosScreenState extends State<TodosScreen> {
       child: Padding(
         padding: EdgeInsets.only(left: Dim.width(context) / 4.95),
         child: Text(
-          '${AllLocale
-              .of(context)
-              .subtitle} $num',
+          '${AllLocale.of(context).subtitle} $num',
         ),
       ),
     );
@@ -74,8 +71,7 @@ class _TodosScreenState extends State<TodosScreen> {
   Widget _body(ScrollController scrollController, context, List<Todo> todos,
       int revision) {
     return SliverToBoxAdapter(
-        child: _card(scrollController, context, todos, revision)
-    );
+        child: _card(scrollController, context, todos, revision));
   }
 
   Widget _card(ScrollController scrollController, context, List<Todo> todos,
@@ -91,15 +87,24 @@ class _TodosScreenState extends State<TodosScreen> {
         right: Dim.width(context) / 56,
         bottom: Dim.height(context) / 40,
       ),
-      child:
-      Column(
+      child: Column(
         children: [
-
           _bodyCard(scrollController, context, todos, revision),
+          ListTile(
+            title: TextField(
+              decoration: InputDecoration(border: InputBorder.none),
+            ),
+          )
         ],
-      ),);
+      ),
+    );
   }
 
+  int compareElement(Todo a, Todo b) =>
+      DateTime.fromMillisecondsSinceEpoch(a.createdAt)
+              .isAfter(DateTime.fromMillisecondsSinceEpoch(b.createdAt))
+          ? -1
+          : 1;
 
   Widget _bodyCard(controller, context, List<Todo> todos, int revision) {
     return ListView.builder(
@@ -122,7 +127,8 @@ class _TodosScreenState extends State<TodosScreen> {
       key: Key(item.id),
       background: _fromLeftToRight(),
       secondaryBackground: _fromRightToLeft(),
-      confirmDismiss: (direction) => _confirmDismissal(direction, context, item),
+      confirmDismiss: (direction) =>
+          _confirmDismissal(direction, context, item),
       onDismissed: (direction) =>
           _toDismissed(direction, context, item, revision),
       child: _todoTile(item, context, revision),
@@ -134,15 +140,13 @@ class _TodosScreenState extends State<TodosScreen> {
       color: Colors.green,
       alignment: Alignment.centerLeft,
       child: Padding(
-        padding: EdgeInsets.all(15),
-        child: SvgPicture.asset(
-          'assets/icons/check.svg',
-          color: Colors.white,
-        )
-      ),
+          padding: EdgeInsets.all(15),
+          child: SvgPicture.asset(
+            'assets/icons/check.svg',
+            color: Colors.white,
+          )),
     );
   }
-
 
   Widget _fromRightToLeft() {
     return Container(
@@ -158,22 +162,17 @@ class _TodosScreenState extends State<TodosScreen> {
     );
   }
 
-  Future<bool> _confirmDismissal(DismissDirection direction, context,
-      Todo item) async {
+  Future<bool> _confirmDismissal(
+      DismissDirection direction, context, Todo item) async {
     if (direction == DismissDirection.startToEnd) {
       return false;
     } else {
       bool delete = true;
       final snackbarController = ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content:
-          Text('${AllLocale
-              .of(context)
-              .deletedTask} ${item.text}'),
+          content: Text('${AllLocale.of(context).deletedTask} ${item.text}'),
           action: SnackBarAction(
-              label: AllLocale
-                  .of(context)
-                  .undo,
+              label: AllLocale.of(context).undo,
               onPressed: () => delete = false),
         ),
       );
@@ -182,9 +181,8 @@ class _TodosScreenState extends State<TodosScreen> {
     }
   }
 
-  Future<bool?> _toDismissed(DismissDirection direction, context, Todo item,
-      int revision) async
-  {
+  Future<bool?> _toDismissed(
+      DismissDirection direction, context, Todo item, int revision) async {
     if (direction == DismissDirection.startToEnd) {
       BlocProvider.of<TodosCubit>(context).changeCompletion(item, revision);
       return false;
@@ -194,25 +192,23 @@ class _TodosScreenState extends State<TodosScreen> {
     }
   }
 
-
   Widget _todoTile(Todo todo, context, int revision) {
     bool isChanged = todo.done;
     return ListTile(
-        onTap:() =>
-            Navigator.pushNamed(context, Routes.EDIT_TODO_ROUTE,
-                arguments: {"todo": todo, "revision": revision}),
+        onTap: () => Navigator.pushNamed(context, Routes.EDIT_TODO_ROUTE,
+            arguments: {"todo": todo, "revision": revision}),
         leading: Theme(
           data: Theme.of(context).copyWith(
             unselectedWidgetColor:
-            todo.importance == "important" ? Colors.red : Colors.grey,
+                todo.importance == "important" ? Colors.red : Colors.grey,
           ),
           child: Checkbox(
             checkColor: Colors.white,
             activeColor: Colors.green,
             value: isChanged,
             onChanged: (_) async {
-              BlocProvider.of<TodosCubit>(context).changeCompletion(
-                  todo, revision);
+              BlocProvider.of<TodosCubit>(context)
+                  .changeCompletion(todo, revision);
               //return false;
             },
           ),
@@ -227,53 +223,50 @@ class _TodosScreenState extends State<TodosScreen> {
         ),
         title: todo.done == true
             ? Text(
-          todo.text,
-          style: const TextStyle(
-              decoration: TextDecoration.lineThrough, color: Colors.grey),
-        )
+                todo.text,
+                style: const TextStyle(
+                    decoration: TextDecoration.lineThrough, color: Colors.grey),
+              )
             : Row(
-          children: [
-            _priority(todo.importance),
-            Text(
-              todo.text,
-            ),
-          ],
-        ),
+                children: [
+                  _priority(todo.importance),
+                  Text(
+                    todo.text,
+                  ),
+                ],
+              ),
         subtitle: todo.deadline != null
             ? Text(
-            DateFormat('dd MMMM yyy', 'ru').format(
-                DateTime.fromMillisecondsSinceEpoch(todo.deadline!)),
-            style: const TextStyle(color: Colors.grey))
+                DateFormat('dd MMMM yyy', 'ru').format(
+                    DateTime.fromMillisecondsSinceEpoch(todo.deadline!)),
+                style: const TextStyle(color: Colors.grey))
             : null);
   }
-
 
   Widget _priority(String? importance) {
     return importance == "basic"
         ? Padding(
-          padding: const EdgeInsets.all(6.0),
-          child: SvgPicture.asset(
-      'assets/icons/arrow.svg',
-      color: Colors.grey,
-    ),
-        )
+            padding: const EdgeInsets.all(6.0),
+            child: SvgPicture.asset(
+              'assets/icons/arrow.svg',
+              color: Colors.grey,
+            ),
+          )
         : (importance == "important"
-        ? Padding(
-          padding: const EdgeInsets.all(6.0),
-          child: SvgPicture.asset(
-          'assets/icons/priority.svg',
-          color: Colors.red,
-    ),
-        )
-        : const Text(""));
+            ? Padding(
+                padding: const EdgeInsets.all(6.0),
+                child: SvgPicture.asset(
+                  'assets/icons/priority.svg',
+                  color: Colors.red,
+                ),
+              )
+            : const Text(""));
   }
-
 
   Widget _btnAdd(int revision, context) {
     return FloatingActionButton(
-      onPressed: () =>
-          Navigator.pushNamed(context, Routes.ADD_TODO_ROUTE,
-              arguments: revision),
+      onPressed: () => Navigator.pushNamed(context, Routes.ADD_TODO_ROUTE,
+          arguments: revision),
       child: SvgPicture.asset(
         'assets/icons/add.svg',
         color: Colors.white,
@@ -282,39 +275,38 @@ class _TodosScreenState extends State<TodosScreen> {
   }
 }
 
-
-  Widget _todoTile(Todo todo, context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          bottom: BorderSide(
-            color: Colors.grey,
-          ),
+Widget _todoTile(Todo todo, context) {
+  return Container(
+    width: MediaQuery.of(context).size.width,
+    padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      border: Border(
+        bottom: BorderSide(
+          color: Colors.grey,
         ),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(todo.text),
-          _completionIndicator(todo),
-        ],
-      ),
-    );
-  }
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(todo.text),
+        _completionIndicator(todo),
+      ],
+    ),
+  );
+}
 
-  Widget _completionIndicator(Todo todo) {
-    return Container(
-      width: 20.0,
-      height: 20.0,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(50.0),
-        border: Border.all(
-          width: 4.0,
-          color: todo.done ? Colors.green : Colors.red,
-        ),
+Widget _completionIndicator(Todo todo) {
+  return Container(
+    width: 20.0,
+    height: 20.0,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(50.0),
+      border: Border.all(
+        width: 4.0,
+        color: todo.done ? Colors.green : Colors.red,
       ),
-    );
-  }
+    ),
+  );
+}
