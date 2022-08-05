@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 import '../../core/constants/colors.dart';
 import '../../core/constants/dimension.dart';
 import '../../core/localization/l10n/all_locales.dart';
@@ -20,7 +21,7 @@ class AddTodoScreen extends StatefulWidget {
 }
 
 class _AddTodoScreenState extends State<AddTodoScreen> {
-  Random _random = Random();
+  Uuid uuid = Uuid();
 
   //TextEditingController dateInput = TextEditingController();
 
@@ -223,7 +224,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
           onTap: () {
             final message = _controller.text;
             Todo newTask = Todo(
-                id: _random.nextInt(10000).toString(),
+                id: uuid.v4().toString(),
                 createdAt: DateTime.now().millisecondsSinceEpoch,
                 text: message,
                 lastUpdatedBy: "123",

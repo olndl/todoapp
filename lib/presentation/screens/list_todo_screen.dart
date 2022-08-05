@@ -28,8 +28,9 @@ class _TodosScreenState extends State<TodosScreen> {
 
     return BlocBuilder<TodosCubit, TodosState>(
       builder: (context, state) {
-        if (!(state is TodosLoaded))
-          return Center(child: CircularProgressIndicator());
+        if (!(state is TodosLoaded)) {
+          return const Center(child: CircularProgressIndicator());
+        }
         final todos = state.todos;
         final revision = state.revision;
         final completeTodo = todos.where((element) => element.done == true).length;
@@ -62,9 +63,9 @@ class _TodosScreenState extends State<TodosScreen> {
       child: Padding(
         padding: EdgeInsets.only(left: Dim.width(context) / 4.95),
         child: Text(
-          AllLocale
+          '${AllLocale
               .of(context)
-              .subtitle+' $num',
+              .subtitle} $num',
         ),
       ),
     );
@@ -91,7 +92,12 @@ class _TodosScreenState extends State<TodosScreen> {
         bottom: Dim.height(context) / 40,
       ),
       child:
-      _bodyCard(scrollController, context, todos, revision),);
+      Column(
+        children: [
+
+          _bodyCard(scrollController, context, todos, revision),
+        ],
+      ),);
   }
 
 
@@ -116,15 +122,7 @@ class _TodosScreenState extends State<TodosScreen> {
       key: Key(item.id),
       background: _fromLeftToRight(),
       secondaryBackground: _fromRightToLeft(),
-      confirmDismiss: (direction) async {
-        if (direction == DismissDirection.startToEnd) {
-          BlocProvider.of<TodosCubit>(context).changeCompletion(item, revision);
-          return false;
-        }
-        if (direction == DismissDirection.endToStart) {
-          BlocProvider.of<TodosCubit>(context).deleteTodo(item, revision);
-        }
-      },
+      confirmDismiss: (direction) => _confirmDismissal(direction, context, item),
       onDismissed: (direction) =>
           _toDismissed(direction, context, item, revision),
       child: _todoTile(item, context, revision),
@@ -284,25 +282,6 @@ class _TodosScreenState extends State<TodosScreen> {
   }
 }
 
-
-
-  Widget _todo(Todo todo, int revision, context) {
-    return InkWell(
-      onTap: () => Navigator.pushNamed(context, Routes.EDIT_TODO_ROUTE,
-          arguments: {"todo": todo, "revision": revision}),
-      child: Dismissible(
-        key: Key("${todo.id}"),
-        child: _todoTile(todo, context),
-        confirmDismiss: (_) async {
-          BlocProvider.of<TodosCubit>(context).changeCompletion(todo, revision);
-          return false;
-        },
-        background: Container(
-          color: Colors.indigo,
-        ),
-      ),
-    );
-  }
 
   Widget _todoTile(Todo todo, context) {
     return Container(
