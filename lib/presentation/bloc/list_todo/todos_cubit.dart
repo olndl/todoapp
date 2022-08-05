@@ -63,9 +63,14 @@ class TodosCubit extends Cubit<TodosState> {
     }
   }
 
-  void changeTodoText(Todo todo, String message, int revision) {
+  void changeTodo(Todo todo,
+      String message,
+      String importance,
+      int deadline,
+      int revision) {
     final currentState = state;
-    final Todo todoWithChangedText = todo.copyWith(text: message);
+    final Todo todoWithChangedText = todo.copyWith(text: message,
+        importance: importance, deadline: deadline);
     if (currentState is TodosLoaded) {
       final revision = currentState.revision;
       final todoList =

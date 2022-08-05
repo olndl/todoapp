@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../core/constants/colors.dart';
 import '../../core/localization/l10n/all_locales.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class AppHeader extends SliverPersistentHeaderDelegate {
 
@@ -66,7 +67,11 @@ class AppHeader extends SliverPersistentHeaderDelegate {
               child: Padding(
                 padding: EdgeInsets.only(left: 392 / 1.6),
                 child:
-                    IconButton(onPressed: () {}, icon: Icon(Icons.visibility)),
+                    IconButton(onPressed: () {},
+                        icon: SvgPicture.asset(
+                          'assets/icons/visibility.svg',
+                          color: ColorApp.lightTheme.colorBlue,
+                        )),
               )),
         ],
       ),

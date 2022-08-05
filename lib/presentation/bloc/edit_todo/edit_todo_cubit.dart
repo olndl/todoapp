@@ -16,18 +16,16 @@ class EditTodoCubit extends Cubit<EditTodoState> {
   void deleteTodo(Todo todo, int revision) {
     todosCubit.deleteTodo(todo, revision);
     emit(TodoEdited());
-    }
+  }
 
-
-  void updateTodo(Todo todo, String message, int revision) {
+  void updateTodo(
+      Todo todo, String message, importance, deadline, int revision) {
     print(message);
     if (message.isEmpty) {
       emit(EditTodoError(error: "Message is empty"));
       return;
     }
-    todosCubit.changeTodoText(todo, message, revision);
+    todosCubit.changeTodo(todo, message, importance, deadline, revision);
     emit(TodoEdited());
   }
 }
-
-
