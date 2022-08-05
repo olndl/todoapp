@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import '../../core/constants/colors.dart';
 import '../../core/constants/dimension.dart';
 import '../../core/localization/l10n/all_locales.dart';
@@ -20,6 +21,51 @@ class AddTodoScreen extends StatefulWidget {
 class _AddTodoScreenState extends State<AddTodoScreen> {
   Random _random = Random();
   final _controller = TextEditingController();
+
+
+  bool isSwitched = false;
+  int? datetime;
+
+  //TextEditingController dateInput = TextEditingController();
+
+  @override
+  void initState() {
+    //dateInput.text = "";
+    int datetime = 0;
+    super.initState();
+  }
+
+  String dropdownvalue = 'low';
+
+  var items = [
+    'low',
+    'basic',
+    'important',
+  ];
+
+  void _toSetDeadline() async {
+    DateTime? pickedDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime.now(),
+        lastDate: DateTime(2101));
+    if (pickedDate != null) {
+      String formattedDate = DateFormat.yMMMMd('ru').format(pickedDate);
+      setState(() {
+        datetime = pickedDate.millisecondsSinceEpoch;
+        //dateInput.text = formattedDate;
+      });
+    } else {
+      setState(() {
+        isSwitched = false;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+                AllLocale.of(context).incorrectDate),),);
+      }
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,102 +109,102 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                   textAlign: TextAlign.left,
                 ),
               ),
-          //     Container(
-          //       margin: EdgeInsets.all(Dim.width(context) / 25),
-          //       child: Column(
-          //         crossAxisAlignment: CrossAxisAlignment.start,
-          //         children: [
-          //           Text(
-          //             AllLocale.of(context).priority,
-          //             textAlign: TextAlign.left,
-          //           ),
-          //           DropdownButton(
-          //             value: dropdownvalue,
-          //             disabledHint: Text("Нет"),
-          //             elevation: 8,
-          //             isExpanded: true,
-          //             underline: Divider(),
-          //             items: items.map((String items) {
-          //               return DropdownMenuItem(
-          //                 value: items,
-          //                 child: Text(items),
-          //               );
-          //             }).toList(),
-          //             onChanged: (String? newValue) {
-          //               setState(() {
-          //                 dropdownvalue = newValue!;
-          //               });
-          //             },
-          //           ),
-          //         ],
-          //       ),
-          //     ),
-          //     Container(
-          //         margin: EdgeInsets.all(Dim.width(context) / 25),
-          //         child: Row(
-          //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //           children: [
-          //             Column(
-          //               crossAxisAlignment: CrossAxisAlignment.start,
-          //               children: [
-          //                 Text(
-          //                   AllLocale.of(context).completeDate,
-          //                   textAlign: TextAlign.left,
-          //                 ),
-          //                 Text(
-          //                   dateInput.text,
-          //                   textAlign: TextAlign.left,
-          //                   style: TextStyle(
-          //                       color: ColorApp.lightTheme.colorBlue,
-          //                       fontSize: 14),
-          //                 )
-          //               ],
-          //             ),
-          //             Switch(
-          //               value: isSwitched,
-          //               onChanged: (value) {
-          //                 setState(() {
-          //                   isSwitched = value;
-          //                 });
-          //                 if (isSwitched) {
-          //                   _toSetDeadline();
-          //                 } else {
-          //                   dateInput.clear();
-          //                 }
-          //               },
-          //             ),
-          //           ],
-          //         )),
-          //     const Divider(
-          //       thickness: .8,
-          //     ),
-          //     Container(
-          //       margin: EdgeInsets.all(Dim.width(context) / 25),
-          //       child: GestureDetector(
-          //         onTap: () {},
-          //         child: Row(
-          //           children: [
-          //             Icon(
-          //               Icons.delete,
-          //               color: ColorApp.lightTheme.colorRed,
-          //             ),
-          //             SizedBox(
-          //               width: Dim.width(context) / 50,
-          //             ),
-          //             Text(
-          //               AllLocale.of(context).delete,
-          //               style: TextStyle(color: ColorApp.lightTheme.colorRed),
-          //             )
-          //           ],
-          //         ),
-          //       ),
-          //     ),
-          //   ],
-          // ),
-        ],)
-    )
-      ],
-    );
+              Container(
+                margin: EdgeInsets.all(Dim.width(context) / 25),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      AllLocale.of(context).priority,
+                      textAlign: TextAlign.left,
+                    ),
+                    DropdownButton(
+                      value: dropdownvalue,
+                      disabledHint: Text(dropdownvalue),
+                      elevation: 8,
+                      isExpanded: true,
+                      underline: Divider(),
+                      items: items.map((String items) {
+                        return DropdownMenuItem(
+                          value: items,
+                          child: Text(items),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          dropdownvalue = newValue!;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                  margin: EdgeInsets.all(Dim.width(context) / 25),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            AllLocale.of(context).completeDate,
+                            textAlign: TextAlign.left,
+                          ),
+                          Text(
+                            datetime == null ? "" :
+                            DateFormat.yMMMMd('ru').format(DateTime.fromMillisecondsSinceEpoch(datetime!)),
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                                color: ColorApp.lightTheme.colorBlue,
+                                fontSize: 14),
+                          )
+                        ],
+                      ),
+                      Switch(
+                        value: isSwitched,
+                        onChanged: (value) {
+                          setState(() {
+                            isSwitched = value;
+                          });
+                          if (isSwitched) {
+                            _toSetDeadline();
+                          } else {
+                            datetime = 0;
+                            //dateInput.clear();
+                          }
+                        },
+                      ),
+                    ],
+                  )),
+              const Divider(
+                thickness: .8,
+              ),
+              Container(
+                margin: EdgeInsets.all(Dim.width(context) / 25),
+                child: GestureDetector(
+                  onTap: () {},
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.delete,
+                        color: ColorApp.lightTheme.colorGrey,
+                      ),
+                      SizedBox(
+                        width: Dim.width(context) / 50,
+                      ),
+                      Text(
+                        AllLocale.of(context).delete,
+                        style: TextStyle(color: ColorApp.lightTheme.colorGrey),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),],);
+
   }
 
   Widget _appBar() {
@@ -186,9 +232,9 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                         text: message,
                         lastUpdatedBy: "123",
                         changedAt: DateTime.now().millisecondsSinceEpoch,
-                        deadline: DateTime.now().millisecondsSinceEpoch,
+                        deadline: datetime,
                         done: false,
-                        importance: 'low');
+                        importance: dropdownvalue);
                     BlocProvider.of<AddTodoCubit>(context)
                         .addTodo(newTask, widget.revision);
                   },
@@ -203,7 +249,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
           builder: (context, state) {
             //if (state is AddingTodo) return CircularProgressIndicator();
             return Padding(
-              padding: const EdgeInsets.only(right: 8.0),
+              padding: const EdgeInsets.only(right: 8, top: 10, bottom: 5),
               child: Text(
                 AllLocale.of(context).save, style: TextStyle(color: Colors.blue),
               ),

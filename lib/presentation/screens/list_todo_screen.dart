@@ -19,6 +19,8 @@ class TodosScreen extends StatefulWidget {
 }
 
 class _TodosScreenState extends State<TodosScreen> {
+  bool visible = true;
+
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<TodosCubit>(context).fetchTodos();
@@ -30,6 +32,7 @@ class _TodosScreenState extends State<TodosScreen> {
         final todos = state.todos;
         final revision = state.revision;
         final completeTodo = todos.where((element) => element.done == true).length;
+        final uncompletedTodo = todos.where((element) => element.done == false);
         final scrollController = ScrollController();
         return Scaffold(
           backgroundColor: Color(0xfffcfaf1),
@@ -93,7 +96,6 @@ class _TodosScreenState extends State<TodosScreen> {
 
   Widget _bodyCard(controller, context, List<Todo> todos, int revision) {
     return ListView.builder(
-      reverse: true,
       padding: EdgeInsets.only(
           top: Dim.height(context) / 100, bottom: Dim.height(context) / 100),
       controller: controller,
