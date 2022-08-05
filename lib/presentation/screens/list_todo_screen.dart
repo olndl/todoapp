@@ -20,6 +20,8 @@ class TodosScreen extends StatefulWidget {
 class _TodosScreenState extends State<TodosScreen> {
   bool visible = true;
 
+  TextEditingController _shortTodoController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<TodosCubit>(context).fetchTodos();
@@ -39,11 +41,22 @@ class _TodosScreenState extends State<TodosScreen> {
         final scrollController = ScrollController();
         return Scaffold(
           backgroundColor: Color(0xfffcfaf1),
-          body: CustomScrollView(slivers: [
-            _head(),
-            _subhead(context, completeTodo),
-            _body(scrollController, context, todos, revision)
-          ]),
+          body: RefreshIndicator(
+            onRefresh: () async {
+              BlocProvider.of<TodosCubit>(context).updateTodoListOnServer(todos, revision);
+              debugPrint("$revision");
+            },
+            color: ColorApp.lightTheme.colorWhite,
+            backgroundColor: Colors.blue,
+            //triggerMode: RefreshIndicatorTriggerMode.anywhere,
+            strokeWidth: 4.0,
+            child: CustomScrollView(
+                slivers: [
+              _head(),
+              _subhead(context, completeTodo),
+              _body(scrollController, context, todos, revision)
+            ]),
+          ),
           floatingActionButton: _btnAdd(revision, context),
         );
       },
@@ -91,8 +104,18 @@ class _TodosScreenState extends State<TodosScreen> {
         children: [
           _bodyCard(scrollController, context, todos, revision),
           ListTile(
+            leading: SvgPicture.asset(
+              'assets/icons/add.svg',
+              color: Colors.grey,
+            ),
             title: TextField(
-              decoration: InputDecoration(border: InputBorder.none),
+              controller: _shortTodoController,
+              onSubmitted: (text) {
+                BlocProvider.of<TodosCubit>(context).addShortTodo(text);
+                _shortTodoController.clear();
+              },
+              decoration: InputDecoration(border: InputBorder.none,
+              hintText: "Новое"),
             ),
           )
         ],
@@ -106,21 +129,8 @@ class _TodosScreenState extends State<TodosScreen> {
           ? -1
           : 1;
 
-  final GlobalKey<RefreshIndicatorState> _refreshIndicator = GlobalKey<RefreshIndicatorState>();
-
   Widget _bodyCard(controller, context, List<Todo> todos, int revision) {
-    return RefreshIndicator(
-      key: _refreshIndicator,
-      onRefresh: () async {
-        BlocProvider.of<TodosCubit>(context).updateTodoListOnServer(todos, revision);
-        debugPrint("$revision");
-      },
-      color: ColorApp.lightTheme.colorWhite,
-      backgroundColor: Colors.blue,
-      //triggerMode: RefreshIndicatorTriggerMode.anywhere,
-      strokeWidth: 4.0,
-      child: ListView.builder(
-        physics: const AlwaysScrollableScrollPhysics(),
+    return ListView.builder(
         padding: EdgeInsets.only(
             top: Dim.height(context) / 100, bottom: Dim.height(context) / 100),
         controller: controller,
@@ -132,7 +142,6 @@ class _TodosScreenState extends State<TodosScreen> {
               clipBehavior: Clip.hardEdge,
               child: _todoBody(index, item, context, revision));
         },
-      ),
     );
   }
 
@@ -287,40 +296,4 @@ class _TodosScreenState extends State<TodosScreen> {
       ),
     );
   }
-}
-
-Widget _todoTile(Todo todo, context) {
-  return Container(
-    width: MediaQuery.of(context).size.width,
-    padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
-    decoration: BoxDecoration(
-      color: Colors.white,
-      border: Border(
-        bottom: BorderSide(
-          color: Colors.grey,
-        ),
-      ),
-    ),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(todo.text),
-        _completionIndicator(todo),
-      ],
-    ),
-  );
-}
-
-Widget _completionIndicator(Todo todo) {
-  return Container(
-    width: 20.0,
-    height: 20.0,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(50.0),
-      border: Border.all(
-        width: 4.0,
-        color: todo.done ? Colors.green : Colors.red,
-      ),
-    ),
-  );
 }

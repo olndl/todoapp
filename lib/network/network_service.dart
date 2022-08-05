@@ -80,7 +80,7 @@ class NetworkService {
         return false;
       }
     } catch (e) {
-      print('Error updating user: $e');
+      print('Error updating todo: $e');
     }
   }
 
@@ -101,7 +101,7 @@ class NetworkService {
         return false;
       }
     } catch (e) {
-      print('Error creating user: $e');
+      print('Error creating todo: $e');
     }
     return null;
   }
@@ -115,7 +115,7 @@ class NetworkService {
             'X-Last-Known-Revision': '$revision'
           }));
       if (response.statusCode == 200) {
-        print('User deleted!');
+        print('Todo deleted!');
         print(TodoModel.fromJson(response.data));
         return true;
       } else {
@@ -123,7 +123,7 @@ class NetworkService {
         return false;
       }
     } catch (e) {
-      print('Error deleting user: $e');
+      print('Error deleting todo: $e');
     }
     return null;
   }

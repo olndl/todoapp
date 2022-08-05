@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:uuid/uuid.dart';
 import '../../../data/models/todo/todo.dart';
 import '../../../network/repository.dart';
 
 part 'todos_state.dart';
 
 class TodosCubit extends Cubit<TodosState> {
+  Uuid uuid = Uuid();
   final Repository repository;
 
   TodosCubit({required this.repository}) : super(TodosInitial());
@@ -34,10 +36,34 @@ class TodosCubit extends Cubit<TodosState> {
   addTodo(Todo todo) {
     final currentState = state;
     if (currentState is TodosLoaded) {
-      final todoList = currentState.todos;
+      List<Todo> todoList = List.from(currentState.todos);
       final revision = currentState.revision;
       todoList.add(todo);
       repository.addTodo(todo, revision).then((isAdded) {
+        if (isAdded != null) {
+          emit(TodosLoaded(todos: todoList, revision: revision + 1));
+        }
+      });
+    }
+  }
+
+  addShortTodo(String message) {
+    final currentState = state;
+    final shortTodo = Todo(
+        id: uuid.v4().toString(),
+        createdAt: DateTime.now().millisecondsSinceEpoch,
+        text: message,
+        lastUpdatedBy: "123",
+        changedAt: DateTime.now().millisecondsSinceEpoch,
+        deadline: null,
+        color: null,
+        done: false,
+        importance: 'low');
+    if (currentState is TodosLoaded) {
+      List<Todo> todoList = List.from(currentState.todos);
+      final revision = currentState.revision;
+      todoList.add(shortTodo);
+      repository.addTodo(shortTodo, revision).then((isAdded) {
         if (isAdded != null) {
           emit(TodosLoaded(todos: todoList, revision: revision + 1));
         }
