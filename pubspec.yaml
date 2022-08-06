@@ -11,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  firebase_core: ^1.20.0
   cupertino_icons: ^1.0.2
   linter: ^1.26.0
   logger: ^1.1.0
@@ -30,6 +30,8 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   logging: ^1.0.2
+  firebase_crashlytics: ^2.8.6
+  firebase_analytics: ^9.3.0
 
 dev_dependencies:
   hive_generator: ^1.1.3

@@ -1,3 +1,5 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
@@ -60,6 +62,12 @@ class _TodosScreenState extends State<TodosScreen> {
             ]),
           ),
           floatingActionButton: _btnAdd(revision, context),
+          // Crash Example
+          // floatingActionButton: TextButton(
+          //   onPressed: () =>
+          //   { FirebaseCrashlytics.instance.crash(),},
+          //   child: const Text("Throw Test Exception"),
+          // ),
         );
       },
     );
@@ -119,7 +127,7 @@ class _TodosScreenState extends State<TodosScreen> {
               decoration: InputDecoration(border: InputBorder.none,
               hintText: AllLocale.of(context).newShortTodo),
             ),
-          )
+          ),
         ],
       ),
     );
