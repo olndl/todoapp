@@ -208,10 +208,6 @@ class _TodosScreenState extends State<TodosScreen> {
 
   Future<bool?> _toDismissed(
       DismissDirection direction, context, Todo item, int revision) async {
-    // if (direction == DismissDirection.startToEnd) {
-    //   BlocProvider.of<TodosCubit>(context).changeCompletion(item, revision);
-    //   return false;
-    // }
     if (direction == DismissDirection.endToStart) {
       BlocProvider.of<TodosCubit>(context).deleteTodo(item, revision);
     }

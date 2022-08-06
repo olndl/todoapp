@@ -67,7 +67,6 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return BlocListener<EditTodoCubit, EditTodoState>(
       listener: (context, state) {
         if (state is TodoEdited) {
@@ -189,12 +188,15 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
               Container(
                 margin: EdgeInsets.all(Dim.width(context) / 25),
                 child: GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    BlocProvider.of<EditTodoCubit>(context)
+                        .deleteTodo(widget.todo, widget.revision);
+                  },
                   child: Row(
                     children: [
                       SvgPicture.asset(
                         'assets/icons/delete.svg',
-                        color:  ColorApp.lightTheme.colorRed,
+                        color: ColorApp.lightTheme.colorRed,
                       ),
                       SizedBox(
                         width: Dim.width(context) / 50,
@@ -224,18 +226,17 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
         onPressed: () {
           Navigator.pop(context);
         },
-        icon:  SvgPicture.asset(
+        icon: SvgPicture.asset(
           'assets/icons/close.svg',
-          color:  ColorApp.lightTheme.labelPrimary,
+          color: ColorApp.lightTheme.labelPrimary,
         ),
       ),
       actions: [
         InkWell(
           onTap: () {
             final message = _controller.text;
-            BlocProvider.of<EditTodoCubit>(context)
-                    .updateTodo(widget.todo, message, dropdownvalue,
-                datetime, widget.revision);
+            BlocProvider.of<EditTodoCubit>(context).updateTodo(
+                widget.todo, message, dropdownvalue, datetime, widget.revision);
           },
           child: _addBtn(context),
         ),
@@ -244,12 +245,12 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
   }
 
   Widget _addBtn(context) {
-  return Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Text(
-            AllLocale.of(context).save,
-            style: TextStyle(color: Colors.blue),
-          ),
-        );
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Text(
+        AllLocale.of(context).save,
+        style: TextStyle(color: Colors.blue),
+      ),
+    );
   }
 }
