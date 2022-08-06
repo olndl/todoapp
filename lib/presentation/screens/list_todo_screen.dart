@@ -5,6 +5,7 @@ import 'package:todoapp/presentation/screens/todo_view_screen.dart';
 import '../../core/constants/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../core/constants/dimension.dart';
+import '../../core/errors/logger.dart';
 import '../../core/localization/l10n/all_locales.dart';
 import '../../core/navigation/routes.dart';
 import '../../data/models/todo/todo.dart';
@@ -45,7 +46,7 @@ class _TodosScreenState extends State<TodosScreen> {
           body: RefreshIndicator(
             onRefresh: () async {
               BlocProvider.of<TodosCubit>(context).updateTodoListOnServer(todos, revision);
-              debugPrint("$revision");
+              logger.info('current revision: $revision',);
             },
             color: ColorApp.lightTheme.colorWhite,
             backgroundColor: Colors.blue,
@@ -115,7 +116,7 @@ class _TodosScreenState extends State<TodosScreen> {
                 _shortTodoController.clear();
               },
               decoration: InputDecoration(border: InputBorder.none,
-              hintText: "Новое"),
+              hintText: AllLocale.of(context).newShortTodo),
             ),
           )
         ],
@@ -151,7 +152,7 @@ class _TodosScreenState extends State<TodosScreen> {
       background: _fromLeftToRight(),
       secondaryBackground: _fromRightToLeft(),
       confirmDismiss: (direction) =>
-          _confirmDismissal(direction, context, item),
+          _confirmDismissal(direction, context, item, revision),
       onDismissed: (direction) =>
           _toDismissed(direction, context, item, revision),
       child: _todoTile(item, context, revision),
@@ -186,8 +187,9 @@ class _TodosScreenState extends State<TodosScreen> {
   }
 
   Future<bool> _confirmDismissal(
-      DismissDirection direction, context, Todo item) async {
+      DismissDirection direction, context, Todo item, int revision) async {
     if (direction == DismissDirection.startToEnd) {
+      BlocProvider.of<TodosCubit>(context).changeCompletion(item, revision);
       return false;
     } else {
       bool delete = true;
@@ -206,10 +208,10 @@ class _TodosScreenState extends State<TodosScreen> {
 
   Future<bool?> _toDismissed(
       DismissDirection direction, context, Todo item, int revision) async {
-    if (direction == DismissDirection.startToEnd) {
-      BlocProvider.of<TodosCubit>(context).changeCompletion(item, revision);
-      return false;
-    }
+    // if (direction == DismissDirection.startToEnd) {
+    //   BlocProvider.of<TodosCubit>(context).changeCompletion(item, revision);
+    //   return false;
+    // }
     if (direction == DismissDirection.endToStart) {
       BlocProvider.of<TodosCubit>(context).deleteTodo(item, revision);
     }
@@ -363,17 +365,17 @@ class AppHeader extends SliverPersistentHeaderDelegate {
           AnimatedContainer(
               duration: const Duration(milliseconds: 100),
               padding: EdgeInsets.lerp(
-                EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                EdgeInsets.only(bottom: 16),
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                const EdgeInsets.only(bottom: 16),
                 progress,
               ),
               alignment: Alignment.lerp(
-                Alignment(.8, 2.35),
-                Alignment(.67, 2.2),
+                const Alignment(.8, 2.35),
+                const Alignment(.67, 2.2),
                 progress,
               ),
               child: Padding(
-                padding: EdgeInsets.only(left: 392 / 1.6),
+                padding: const EdgeInsets.only(left: 392 / 1.6),
                 child:
                 IconButton(onPressed: () {},
                     icon: SvgPicture.asset(

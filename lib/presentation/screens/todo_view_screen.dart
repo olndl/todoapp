@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:todoapp/core/localization/l10n/all_locales.dart';
 import '../../data/models/todo/todo.dart';
 
@@ -7,6 +8,11 @@ class TodoViewScreen extends StatelessWidget {
   final Todo todo;
 
   const TodoViewScreen({Key? key, required this.todo}) : super(key: key);
+
+  String _fromTsoFormatDate(int ts) {
+    return DateFormat('dd MMMM yyy', 'ru')
+        .format(DateTime.fromMillisecondsSinceEpoch(ts));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +26,14 @@ class TodoViewScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Text("${AllLocale.of(context).task}: ${todo.text}"),
-                Text("${AllLocale.of(context).createdAt}: ${todo.createdAt}"),
-                Text("${AllLocale.of(context).changedAt}: ${todo.changedAt}"),
-                Text("${AllLocale.of(context).deadline}: ${todo.deadline}"),
+                Text(
+                    "${AllLocale.of(context).createdAt}: ${_fromTsoFormatDate(todo.createdAt)}"),
+                Text(
+                    "${AllLocale.of(context).changedAt}: ${_fromTsoFormatDate(todo.changedAt)}"),
+                Text(
+                    "${AllLocale.of(context).deadline}: ${todo.deadline == null
+                        ? AllLocale.of(context).withoutDeadline
+                        : _fromTsoFormatDate(todo.deadline!)}"),
                 Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Row(

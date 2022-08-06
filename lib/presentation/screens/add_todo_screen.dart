@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 import '../../core/constants/colors.dart';
 import '../../core/constants/dimension.dart';
+import '../../core/errors/logger.dart';
 import '../../core/localization/l10n/all_locales.dart';
 import '../../data/models/todo/todo.dart';
 import '../bloc/add_todo/add_todo_cubit.dart';
@@ -19,13 +20,13 @@ class AddTodoScreen extends StatefulWidget {
 }
 
 class _AddTodoScreenState extends State<AddTodoScreen> {
-  Uuid uuid = Uuid();
+  Uuid uuid = const Uuid();
 
   final _controller = TextEditingController();
   bool _isSwitched = false;
   int? _datetime;
 
-  String dropdownvalue = 'low';
+  String dropdownValue = 'low';
 
   var items = [
     'low',
@@ -62,11 +63,13 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
         if (state is TodoAdded) {
           Navigator.pop(context);
         } else if (state is AddTodoError) {
-          debugPrint(state.error);
+          logger.info(
+            'Error: - ${state.error}',
+          );
         }
       },
       child: Scaffold(
-        backgroundColor: Color(0xfffcfaf1),
+        backgroundColor: const Color(0xfffcfaf1),
         body: _addBody(),
       ),
     );
@@ -107,11 +110,16 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                       textAlign: TextAlign.left,
                     ),
                     DropdownButton(
-                      value: dropdownvalue,
-                      disabledHint: Text(dropdownvalue),
-                      elevation: 8,
+                      value: dropdownValue,
+                      hint: Text("Важность"),
                       isExpanded: true,
-                      underline: Divider(),
+                      icon: const SizedBox.shrink(),
+                      elevation: 16,
+                      style: const TextStyle(color: Colors.grey),
+                      underline: Container(
+                        height: 1,
+                        color: Colors.grey,
+                      ),
                       items: items.map((String items) {
                         return DropdownMenuItem(
                           value: items,
@@ -120,7 +128,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                       }).toList(),
                       onChanged: (String? newValue) {
                         setState(() {
-                          dropdownvalue = newValue!;
+                          dropdownValue = newValue!;
                         });
                       },
                     ),
@@ -226,7 +234,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                 changedAt: DateTime.now().millisecondsSinceEpoch,
                 deadline: _datetime,
                 done: false,
-                importance: dropdownvalue);
+                importance: dropdownValue);
             BlocProvider.of<AddTodoCubit>(context)
                 .addTodo(newTask, widget.revision);
           },
@@ -240,12 +248,13 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
     return BlocBuilder<AddTodoCubit, AddTodoState>(
       builder: (context, state) {
         return Padding(
-          padding: const EdgeInsets.only(right: 8, top: 10, bottom: 5),
+          padding: const EdgeInsets.all(20.0),
           child: Text(
-            AllLocale.of(context).save,
-            style: TextStyle(color: Colors.blue),
-          ),
+              AllLocale.of(context).save,
+              style: const TextStyle(color: Colors.blue),
+            ),
         );
+
       },
     );
   }

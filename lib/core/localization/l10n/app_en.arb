@@ -16,6 +16,8 @@
     "task": "Task",
     "createdAt": "Created at",
     "changedAt": "Changed at",
-    "deadline": "Deadline"
+    "deadline": "Deadline",
+    "newShortTodo": "New",
+    "withoutDeadline": "Without deadline"
 
 }

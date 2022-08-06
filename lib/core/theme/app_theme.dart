@@ -18,7 +18,7 @@ ThemeData lightThemeData = ThemeData(
 
   fontFamily: 'Roboto',
 
-  textTheme: const TextTheme(
+  textTheme:const TextTheme(
     // Large title 32/38
     headline5: TextStyle(
       fontSize: 32.0,
@@ -29,7 +29,14 @@ ThemeData lightThemeData = ThemeData(
     // title 20/32
     headline6: TextStyle(
         fontSize: 20.0,
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.bold,
+        height: 32 / 20,
+        color: Colors.black,
+        letterSpacing: .5),
+    headline4: TextStyle(
+        fontSize: 20.0,
+        fontWeight: FontWeight.bold,
+        color: Colors.black,
         height: 32 / 20,
         letterSpacing: .5),
     subtitle2: TextStyle(

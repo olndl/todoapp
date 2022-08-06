@@ -17,5 +17,7 @@
     "task": "Дело",
     "createdAt": "Создано",
     "changedAt": "Изменено",
-    "deadline": "Срок"
+    "deadline": "Срок",
+    "newShortTodo": "Новое",
+     "withoutDeadline": "Нет"
 }

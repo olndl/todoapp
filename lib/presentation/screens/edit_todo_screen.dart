@@ -119,10 +119,15 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
                     ),
                     DropdownButton(
                       value: dropdownvalue,
-                      disabledHint: Text(dropdownvalue),
-                      elevation: 8,
+                      hint: Text("Важность"),
                       isExpanded: true,
-                      underline: Divider(),
+                      icon: const SizedBox.shrink(),
+                      elevation: 16,
+                      style: const TextStyle(color: Colors.grey),
+                      underline: Container(
+                        height: 1,
+                        color: Colors.grey,
+                      ),
                       items: items.map((String items) {
                         return DropdownMenuItem(
                           value: items,
@@ -196,7 +201,7 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
                       ),
                       Text(
                         AllLocale.of(context).delete,
-                        style: TextStyle(color: ColorApp.lightTheme.colorGrey),
+                        style: TextStyle(color: ColorApp.lightTheme.colorRed),
                       )
                     ],
                   ),
@@ -240,7 +245,7 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
 
   Widget _addBtn(context) {
   return Padding(
-          padding: const EdgeInsets.only(right: 8, top: 10, bottom: 5),
+          padding: const EdgeInsets.all(20.0),
           child: Text(
             AllLocale.of(context).save,
             style: TextStyle(color: Colors.blue),
