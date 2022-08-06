@@ -23,14 +23,12 @@ class TodosCubit extends Cubit<TodosState> {
   }
 
   void fetchTodos() {
-    Timer(Duration(seconds: 3), () {
       repository.fetchTodos().then((todos) {
         emit(TodosLoaded(
           todos: todos.list,
           revision: todos.revision,
         ));
       });
-    });
   }
 
   addTodo(Todo todo) {

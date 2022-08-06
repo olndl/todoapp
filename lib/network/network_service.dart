@@ -2,16 +2,18 @@ import 'package:dio/dio.dart';
 import 'package:todoapp/data/models/todo_list_model/todo_list_model.dart';
 import 'package:todoapp/data/models/todo_model/todo_model.dart';
 
+import '../core/errors/logger.dart';
+
 class NetworkService {
   final token = "Anehull";
   final _baseUrl = "https://beta.mrdekk.ru/todobackend";
 
   final _dio = Dio();
 
-  Future<TodoListModel> fetchTodosOnServer(Map bodyRequest, int revision) async {
+  Future<TodoListModel> fetchTodosOnServer(
+      Map bodyRequest, int revision) async {
     try {
-      Response response = await _dio.patch(
-          '$_baseUrl/list/',
+      Response response = await _dio.patch('$_baseUrl/list/',
           data: bodyRequest,
           options: Options(headers: {
             'Authorization': 'Bearer $token',
@@ -21,15 +23,20 @@ class NetworkService {
       if (response.statusCode == 200) {
         return TodoListModel.fromJson(response.data);
       } else {
-        print('${response.statusCode} : ${response.data.toString()}');
+        logger.info(
+          'fetchTodosOnServerResponce: '
+          '${response.statusCode} : ${response.data.toString()}',
+        );
       }
       return TodoListModel.fromJson(response.data);
     } catch (error, stacktrace) {
-      print('Exception occured $error stackTrace: $stacktrace');
+      logger.info(
+        'Exception occured: '
+        ' $error stackTrace: $stacktrace',
+      );
       throw Exception("Data not found / Connection issue");
     }
   }
-
 
   Future<TodoListModel> fetchTodos() async {
     try {
@@ -38,11 +45,17 @@ class NetworkService {
       if (response.statusCode == 200) {
         return TodoListModel.fromJson(response.data);
       } else {
-        print('${response.statusCode} : ${response.data.toString()}');
+        logger.info(
+          'fetchTodosResponce: '
+          '${response.statusCode} : ${response.data.toString()}',
+        );
       }
       return TodoListModel.fromJson(response.data);
     } catch (error, stacktrace) {
-      print('Exception occured $error stackTrace: $stacktrace');
+      logger.info(
+        'Exception occured: '
+        ' $error stackTrace: $stacktrace',
+      );
       throw Exception("Data not found / Connection issue");
     }
   }
@@ -54,11 +67,17 @@ class NetworkService {
       if (response.statusCode == 200) {
         return TodoModel.fromJson(response.data);
       } else {
-        print('${response.statusCode} : ${response.data.toString()}');
+        logger.info(
+          'fetchOneTodoResponce: '
+          '${response.statusCode} : ${response.data.toString()}',
+        );
       }
       return TodoModel.fromJson(response.data);
     } catch (error, stacktrace) {
-      print('Exception occured $error stackTrace: $stacktrace');
+      logger.info(
+        'Exception occured: '
+        ' $error stackTrace: $stacktrace',
+      );
       throw Exception("Data not found / Connection issue");
     }
   }
@@ -73,14 +92,18 @@ class NetworkService {
             'X-Last-Known-Revision': '$revision'
           }));
       if (response.statusCode == 200) {
-        print(TodoModel.fromJson(response.data));
         return true;
       } else {
-        print('${response.statusCode} : ${response.data.toString()}');
+        logger.info(
+          'fetchOneTodoResponce: '
+          '${response.statusCode} : ${response.data.toString()}',
+        );
         return false;
       }
     } catch (e) {
-      print('Error updating todo: $e');
+      logger.info(
+        'Error updating todo: $e',
+      );
     }
   }
 
@@ -89,19 +112,23 @@ class NetworkService {
       Response response = await _dio.post('$_baseUrl/list/',
           data: bodyRequest,
           options: Options(headers: {
-        'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json',
-        'X-Last-Known-Revision': '$revision'
+            'Authorization': 'Bearer $token',
+            'Content-Type': 'application/json',
+            'X-Last-Known-Revision': '$revision'
           }));
       if (response.statusCode == 200) {
-        print(TodoModel.fromJson(response.data));
         return true;
       } else {
-        print('${response.statusCode} : ${response.data.toString()}');
+        logger.info(
+          'fetchOneTodoResponce: '
+          '${response.statusCode} : ${response.data.toString()}',
+        );
         return false;
       }
     } catch (e) {
-      print('Error creating todo: $e');
+      logger.info(
+        'Error updating todo: $e',
+      );
     }
     return null;
   }
@@ -115,15 +142,21 @@ class NetworkService {
             'X-Last-Known-Revision': '$revision'
           }));
       if (response.statusCode == 200) {
-        print('Todo deleted!');
-        print(TodoModel.fromJson(response.data));
+        logger.info(
+          'Todo deleted! - ${TodoModel.fromJson(response.data)}',
+        );
         return true;
       } else {
-        print('${response.statusCode} : ${response.data.toString()}');
+        logger.info(
+          'fetchOneTodoResponce: '
+          '${response.statusCode} : ${response.data.toString()}',
+        );
         return false;
       }
     } catch (e) {
-      print('Error deleting todo: $e');
+      logger.info(
+        'Error deleting todo: $e',
+      );
     }
     return null;
   }

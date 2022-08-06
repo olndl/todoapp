@@ -21,18 +21,17 @@ ThemeData lightThemeData = ThemeData(
   textTheme: const TextTheme(
     // Large title 32/38
     headline5: TextStyle(
-        fontSize: 32.0,
-        fontWeight: FontWeight.w500,
-        height: 38 / 32,
-        letterSpacing: 0,
+      fontSize: 32.0,
+      fontWeight: FontWeight.w500,
+      height: 38 / 32,
+      letterSpacing: 0,
     ),
     // title 20/32
     headline6: TextStyle(
         fontSize: 20.0,
         fontWeight: FontWeight.w500,
         height: 32 / 20,
-        letterSpacing: .5
-    ),
+        letterSpacing: .5),
     subtitle2: TextStyle(
       fontSize: 20.0,
     ),
@@ -40,22 +39,19 @@ ThemeData lightThemeData = ThemeData(
         fontSize: 14.0,
         fontWeight: FontWeight.w500,
         height: 24 / 14,
-        letterSpacing: .16
-    ),
+        letterSpacing: .16),
     bodyText1: TextStyle(
         fontSize: 16.0,
         fontWeight: FontWeight.normal,
         height: 20 / 16,
-        letterSpacing: 0
-    ),
+        letterSpacing: 0),
     subtitle1: TextStyle(
         fontSize: 14.0,
         fontWeight: FontWeight.normal,
         height: 20 / 14,
-        letterSpacing: 0
-    ),
+        letterSpacing: 0),
   ),
- // listTileTheme: (),
+  // listTileTheme: (),
 
   cardTheme: CardTheme(
     color: ColorApp.lightTheme.backPrimary,
@@ -64,8 +60,9 @@ ThemeData lightThemeData = ThemeData(
     ),
   ),
 
-  floatingActionButtonTheme:  FloatingActionButtonThemeData(
-      backgroundColor: ColorApp.lightTheme.colorBlue, foregroundColor: ColorApp.lightTheme.colorWhite),
+  floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: ColorApp.lightTheme.colorBlue,
+      foregroundColor: ColorApp.lightTheme.colorWhite),
 );
 
 ThemeData darkThemeData = ThemeData(
@@ -102,6 +99,7 @@ ThemeData darkThemeData = ThemeData(
       side: BorderSide(color: ColorApp.darkTheme.backElevated, width: 1),
     ),
   ),
-  floatingActionButtonTheme:  FloatingActionButtonThemeData(
-      backgroundColor: ColorApp.darkTheme.colorBlue, foregroundColor: ColorApp.darkTheme.colorWhite),
+  floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: ColorApp.darkTheme.colorBlue,
+      foregroundColor: ColorApp.darkTheme.colorWhite),
 );

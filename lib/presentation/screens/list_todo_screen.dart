@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:todoapp/presentation/screens/todo_view_screen.dart';
 import '../../core/constants/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../core/constants/dimension.dart';
@@ -8,7 +9,8 @@ import '../../core/localization/l10n/all_locales.dart';
 import '../../core/navigation/routes.dart';
 import '../../data/models/todo/todo.dart';
 import '../bloc/list_todo/todos_cubit.dart';
-import '../widgets/app_header.dart';
+
+
 
 class TodosScreen extends StatefulWidget {
   const TodosScreen({Key? key}) : super(key: key);
@@ -31,13 +33,12 @@ class _TodosScreenState extends State<TodosScreen> {
         if (!(state is TodosLoaded)) {
           return const Center(child: CircularProgressIndicator());
         }
-        //List<Todo> todos = state.todos;
         List<Todo> todos = List.from(state.todos);
         todos.sort(compareElement);
         final revision = state.revision;
         final completeTodo =
             todos.where((element) => element.done == true).length;
-        //final uncompletedTodo = todos.where((element) => element.done == false);
+        final uncompletedTodoList = todos.where((element) => element.done == false).toList();
         final scrollController = ScrollController();
         return Scaffold(
           backgroundColor: Color(0xfffcfaf1),
@@ -48,13 +49,12 @@ class _TodosScreenState extends State<TodosScreen> {
             },
             color: ColorApp.lightTheme.colorWhite,
             backgroundColor: Colors.blue,
-            //triggerMode: RefreshIndicatorTriggerMode.anywhere,
             strokeWidth: 4.0,
             child: CustomScrollView(
                 slivers: [
               _head(),
               _subhead(context, completeTodo),
-              _body(scrollController, context, todos, revision)
+              _body(scrollController, context, visible ? todos : uncompletedTodoList, revision)
             ]),
           ),
           floatingActionButton: _btnAdd(revision, context),
@@ -106,7 +106,7 @@ class _TodosScreenState extends State<TodosScreen> {
           ListTile(
             leading: SvgPicture.asset(
               'assets/icons/add.svg',
-              color: Colors.grey,
+              color: Colors.transparent,
             ),
             title: TextField(
               controller: _shortTodoController,
@@ -238,7 +238,7 @@ class _TodosScreenState extends State<TodosScreen> {
         ),
         horizontalTitleGap: 3,
         trailing: IconButton(
-          onPressed: () {},
+          onPressed: () {_simpleDialogithTodoDetails(context, todo);},
           icon: SvgPicture.asset(
             'assets/icons/info_outline.svg',
             color: Colors.grey,
@@ -260,10 +260,15 @@ class _TodosScreenState extends State<TodosScreen> {
               ),
         subtitle: todo.deadline != null
             ? Text(
-                DateFormat('dd MMMM yyy', 'ru').format(
-                    DateTime.fromMillisecondsSinceEpoch(todo.deadline!)),
+                _fromTsoFormatDate(todo.deadline!),
                 style: const TextStyle(color: Colors.grey))
             : null);
+  }
+
+
+  String _fromTsoFormatDate(int ts) {
+    return DateFormat('dd MMMM yyy', 'ru').format(
+        DateTime.fromMillisecondsSinceEpoch(ts));
   }
 
   Widget _priority(String? importance) {
@@ -296,4 +301,99 @@ class _TodosScreenState extends State<TodosScreen> {
       ),
     );
   }
+
+  _simpleDialogithTodoDetails(BuildContext context, Todo todo) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return TodoViewScreen(todo: todo);
+      },
+    );
+  }
 }
+
+class AppHeader extends SliverPersistentHeaderDelegate {
+
+  const AppHeader();
+
+  @override
+  Widget build(
+      BuildContext context,
+      double shrinkOffset,
+      bool overlapsContent,
+      ) {
+    final progress = shrinkOffset / maxExtent;
+
+    return Material(
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          AnimatedOpacity(
+            duration: const Duration(milliseconds: 150),
+            opacity: 1,
+            child: ColoredBox(
+              color: ColorApp.lightTheme.backPrimary,
+            ),
+          ),
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 100),
+            padding: EdgeInsets.lerp(
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              const EdgeInsets.only(bottom: 16),
+              progress,
+            ),
+            alignment: Alignment.lerp(
+              const Alignment(-.4, 1),
+              const Alignment(-.8, 1),
+              progress,
+            ),
+            child: Text(
+              AllLocale.of(context).title,
+              style: TextStyle.lerp(
+                Theme.of(context)
+                    .textTheme
+                    .headline4,
+                Theme.of(context)
+                    .textTheme
+                    .headline6,
+                progress,
+              ),
+            ),
+          ),
+          AnimatedContainer(
+              duration: const Duration(milliseconds: 100),
+              padding: EdgeInsets.lerp(
+                EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                EdgeInsets.only(bottom: 16),
+                progress,
+              ),
+              alignment: Alignment.lerp(
+                Alignment(.8, 2.35),
+                Alignment(.67, 2.2),
+                progress,
+              ),
+              child: Padding(
+                padding: EdgeInsets.only(left: 392 / 1.6),
+                child:
+                IconButton(onPressed: () {},
+                    icon: SvgPicture.asset(
+                      'assets/icons/visibility.svg',
+                      color: ColorApp.lightTheme.colorBlue,
+                    )),
+              )),
+        ],
+      ),
+    );
+  }
+
+  @override
+  double get maxExtent => 150;
+
+  @override
+  double get minExtent => 84;
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
+      true;
+}
+

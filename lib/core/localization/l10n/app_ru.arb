@@ -11,5 +11,11 @@
     "priority": "Важность",
     "completeDate": "Сделать до",
     "delete": "Удалить",
-    "incorrectDate": "Некорректная дата. Введите снова"
+    "incorrectDate": "Некорректная дата. Введите снова",
+    "todoView": "ДЕЛО",
+    "ok": "OK",
+    "task": "Дело",
+    "createdAt": "Создано",
+    "changedAt": "Изменено",
+    "deadline": "Срок"
 }

@@ -1,8 +1,4 @@
 {
-    "helloWorld": "Hello World!",
-    "@helloWorld": {
-      "description": "The conventional newborn programmer greeting"
-    },
     "appName": "Done",
     "title": "My tasks",
     "subtitle": "Completed —",
@@ -14,5 +10,12 @@
     "priority": "Priority",
     "completeDate": "Complete by",
     "delete": "Delete",
-    "incorrectDate": "Invalid date. Enter again"
+    "incorrectDate": "Invalid date. Enter again",
+    "todoView": "TASK",
+    "ok": "OK",
+    "task": "Task",
+    "createdAt": "Created at",
+    "changedAt": "Changed at",
+    "deadline": "Deadline"
+
 }

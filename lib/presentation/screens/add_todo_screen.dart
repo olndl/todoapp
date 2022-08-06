@@ -42,7 +42,6 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
     if (pickedDate != null) {
       setState(() {
         _datetime = pickedDate.millisecondsSinceEpoch;
-        //dateInput.text = formattedDate;
       });
     } else {
       setState(() {
