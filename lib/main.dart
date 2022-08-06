@@ -2,16 +2,23 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:hive/hive.dart';
 import 'core/errors/error_handler.dart';
 import 'core/errors/logger.dart';
 import 'core/navigation/router.dart';
 import 'core/localization/l10n/all_locales.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+import 'data/models/todo/todo.dart';
+
+void main() async {
+  await Hive.initFlutter();
+  Hive.registerAdapter(TodoAdapter());
+  await Hive.openBox<Todo>('todo_box');
+
   runZonedGuarded(() {
     initLogger();
     logger.info('Start main');
-
     ErrorHandler.init();
     runApp(TodoApp(router: AppRouter()));
   }, ErrorHandler.recordError);

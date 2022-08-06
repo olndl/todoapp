@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:meta/meta.dart';
 import 'package:uuid/uuid.dart';
+import '../../../core/errors/logger.dart';
 import '../../../data/models/todo/todo.dart';
 import '../../../network/repository.dart';
 
@@ -10,6 +12,8 @@ part 'todos_state.dart';
 class TodosCubit extends Cubit<TodosState> {
   Uuid uuid = Uuid();
   final Repository repository;
+
+  Box<Todo> todosBox = Hive.box('todo_box');
 
   TodosCubit({required this.repository}) : super(TodosInitial());
 
@@ -39,6 +43,11 @@ class TodosCubit extends Cubit<TodosState> {
       todoList.add(todo);
       repository.addTodo(todo, revision).then((isAdded) {
         if (isAdded != null) {
+          todosBox.put(todo.id, todo);
+          logger.info(
+            'Add todo with key - ${todo.id}.\nNumber of todos: '
+                '${todosBox.length}, current todos: ${todosBox.values}',
+          );
           emit(TodosLoaded(todos: todoList, revision: revision + 1));
         }
       });
@@ -63,6 +72,11 @@ class TodosCubit extends Cubit<TodosState> {
       todoList.add(shortTodo);
       repository.addTodo(shortTodo, revision).then((isAdded) {
         if (isAdded != null) {
+          todosBox.put(shortTodo.id, shortTodo);
+          logger.info(
+            'Add todo with key - ${shortTodo.id}.\nNumber of todos: '
+                '${todosBox.length}, current todos: ${todosBox.values}',
+          );
           emit(TodosLoaded(todos: todoList, revision: revision + 1));
         }
       });
@@ -81,6 +95,11 @@ class TodosCubit extends Cubit<TodosState> {
           .changeTodo(todoWithChangedCompletion, todo.id, revision)
           .then((isChanged) {
         if (isChanged!) {
+          todosBox.put(todo.id, todoWithChangedCompletion);
+          logger.info(
+            'Change todo completion with key - ${todo.id}.\nNumber of todos: '
+                '${todosBox.length}, current todos: ${todosBox.values}',
+          );
           emit(TodosLoaded(todos: todoList, revision: revision + 1));
         }
       });
@@ -90,20 +109,26 @@ class TodosCubit extends Cubit<TodosState> {
   void changeTodo(Todo todo,
       String message,
       String importance,
-      int deadline,
+      int? deadline,
       int revision) {
     final currentState = state;
-    final Todo todoWithChangedText = todo.copyWith(text: message,
+    final Todo todoWithChanging = todo.copyWith(text: message,
         importance: importance, deadline: deadline);
     if (currentState is TodosLoaded) {
       final revision = currentState.revision;
       final todoList =
       currentState.todos.where((element) => element.id != todo.id).toList();
-      todoList.add(todoWithChangedText);
+      todoList.add(todoWithChanging);
       repository
-          .changeTodo(todoWithChangedText, todo.id, revision)
+          .changeTodo(todoWithChanging, todo.id, revision)
           .then((isChanged) {
         if (isChanged!) {
+          todosBox.put(todo.id, todoWithChanging);
+          logger.info(
+            'Changed todo with key - ${todo.id}. \n Before: $todo/ After: $todoWithChanging'
+                '\nNumber of todos: '
+                '${todosBox.length}, current todos: ${todosBox.values}',
+          );
           emit(TodosLoaded(todos: todoList, revision: revision + 1));
         }
       });
@@ -118,6 +143,11 @@ class TodosCubit extends Cubit<TodosState> {
           currentState.todos.where((element) => element.id != todo.id).toList();
       repository.deleteTodo(todo.id, revision).then((isDeleted) {
         if (isDeleted!) {
+          todosBox.delete(todo.id);
+          logger.info(
+            'Deleted todo with key - ${todo.id}. Number of todos: '
+                '${todosBox.length}, current todos: ${todosBox.values}',
+          );
           emit(TodosLoaded(todos: todoList, revision: revision + 1));
         }
       });

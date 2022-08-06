@@ -3,6 +3,68 @@
 part of 'todo.dart';
 
 // **************************************************************************
+// TypeAdapterGenerator
+// **************************************************************************
+
+class TodoAdapter extends TypeAdapter<_$_Todo> {
+  @override
+  final int typeId = 0;
+
+  @override
+  _$_Todo read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return _$_Todo(
+      id: fields[1] as String,
+      createdAt: fields[2] as int,
+      text: fields[3] as String,
+      lastUpdatedBy: fields[4] as String,
+      changedAt: fields[5] as int,
+      deadline: fields[6] as int?,
+      color: fields[7] as String?,
+      done: fields[8] as bool,
+      importance: fields[9] as String,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, _$_Todo obj) {
+    writer
+      ..writeByte(9)
+      ..writeByte(1)
+      ..write(obj.id)
+      ..writeByte(2)
+      ..write(obj.createdAt)
+      ..writeByte(3)
+      ..write(obj.text)
+      ..writeByte(4)
+      ..write(obj.lastUpdatedBy)
+      ..writeByte(5)
+      ..write(obj.changedAt)
+      ..writeByte(6)
+      ..write(obj.deadline)
+      ..writeByte(7)
+      ..write(obj.color)
+      ..writeByte(8)
+      ..write(obj.done)
+      ..writeByte(9)
+      ..write(obj.importance);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TodoAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+// **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:todoapp/presentation/screens/todo_view_screen.dart';
 import '../../core/constants/colors.dart';
@@ -21,9 +22,9 @@ class TodosScreen extends StatefulWidget {
 }
 
 class _TodosScreenState extends State<TodosScreen> {
-  bool visible = true;
-
   TextEditingController _shortTodoController = TextEditingController();
+
+  bool visible = true;
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +142,7 @@ class _TodosScreenState extends State<TodosScreen> {
           final item = todos[index];
           return ClipRRect(
               clipBehavior: Clip.hardEdge,
-              child: _todoBody(index, item, context, revision));
+              child: _todoBody(index, item, context, revision),);
         },
     );
   }

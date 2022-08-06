@@ -6,7 +6,7 @@ part 'todo.g.dart';
 
 @freezed
 class Todo with _$Todo {
-  @HiveType(typeId: 0)
+  @HiveType(typeId: 0, adapterName: 'TodoAdapter')
   const factory Todo({
     @HiveField(1) required String id,
     @JsonKey(name: 'created_at') @HiveField(2) required int createdAt,

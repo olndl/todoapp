@@ -205,7 +205,7 @@ class __$$_TodoCopyWithImpl<$Res> extends _$TodoCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@HiveType(typeId: 0)
+@HiveType(typeId: 0, adapterName: 'TodoAdapter')
 class _$_Todo implements _Todo {
   const _$_Todo(
       {@HiveField(1)

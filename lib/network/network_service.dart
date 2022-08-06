@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:todoapp/data/models/todo_list_model/todo_list_model.dart';
 import 'package:todoapp/data/models/todo_model/todo_model.dart';
-
 import '../core/errors/logger.dart';
+
 
 class NetworkService {
   final token = "Anehull";
@@ -75,7 +75,7 @@ class NetworkService {
       return TodoModel.fromJson(response.data);
     } catch (error, stacktrace) {
       logger.info(
-        'Exception occured: '
+        'Exception occurred: '
         ' $error stackTrace: $stacktrace',
       );
       throw Exception("Data not found / Connection issue");
@@ -95,7 +95,7 @@ class NetworkService {
         return true;
       } else {
         logger.info(
-          'fetchOneTodoResponce: '
+          'fetchOneTodoResponse: '
           '${response.statusCode} : ${response.data.toString()}',
         );
         return false;
