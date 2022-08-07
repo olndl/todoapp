@@ -13,6 +13,7 @@
 - [x] Implemented work with Firebase Remote Configs: default red color vs #793cd8 depending on device language
 - [x] Connected and configured Firebase Crashlytics
 - [x] Internationalization
+- [x] App icon added <img src="https://github.com/olndl/todoapp/blob/develop/assets/icons/icon.png" width="25" />
 
 ## APK
 - [Download the latest version of the app](https://disk.yandex.ru/d/jabwxSf1lZ4fMw)
