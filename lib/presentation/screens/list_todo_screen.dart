@@ -1,8 +1,6 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:todoapp/presentation/screens/todo_view_screen.dart';
 import '../../core/constants/colors.dart';
@@ -24,9 +22,15 @@ class TodosScreen extends StatefulWidget {
 }
 
 class _TodosScreenState extends State<TodosScreen> {
-  TextEditingController _shortTodoController = TextEditingController();
+  late TextEditingController _shortTodoController;
 
-  bool visible = true;
+  @override
+  void initState() {
+    super.initState();
+    _shortTodoController = TextEditingController();
+  }
+
+  bool flag = true;
 
   @override
   Widget build(BuildContext context) {
@@ -58,10 +62,11 @@ class _TodosScreenState extends State<TodosScreen> {
                 slivers: [
               _head(),
               _subhead(context, completeTodo),
-              _body(scrollController, context, visible ? todos : uncompletedTodoList, revision)
+              _body(scrollController, context, flag ? todos : uncompletedTodoList, revision)
             ]),
           ),
           floatingActionButton: _btnAdd(revision, context),
+
           // Crash Example
           // floatingActionButton: TextButton(
           //   onPressed: () =>
@@ -74,18 +79,41 @@ class _TodosScreenState extends State<TodosScreen> {
   }
 
   Widget _head() {
-    return const SliverPersistentHeader(
+    return SliverPersistentHeader(
       pinned: true,
-      delegate: AppHeader(),
-    );
+      floating: true,
+      delegate: _SliverAppBarDelegate(
+        minHeight: 84,
+        maxHeight: 150,
+        child:  IconButton(
+          onPressed: () => {
+          logger.info(
+          "Button <eye> pressed"
+          ),
+            setState((){ flag = !flag;})},
+          icon: flag == true
+          ?  SvgPicture.asset(
+            'assets/icons/visibility_off.svg',
+            color: Colors.grey,
+          )
+              : SvgPicture.asset(
+        'assets/icons/visibility.svg',
+        color: Colors.grey,
+        ),
+      ),)
+      );
   }
 
   Widget _subhead(context, num) {
     return SliverToBoxAdapter(
       child: Padding(
         padding: EdgeInsets.only(left: Dim.width(context) / 4.95),
-        child: Text(
-          '${AllLocale.of(context).subtitle} $num',
+        child: Row(
+          children: [
+            Text(
+              '${AllLocale.of(context).subtitle} $num',
+            ),
+          ],
         ),
       ),
     );
@@ -121,7 +149,12 @@ class _TodosScreenState extends State<TodosScreen> {
             title: TextField(
               controller: _shortTodoController,
               onSubmitted: (text) {
-                BlocProvider.of<TodosCubit>(context).addShortTodo(text);
+               text.isNotEmpty ? BlocProvider.of<TodosCubit>(context).addShortTodo(text)
+               : ScaffoldMessenger.of(context).showSnackBar(
+                 const SnackBar(
+                   content: Text('Error: - message is empty'),
+                 ),
+               );
                 _shortTodoController.clear();
               },
               decoration: InputDecoration(border: InputBorder.none,
@@ -171,7 +204,7 @@ class _TodosScreenState extends State<TodosScreen> {
   Widget _fromLeftToRight() {
     return Container(
       color: Colors.green,
-      alignment: Alignment.centerLeft,
+      alignment: Alignment.lerp(Alignment.centerLeft, Alignment.centerRight, .05),
       child: Padding(
           padding: EdgeInsets.all(15),
           child: SvgPicture.asset(
@@ -184,7 +217,7 @@ class _TodosScreenState extends State<TodosScreen> {
   Widget _fromRightToLeft() {
     return Container(
       color: Colors.red,
-      alignment: Alignment.centerRight,
+      alignment: Alignment.lerp(Alignment.centerRight, Alignment.centerLeft, .05),
       child: Padding(
         padding: EdgeInsets.all(15),
         child: SvgPicture.asset(
@@ -317,90 +350,82 @@ class _TodosScreenState extends State<TodosScreen> {
       },
     );
   }
-}
+  }
 
-class AppHeader extends SliverPersistentHeaderDelegate {
+class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
+  final double minHeight;
+  final double maxHeight;
+  final Widget child;
 
-  const AppHeader();
+  _SliverAppBarDelegate({
+    required this.minHeight,
+    required this.maxHeight,
+    required this.child,
+  });
+
+  @override
+  double get minExtent => minHeight;
+
+  @override
+  double get maxExtent => max(maxHeight, minHeight);
+
 
   @override
   Widget build(
-      BuildContext context,
-      double shrinkOffset,
-      bool overlapsContent,
-      ) {
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     final progress = shrinkOffset / maxExtent;
-
-    return Material(
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          AnimatedOpacity(
-            duration: const Duration(milliseconds: 150),
-            opacity: 1,
-            child: ColoredBox(
-              color: ColorApp.lightTheme.backPrimary,
-            ),
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        AnimatedOpacity(
+          duration: const Duration(milliseconds: 150),
+          opacity: 1,
+          child: ColoredBox(
+            color: ColorApp.lightTheme.backPrimary,
           ),
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 100),
-            padding: EdgeInsets.lerp(
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              const EdgeInsets.only(bottom: 16),
-              progress,
-            ),
-            alignment: Alignment.lerp(
-              const Alignment(-.4, 1),
-              const Alignment(-.8, 1),
-              progress,
-            ),
-            child: Text(
-              AllLocale.of(context).title,
-              style: TextStyle.lerp(
-                Theme.of(context)
-                    .textTheme
-                    .headline4,
-                Theme.of(context)
-                    .textTheme
-                    .headline6,
-                progress,
-              ),
-            ),
+        ),
+        AnimatedContainer(
+          duration: const Duration(milliseconds: 100),
+          padding: EdgeInsets.lerp(
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            const EdgeInsets.only(bottom: 16),
+            progress,
           ),
-          AnimatedContainer(
-              duration: const Duration(milliseconds: 100),
-              padding: EdgeInsets.lerp(
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                const EdgeInsets.only(bottom: 16),
-                progress,
+          alignment: Alignment.lerp(
+            const Alignment(0, 1),
+            const Alignment(.5, 1.5),
+            progress,
+          ),
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 60),
+                child: Text(
+                  AllLocale.of(context).title,
+                  style: TextStyle.lerp(
+                    Theme.of(context)
+                        .textTheme
+                        .headline4,
+                    Theme.of(context)
+                        .textTheme
+                        .headline6,
+                    progress,
+                  ),
+                ),
               ),
-              alignment: Alignment.lerp(
-                const Alignment(.8, 2.35),
-                const Alignment(.67, 2.2),
-                progress,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 392 / 1.6),
-                child:
-                IconButton(onPressed: () {},
-                    icon: SvgPicture.asset(
-                      'assets/icons/visibility.svg',
-                      color: ColorApp.lightTheme.colorBlue,
-                    )),
-              )),
-        ],
-      ),
+              SizedBox(width: 95,),
+              child
+            ],
+          ),
+        ),
+      ],
     );
   }
 
   @override
-  double get maxExtent => 150;
-
-  @override
-  double get minExtent => 84;
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
-      true;
+  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
+    return maxHeight != oldDelegate.maxHeight ||
+        minHeight != oldDelegate.minHeight ||
+        child != oldDelegate.child;
+  }
 }
-

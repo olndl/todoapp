@@ -66,6 +66,11 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
           logger.info(
             'Error: - ${state.error}',
           );
+      ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Error: - ${state.error}'),
+            ),
+          );
         }
       },
       child: Scaffold(
@@ -118,7 +123,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                       style: const TextStyle(color: Colors.grey),
                       underline: Container(
                         height: 1,
-                        color: Colors.grey,
+                        color: Colors.grey[350],
                       ),
                       items: items.map((String items) {
                         return DropdownMenuItem(
@@ -189,7 +194,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                         color: ColorApp.lightTheme.colorGrey,
                       ),
                       SizedBox(
-                        width: Dim.width(context) / 50,
+                        width: Dim.width(context) / 23,
                       ),
                       Text(
                         AllLocale.of(context).delete,

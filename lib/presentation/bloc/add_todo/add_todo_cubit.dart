@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:todoapp/core/errors/logger.dart';
 import '../../../data/models/todo/todo.dart';
 import '../../../network/repository.dart';
 import '../list_todo/todos_cubit.dart';
@@ -13,14 +14,13 @@ class AddTodoCubit extends Cubit<AddTodoState> {
   AddTodoCubit({required this.repository, required this.todosCubit})
       : super(AddTodoInitial());
 
-  void addTodo(Todo task, int revision) {
-    print(task.text);
-    if (task.text.isEmpty) {
+  void addTodo(Todo todo, int revision) {
+    logger.info(todo.text);
+    if (todo.text.isEmpty) {
       emit(AddTodoError(error: "Message is empty"));
       return;
     }
-    //emit(AddingTodo());
-    todosCubit.addTodo(task);
+    todosCubit.addTodo(todo);
     emit(TodoAdded());
   }
 }
