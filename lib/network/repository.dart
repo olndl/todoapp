@@ -23,10 +23,10 @@ class Repository {
     return todosRaw;
   }
 
-  Future<TodoModel> fetchOneTodo(String id) async {
-    final oneTodo = await networkService.fetchOneTodo(id);
-    return oneTodo;
-  }
+  // Future<TodoModel> fetchOneTodo(String id) async {
+  //   final oneTodo = await networkService.fetchOneTodo(id);
+  //   return oneTodo;
+  // }
 
   Future<bool?> changeTodo(
       Todo task,

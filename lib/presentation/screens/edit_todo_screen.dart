@@ -116,29 +116,31 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
                       AllLocale.of(context).priority,
                       textAlign: TextAlign.left,
                     ),
-                    DropdownButton(
-                      value: dropdownvalue,
-                      hint: Text("Важность"),
-                      isExpanded: true,
-                      icon: const SizedBox.shrink(),
-                      elevation: 16,
-                      style: const TextStyle(color: Colors.grey),
-                      underline: Container(
-                        height: 1,
-                        color: Colors.grey,
+                    Container(
+                      width: 110.0,
+                      child: DropdownButtonHideUnderline(
+                        child: ButtonTheme(
+                          child: DropdownButton(
+                            icon: SizedBox.shrink(),
+                            hint: Text(dropdownvalue),
+                            items: items.map((String items) {
+                              return DropdownMenuItem(
+                                alignment: Alignment.centerLeft,
+                                value: items,
+                                child: Text(items),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                dropdownvalue = newValue!;
+                              });
+                            },
+                            //style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                        ),
                       ),
-                      items: items.map((String items) {
-                        return DropdownMenuItem(
-                          value: items,
-                          child: Text(items),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          dropdownvalue = newValue!;
-                        });
-                      },
                     ),
+                    Container(height: 1, color: Colors.grey[350],)
                   ],
                 ),
               ),
@@ -154,17 +156,15 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
                             AllLocale.of(context).completeDate,
                             textAlign: TextAlign.left,
                           ),
-                          Text(
-                            datetime == null
-                                ? ""
-                                : DateFormat.yMMMMd('ru').format(
+                          datetime != null ?
+                          Text(DateFormat.yMMMMd('ru').format(
                                     DateTime.fromMillisecondsSinceEpoch(
                                         datetime!)),
                             textAlign: TextAlign.left,
                             style: TextStyle(
                                 color: ColorApp.lightTheme.colorBlue,
                                 fontSize: 14),
-                          )
+                          ) : const SizedBox.shrink()
                         ],
                       ),
                       Switch(
@@ -199,7 +199,7 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
                         color: ColorApp.lightTheme.colorRed,
                       ),
                       SizedBox(
-                        width: Dim.width(context) / 50,
+                        width: Dim.width(context) / 23,
                       ),
                       Text(
                         AllLocale.of(context).delete,

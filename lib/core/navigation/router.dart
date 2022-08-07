@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todoapp/presentation/screens/todo_view_screen.dart';
+import 'package:todoapp/presentation/screens/view_todo_screen.dart';
 
 import '../../data/models/todo/todo.dart';
 import '../../network/network_service.dart';

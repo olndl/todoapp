@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:meta/meta.dart';
+import 'package:todoapp/data/models/todo_model/todo_model.dart';
 import 'package:uuid/uuid.dart';
 import '../../../core/errors/logger.dart';
 import '../../../data/models/todo/todo.dart';
@@ -35,6 +36,7 @@ class TodosCubit extends Cubit<TodosState> {
     });
   }
 
+
   addTodo(Todo todo) {
     final currentState = state;
     if (currentState is TodosLoaded) {
@@ -54,10 +56,10 @@ class TodosCubit extends Cubit<TodosState> {
     }
   }
 
-  addShortTodo(String message) {
+  void addShortTodo(String message) {
     final currentState = state;
     final shortTodo = Todo(
-        id: uuid.v4().toString(),
+        id: uuid.v4(),
         createdAt: DateTime.now().millisecondsSinceEpoch,
         text: message,
         lastUpdatedBy: "123",

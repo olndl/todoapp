@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:todoapp/presentation/screens/todo_view_screen.dart';
+import 'package:todoapp/presentation/screens/view_todo_screen.dart';
 import '../../core/constants/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../core/constants/dimension.dart';

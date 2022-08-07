@@ -66,7 +66,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
           logger.info(
             'Error: - ${state.error}',
           );
-      ScaffoldMessenger.of(context).showSnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Error: - ${state.error}'),
             ),
@@ -114,29 +114,31 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                       AllLocale.of(context).priority,
                       textAlign: TextAlign.left,
                     ),
-                    DropdownButton(
-                      value: dropdownValue,
-                      hint: Text("Важность"),
-                      isExpanded: true,
-                      icon: const SizedBox.shrink(),
-                      elevation: 16,
-                      style: const TextStyle(color: Colors.grey),
-                      underline: Container(
-                        height: 1,
-                        color: Colors.grey[350],
+                    Container(
+                      width: 106,
+                      child: DropdownButtonHideUnderline(
+                        child: ButtonTheme(
+                          child: DropdownButton(
+                            icon: SizedBox.shrink(),
+                            hint: Text(dropdownValue),
+                            items: items.map((String items) {
+                              return DropdownMenuItem(
+                                alignment: Alignment.centerLeft,
+                                value: items,
+                                child: Text(items),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                dropdownValue = newValue!;
+                              });
+                            },
+                            //style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                        ),
                       ),
-                      items: items.map((String items) {
-                        return DropdownMenuItem(
-                          value: items,
-                          child: Text(items),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          dropdownValue = newValue!;
-                        });
-                      },
                     ),
+                    Container(height: 1, color: Colors.grey[350],)
                   ],
                 ),
               ),
@@ -152,17 +154,15 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                             AllLocale.of(context).completeDate,
                             textAlign: TextAlign.left,
                           ),
-                          Text(
-                            _datetime == null
-                                ? ""
-                                : DateFormat.yMMMMd('ru').format(
+                          _datetime != null ? Text(
+                           DateFormat.yMMMMd('ru').format(
                                     DateTime.fromMillisecondsSinceEpoch(
                                         _datetime!)),
                             textAlign: TextAlign.left,
                             style: TextStyle(
                                 color: ColorApp.lightTheme.colorBlue,
                                 fontSize: 14),
-                          )
+                          ) : const SizedBox.shrink()
                         ],
                       ),
                       Switch(
@@ -221,10 +221,9 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
         onPressed: () {
           Navigator.pop(context);
         },
-        icon:
-        SvgPicture.asset(
+        icon: SvgPicture.asset(
           'assets/icons/close.svg',
-          color:  ColorApp.lightTheme.labelPrimary,
+          color: ColorApp.lightTheme.labelPrimary,
         ),
       ),
       actions: [
@@ -232,10 +231,10 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
           onTap: () {
             final message = _controller.text;
             Todo newTask = Todo(
-                id: uuid.v4().toString(),
+                id: uuid.v4(),
                 createdAt: DateTime.now().millisecondsSinceEpoch,
                 text: message,
-                lastUpdatedBy: "123",
+                lastUpdatedBy: "olndlDevice",
                 changedAt: DateTime.now().millisecondsSinceEpoch,
                 deadline: _datetime,
                 done: false,
@@ -255,11 +254,10 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
         return Padding(
           padding: const EdgeInsets.all(20.0),
           child: Text(
-              AllLocale.of(context).save,
-              style: const TextStyle(color: Colors.blue),
-            ),
+            AllLocale.of(context).save,
+            style: const TextStyle(color: Colors.blue),
+          ),
         );
-
       },
     );
   }
