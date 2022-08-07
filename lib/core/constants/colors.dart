@@ -13,6 +13,7 @@ class Light {
   final Color backElevated = const Color(0xffffffff);
 
   final Color colorRed = const Color(0xffff3b30);
+  final Color colorSpecial = const Color(0xff793cd8);
   final Color colorGreen = const Color(0xff34c759);
   final Color colorBlue = const Color(0xff007aff);
   final Color colorGrey = const Color(0xff8e8e93);

@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import '../../core/constants/colors.dart';
 import '../../core/constants/dimension.dart';
+import '../../core/constants/strings.dart';
 import '../../core/localization/l10n/all_locales.dart';
 import '../../data/models/todo/todo.dart';
 import '../bloc/edit_todo/edit_todo_cubit.dart';
@@ -34,13 +35,7 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
     super.initState();
   }
 
-  String dropdownvalue = 'low';
-
-  var items = [
-    'low',
-    'basic',
-    'important',
-  ];
+  String dropdownvalue = S.low;
 
   void _toSetDeadline() async {
     DateTime? pickedDate = await showDatePicker(
@@ -147,15 +142,28 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
                           child: DropdownButtonHideUnderline(
                             child: ButtonTheme(
                               child: DropdownButton(
+                                value: dropdownvalue,
+                                style: TextStyle(
+                                    color: ColorApp.lightTheme.labelPrimary),
                                 icon: const SizedBox.shrink(),
                                 hint: Text(dropdownvalue),
-                                items: items.map((String items) {
-                                  return DropdownMenuItem(
-                                    alignment: Alignment.centerLeft,
-                                    value: items,
-                                    child: Text(items),
-                                  );
-                                }).toList(),
+                                items: [
+                                  DropdownMenuItem(
+                                    value: S.low,
+                                    child: Text(AllLocale.of(context).low),
+                                  ),
+                                  DropdownMenuItem(
+                                      value: S.basic,
+                                      child: Text(AllLocale.of(context).basic)),
+                                  DropdownMenuItem(
+                                    value: S.important,
+                                    child: Text(
+                                      "!! ${AllLocale.of(context).important}",
+                                      style: TextStyle(
+                                          color: ColorApp.lightTheme.colorRed),
+                                    ),
+                                  )
+                                ],
                                 onChanged: (String? newValue) {
                                   setState(() {
                                     dropdownvalue = newValue!;

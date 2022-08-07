@@ -11,6 +11,7 @@ import '../../core/localization/l10n/all_locales.dart';
 import '../../core/navigation/routes.dart';
 import '../../data/models/todo/todo.dart';
 import '../bloc/list_todo/todos_cubit.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 
 class TodosScreen extends StatefulWidget {
   const TodosScreen({Key? key}) : super(key: key);
@@ -22,10 +23,37 @@ class TodosScreen extends StatefulWidget {
 class _TodosScreenState extends State<TodosScreen> {
   late TextEditingController _shortTodoController;
 
+  final Map<String, dynamic> _availableImportanceColors = {
+    "purple": ColorApp.lightTheme.colorSpecial,
+    "red": ColorApp.lightTheme.colorRed,
+  };
+
+
+  final String _defaultImportanceColor = "red";
+  final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
+  Future<void> _initConfig() async {
+    await _remoteConfig.setConfigSettings(RemoteConfigSettings(
+      fetchTimeout: const Duration(
+          seconds: 1),
+      minimumFetchInterval: const Duration(
+          seconds:
+          10),
+    ));
+
+    _fetchConfig();
+  }
+
+
+  void _fetchConfig() async {
+    await _remoteConfig.fetchAndActivate();
+  }
+
+
   @override
   void initState() {
     super.initState();
     _shortTodoController = TextEditingController();
+    _initConfig();
   }
 
   bool flag = true;
@@ -169,7 +197,10 @@ class _TodosScreenState extends State<TodosScreen> {
                                       data: Theme.of(context).copyWith(
                                         unselectedWidgetColor:
                                             item.importance == "important"
-                                                ? Colors.red
+                                                ? ( _availableImportanceColors[
+                                            _remoteConfig.getString('importanceColor').isNotEmpty
+                                                ? _remoteConfig.getString('importanceColor')
+                                                : _defaultImportanceColor])
                                                 : Colors.grey,
                                       ),
                                       child: Checkbox(
@@ -242,7 +273,7 @@ class _TodosScreenState extends State<TodosScreen> {
                                 border: InputBorder.none,
                                 hintText: AllLocale.of(context).newShortTodo,
                                 hintStyle:
-                                    Theme.of(context).textTheme.bodyText2),
+                                Theme.of(context).textTheme.bodyText2),
                           ),
                         ),
                       ],
@@ -315,6 +346,10 @@ class _TodosScreenState extends State<TodosScreen> {
                 padding: const EdgeInsets.all(6.0),
                 child: SvgPicture.asset(
                   'assets/icons/priority.svg',
+                  color:  _availableImportanceColors[
+                  _remoteConfig.getString('importanceColor').isNotEmpty
+                      ? _remoteConfig.getString('importanceColor')
+                      : _defaultImportanceColor],
                 ),
               )
             : const Text(""));
@@ -386,7 +421,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 95,
               ),
               child

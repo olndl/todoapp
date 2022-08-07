@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 import '../../core/constants/colors.dart';
 import '../../core/constants/dimension.dart';
+import '../../core/constants/strings.dart';
 import '../../core/errors/logger.dart';
 import '../../core/localization/l10n/all_locales.dart';
 import '../../data/models/todo/todo.dart';
@@ -26,13 +27,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
   bool _isSwitched = false;
   int? _datetime;
 
-  String dropdownValue = 'low';
-
-  var items = [
-    'low',
-    'basic',
-    'important',
-  ];
+  String dropdownValue = S.low;
 
   void _toSetDeadline() async {
     DateTime? pickedDate = await showDatePicker(
@@ -49,9 +44,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
         _isSwitched = false;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AllLocale
-                .of(context)
-                .incorrectDate),
+            content: Text(AllLocale.of(context).incorrectDate),
           ),
         );
       });
@@ -96,14 +89,10 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                     final message = _controller.text;
                     Todo newTask = Todo(
                         id: uuid.v4(),
-                        createdAt: DateTime
-                            .now()
-                            .millisecondsSinceEpoch,
+                        createdAt: DateTime.now().millisecondsSinceEpoch,
                         text: message,
                         lastUpdatedBy: "olndlDevice",
-                        changedAt: DateTime
-                            .now()
-                            .millisecondsSinceEpoch,
+                        changedAt: DateTime.now().millisecondsSinceEpoch,
                         deadline: _datetime,
                         done: false,
                         importance: dropdownValue);
@@ -115,13 +104,8 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                       return Padding(
                         padding: const EdgeInsets.only(right: 15, top: 15),
                         child: Text(
-                          AllLocale
-                              .of(context)
-                              .save,
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .button,
+                          AllLocale.of(context).save,
+                          style: Theme.of(context).textTheme.button,
                         ),
                       );
                     },
@@ -143,16 +127,11 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                       controller: _controller,
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
-                          contentPadding: EdgeInsets.all(Dim.width(context) /
-                              20),
+                          contentPadding:
+                              EdgeInsets.all(Dim.width(context) / 20),
                           border: InputBorder.none,
-                          hintText: AllLocale
-                              .of(context)
-                              .hintMessage),
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .bodyText1,
+                          hintText: AllLocale.of(context).hintMessage),
+                      style: Theme.of(context).textTheme.bodyText1,
                       textAlign: TextAlign.left,
                     ),
                   ),
@@ -162,9 +141,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          AllLocale
-                              .of(context)
-                              .priority,
+                          AllLocale.of(context).priority,
                           textAlign: TextAlign.left,
                         ),
                         Container(
@@ -172,26 +149,44 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                           child: DropdownButtonHideUnderline(
                             child: ButtonTheme(
                               child: DropdownButton(
+                                value: dropdownValue,
+                                style: TextStyle(
+                                    color: ColorApp.lightTheme.labelPrimary),
                                 icon: const SizedBox.shrink(),
                                 hint: Text(dropdownValue),
-                                items: items.map((String items) {
-                                  return DropdownMenuItem(
-                                    alignment: Alignment.centerLeft,
-                                    value: items,
-                                    child: Text(items),
-                                  );
-                                }).toList(),
+                                items: [
+                                  //add items in the dropdown
+                                  DropdownMenuItem(
+                                    value: S.low,
+                                    child: Text(AllLocale.of(context).low),
+                                  ),
+                                  DropdownMenuItem(
+                                      value: S.basic,
+                                      child: Text(AllLocale.of(context).basic)),
+                                  DropdownMenuItem(
+                                    value: S.important,
+                                    child: Text(
+                                      "!! ${AllLocale.of(context).important}",
+                                      style: TextStyle(
+                                          color: ColorApp.lightTheme.colorRed),
+                                    ),
+                                  )
+                                ],
                                 onChanged: (String? newValue) {
-                                  setState(() {
-                                    dropdownValue = newValue!;
-                                  });
+                                  setState(
+                                    () {
+                                      dropdownValue = newValue!;
+                                    },
+                                  );
                                 },
                               ),
                             ),
                           ),
                         ),
                         Container(
-                          height: 1, color: ColorApp.lightTheme.colorGrey,)
+                          height: 1,
+                          color: ColorApp.lightTheme.colorGrey,
+                        )
                       ],
                     ),
                   ),
@@ -204,21 +199,17 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                AllLocale
-                                    .of(context)
-                                    .completeDate,
+                                AllLocale.of(context).completeDate,
                                 textAlign: TextAlign.left,
                               ),
-                              _datetime != null ? Text(
-                                  DateFormat.yMMMMd('ru').format(
-                                      DateTime.fromMillisecondsSinceEpoch(
-                                          _datetime!)),
-                                  textAlign: TextAlign.left,
-                                  style: Theme
-                                      .of(context)
-                                      .textTheme
-                                      .button
-                              ) : const SizedBox.shrink()
+                              _datetime != null
+                                  ? Text(
+                                      DateFormat.yMMMMd('ru').format(
+                                          DateTime.fromMillisecondsSinceEpoch(
+                                              _datetime!)),
+                                      textAlign: TextAlign.left,
+                                      style: Theme.of(context).textTheme.button)
+                                  : const SizedBox.shrink()
                             ],
                           ),
                           Switch(
@@ -253,11 +244,9 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                             width: Dim.width(context) / 23,
                           ),
                           Text(
-                            AllLocale
-                                .of(context)
-                                .delete,
-                            style: TextStyle(
-                                color: ColorApp.lightTheme.colorGrey),
+                            AllLocale.of(context).delete,
+                            style:
+                                TextStyle(color: ColorApp.lightTheme.colorGrey),
                           )
                         ],
                       ),
