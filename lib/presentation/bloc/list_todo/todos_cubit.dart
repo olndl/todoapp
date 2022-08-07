@@ -1,8 +1,6 @@
-import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:meta/meta.dart';
-import 'package:todoapp/data/models/todo_model/todo_model.dart';
 import 'package:uuid/uuid.dart';
 import '../../../core/errors/logger.dart';
 import '../../../data/models/todo/todo.dart';
@@ -11,7 +9,7 @@ import '../../../network/repository.dart';
 part 'todos_state.dart';
 
 class TodosCubit extends Cubit<TodosState> {
-  Uuid uuid = Uuid();
+  final Uuid uuid = const Uuid();
   final Repository repository;
 
   Box<Todo> todosBox = Hive.box('todo_box');

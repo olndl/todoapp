@@ -12,15 +12,21 @@ class AddTodoCubit extends Cubit<AddTodoState> {
   final TodosCubit todosCubit;
 
   AddTodoCubit({required this.repository, required this.todosCubit})
-      : super(AddTodoInitial());
+      : super(
+          AddTodoInitial(),
+        );
 
   void addTodo(Todo todo, int revision) {
     logger.info(todo.text);
     if (todo.text.isEmpty) {
-      emit(AddTodoError(error: "Message is empty"));
+      emit(
+        AddTodoError(error: "Message is empty"),
+      );
       return;
     }
     todosCubit.addTodo(todo);
-    emit(TodoAdded());
+    emit(
+      TodoAdded(),
+    );
   }
 }

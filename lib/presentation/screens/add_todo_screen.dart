@@ -30,28 +30,22 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
 
   String dropdownValue = S.low;
 
-
   final Map<String, dynamic> _availableImportanceColors = {
     "purple": ColorApp.lightTheme.colorSpecial,
     "red": ColorApp.lightTheme.colorRed,
   };
-
 
   final String _defaultImportanceColor = "red";
   final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
 
   Future<void> _initConfig() async {
     await _remoteConfig.setConfigSettings(RemoteConfigSettings(
-      fetchTimeout: const Duration(
-          seconds: 1),
-      minimumFetchInterval: const Duration(
-          seconds:
-          10),
+      fetchTimeout: const Duration(seconds: 1),
+      minimumFetchInterval: const Duration(seconds: 10),
     ));
 
     _fetchConfig();
   }
-
 
   void _fetchConfig() async {
     await _remoteConfig.fetchAndActivate();
@@ -93,11 +87,11 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
           Navigator.pop(context);
         } else if (state is AddTodoError) {
           logger.info(
-            'Error: - ${state.error}',
+            state.error,
           );
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Error: - ${state.error}'),
+              content: Text(AllLocale.of(context).emptyInput),
             ),
           );
         }
@@ -114,7 +108,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                   Navigator.pop(context);
                 },
                 icon: SvgPicture.asset(
-                  'assets/icons/close.svg',
+                  S.iconClose,
                 ),
               ),
               actions: [
@@ -125,7 +119,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                         id: uuid.v4(),
                         createdAt: DateTime.now().millisecondsSinceEpoch,
                         text: message,
-                        lastUpdatedBy: "olndlDevice",
+                        lastUpdatedBy: S.deviceId,
                         changedAt: DateTime.now().millisecondsSinceEpoch,
                         deadline: _datetime,
                         done: false,
@@ -203,9 +197,13 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                                       "!! ${AllLocale.of(context).important}",
                                       style: TextStyle(
                                           color: _availableImportanceColors[
-                                          _remoteConfig.getString('importanceColor').isNotEmpty
-                                              ? _remoteConfig.getString('importanceColor')
-                                              : _defaultImportanceColor]),
+                                              _remoteConfig
+                                                      .getString(
+                                                          'importanceColor')
+                                                      .isNotEmpty
+                                                  ? _remoteConfig.getString(
+                                                      'importanceColor')
+                                                  : _defaultImportanceColor]),
                                     ),
                                   )
                                 ],
@@ -269,24 +267,21 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                   ),
                   Container(
                     margin: EdgeInsets.all(Dim.width(context) / 25),
-                    child: GestureDetector(
-                      onTap: () {},
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            'assets/icons/delete.svg',
-                            color: ColorApp.lightTheme.colorGrey,
-                          ),
-                          SizedBox(
-                            width: Dim.width(context) / 23,
-                          ),
-                          Text(
-                            AllLocale.of(context).delete,
-                            style:
-                                TextStyle(color: ColorApp.lightTheme.colorGrey),
-                          )
-                        ],
-                      ),
+                    child: Row(
+                      children: [
+                        SvgPicture.asset(
+                          S.iconDelete,
+                          color: ColorApp.lightTheme.colorGrey,
+                        ),
+                        SizedBox(
+                          width: Dim.width(context) / 23,
+                        ),
+                        Text(
+                          AllLocale.of(context).delete,
+                          style:
+                              TextStyle(color: ColorApp.lightTheme.colorGrey),
+                        )
+                      ],
                     ),
                   ),
                 ],

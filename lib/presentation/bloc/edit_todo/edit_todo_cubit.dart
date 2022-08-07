@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:todoapp/presentation/bloc/list_todo/todos_cubit.dart';
+import '../../../core/constants/strings.dart';
 import '../../../data/models/todo/todo.dart';
 import '../../../network/repository.dart';
 
@@ -11,18 +12,23 @@ class EditTodoCubit extends Cubit<EditTodoState> {
   final TodosCubit todosCubit;
 
   EditTodoCubit({required this.repository, required this.todosCubit})
-      : super(EditTodoInitial());
+      : super(
+          EditTodoInitial(),
+        );
 
   void deleteTodo(Todo todo, int revision) {
     todosCubit.deleteTodo(todo, revision);
-    emit(TodoEdited());
+    emit(
+      TodoEdited(),
+    );
   }
 
   void updateTodo(
       Todo todo, String message, importance, deadline, int revision) {
-    print(message);
     if (message.isEmpty) {
-      emit(EditTodoError(error: "Message is empty"));
+      emit(
+        EditTodoError(error: S.errorEmptyMessage),
+      );
       return;
     }
     todosCubit.changeTodo(todo, message, importance, deadline, revision);

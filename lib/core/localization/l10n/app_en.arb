@@ -21,6 +21,7 @@
     "withoutDeadline": "Without deadline",
     "low": "Low",
     "basic": "Basic",
-    "important": "Important"
+    "important": "Important",
+    "emptyInput": "Error: - message is empty"
 
 }

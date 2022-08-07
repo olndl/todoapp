@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,6 +24,7 @@ class EditTodoScreen extends StatefulWidget {
 class _EditTodoScreenState extends State<EditTodoScreen> {
   final _controller = TextEditingController();
   late bool _isSwitched;
+  late String dropdownvalue;
   int? datetime;
 
   final Map<String, dynamic> _availableImportanceColors = {
@@ -33,22 +32,17 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
     "red": ColorApp.lightTheme.colorRed,
   };
 
-
   final String _defaultImportanceColor = "red";
   final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
 
   Future<void> _initConfig() async {
     await _remoteConfig.setConfigSettings(RemoteConfigSettings(
-      fetchTimeout: const Duration(
-          seconds: 1),
-      minimumFetchInterval: const Duration(
-          seconds:
-          10),
+      fetchTimeout: const Duration(seconds: 1),
+      minimumFetchInterval: const Duration(seconds: 10),
     ));
 
     _fetchConfig();
   }
-
 
   void _fetchConfig() async {
     await _remoteConfig.fetchAndActivate();
@@ -56,14 +50,14 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
 
   @override
   void initState() {
+    super.initState();
     _controller.text = widget.todo.text;
     datetime = widget.todo.deadline;
     _initConfig();
     _isSwitched = datetime != null ? true : false;
-    super.initState();
+    dropdownvalue = widget.todo.importance;
   }
 
-  String dropdownvalue = S.low;
 
   void _toSetDeadline() async {
     DateTime? pickedDate = await showDatePicker(
@@ -74,7 +68,6 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
     if (pickedDate != null) {
       setState(() {
         datetime = pickedDate.millisecondsSinceEpoch;
-        //dateInput.text = formattedDate;
       });
     } else {
       setState(() {
@@ -110,7 +103,7 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
                   Navigator.pop(context);
                 },
                 icon: SvgPicture.asset(
-                  'assets/icons/close.svg',
+                  S.iconClose,
                 ),
               ),
               actions: [
@@ -189,9 +182,13 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
                                       "!! ${AllLocale.of(context).important}",
                                       style: TextStyle(
                                           color: _availableImportanceColors[
-                                          _remoteConfig.getString('importanceColor').isNotEmpty
-                                              ? _remoteConfig.getString('importanceColor')
-                                              : _defaultImportanceColor]),
+                                              _remoteConfig
+                                                      .getString(
+                                                          'importanceColor')
+                                                      .isNotEmpty
+                                                  ? _remoteConfig.getString(
+                                                      'importanceColor')
+                                                  : _defaultImportanceColor]),
                                     ),
                                   )
                                 ],
@@ -262,7 +259,7 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
                       child: Row(
                         children: [
                           SvgPicture.asset(
-                            'assets/icons/delete.svg',
+                            S.iconDelete,
                             color: ColorApp.lightTheme.colorRed,
                           ),
                           SizedBox(

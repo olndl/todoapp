@@ -22,5 +22,6 @@
     "withoutDeadline": "Нет",
     "low": "Нет",
     "basic": "Низкий",
-    "important": "Высокий"
+    "important": "Высокий",
+    "emptyInput": "Ошибка: - пустой ввод"
 }

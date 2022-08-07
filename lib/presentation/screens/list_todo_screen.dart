@@ -6,6 +6,7 @@ import 'package:todoapp/presentation/screens/view_todo_screen.dart';
 import '../../core/constants/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../core/constants/dimension.dart';
+import '../../core/constants/strings.dart';
 import '../../core/errors/logger.dart';
 import '../../core/localization/l10n/all_locales.dart';
 import '../../core/navigation/routes.dart';
@@ -29,27 +30,21 @@ class _TodosScreenState extends State<TodosScreen> {
     "red": ColorApp.lightTheme.colorRed,
   };
 
-
   final String _defaultImportanceColor = "red";
   final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
 
   Future<void> _initConfig() async {
     await _remoteConfig.setConfigSettings(RemoteConfigSettings(
-      fetchTimeout: const Duration(
-          seconds: 1),
-      minimumFetchInterval: const Duration(
-          seconds:
-          10),
+      fetchTimeout: const Duration(seconds: 1),
+      minimumFetchInterval: const Duration(seconds: 10),
     ));
 
     _fetchConfig();
   }
 
-
   void _fetchConfig() async {
     await _remoteConfig.fetchAndActivate();
   }
-
 
   @override
   void initState() {
@@ -57,7 +52,6 @@ class _TodosScreenState extends State<TodosScreen> {
     _shortTodoController = TextEditingController();
     _initConfig();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -96,17 +90,16 @@ class _TodosScreenState extends State<TodosScreen> {
                     maxHeight: 150,
                     child: IconButton(
                       onPressed: () => {
-                        logger.info("Button <eye> pressed"),
                         setState(() {
                           flag = !flag;
                         })
                       },
                       icon: flag == true
                           ? SvgPicture.asset(
-                              'assets/icons/visibility_off.svg',
+                              S.iconVisibilityOff,
                             )
                           : SvgPicture.asset(
-                              'assets/icons/visibility.svg',
+                              S.iconVisibility,
                             ),
                     ),
                   ),
@@ -161,9 +154,9 @@ class _TodosScreenState extends State<TodosScreen> {
                                       Alignment.centerRight,
                                       .05),
                                   child: Padding(
-                                    padding: EdgeInsets.all(15),
+                                    padding: const EdgeInsets.all(15),
                                     child: SvgPicture.asset(
-                                      'assets/icons/check.svg',
+                                      S.iconCheck,
                                       color: ColorApp.lightTheme.colorWhite,
                                     ),
                                   ),
@@ -175,9 +168,9 @@ class _TodosScreenState extends State<TodosScreen> {
                                       Alignment.centerLeft,
                                       .05),
                                   child: Padding(
-                                    padding: EdgeInsets.all(15),
+                                    padding: const EdgeInsets.all(15),
                                     child: SvgPicture.asset(
-                                      'assets/icons/delete.svg',
+                                      S.iconDelete,
                                       color: ColorApp.lightTheme.colorWhite,
                                     ),
                                   ),
@@ -196,17 +189,24 @@ class _TodosScreenState extends State<TodosScreen> {
                                             }),
                                     leading: Theme(
                                       data: Theme.of(context).copyWith(
-                                        unselectedWidgetColor:
-                                            item.importance == "important"
-                                                ? ( _availableImportanceColors[
-                                            _remoteConfig.getString('importanceColor').isNotEmpty
-                                                ? _remoteConfig.getString('importanceColor')
-                                                : _defaultImportanceColor])
-                                                : Colors.grey,
+                                        unselectedWidgetColor: item
+                                                    .importance ==
+                                                S.important
+                                            ? (_availableImportanceColors[
+                                                _remoteConfig
+                                                        .getString(
+                                                            'importanceColor')
+                                                        .isNotEmpty
+                                                    ? _remoteConfig.getString(
+                                                        'importanceColor')
+                                                    : _defaultImportanceColor])
+                                            : ColorApp.lightTheme.colorGrey,
                                       ),
                                       child: Checkbox(
-                                        checkColor: Colors.white,
-                                        activeColor: Colors.green,
+                                        checkColor:
+                                            ColorApp.lightTheme.colorWhite,
+                                        activeColor:
+                                            ColorApp.lightTheme.colorGreen,
                                         value: isChanged,
                                         onChanged: (_) async {
                                           BlocProvider.of<TodosCubit>(context)
@@ -222,7 +222,7 @@ class _TodosScreenState extends State<TodosScreen> {
                                             context, item);
                                       },
                                       icon: SvgPicture.asset(
-                                        'assets/icons/info_outline.svg',
+                                        S.iconInfoOutline,
                                       ),
                                     ),
                                     title: item.done == true
@@ -255,7 +255,7 @@ class _TodosScreenState extends State<TodosScreen> {
                           },
                         ),
                         ListTile(
-                          leading: SizedBox.shrink(),
+                          leading: const SizedBox.shrink(),
                           title: TextField(
                             controller: _shortTodoController,
                             onSubmitted: (text) {
@@ -263,9 +263,9 @@ class _TodosScreenState extends State<TodosScreen> {
                                   ? BlocProvider.of<TodosCubit>(context)
                                       .addShortTodo(text)
                                   : ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content:
-                                            Text('Error: - message is empty'),
+                                      SnackBar(
+                                        content: Text(
+                                            AllLocale.of(context).emptyInput),
                                       ),
                                     );
                               _shortTodoController.clear();
@@ -274,7 +274,7 @@ class _TodosScreenState extends State<TodosScreen> {
                                 border: InputBorder.none,
                                 hintText: AllLocale.of(context).newShortTodo,
                                 hintStyle:
-                                Theme.of(context).textTheme.bodyText2),
+                                    Theme.of(context).textTheme.bodyText2),
                           ),
                         ),
                       ],
@@ -288,7 +288,7 @@ class _TodosScreenState extends State<TodosScreen> {
             onPressed: () => Navigator.pushNamed(context, Routes.ADD_TODO_ROUTE,
                 arguments: revision),
             child: SvgPicture.asset(
-              'assets/icons/add.svg',
+              S.iconAdd,
             ),
           ),
         );
@@ -330,27 +330,27 @@ class _TodosScreenState extends State<TodosScreen> {
   }
 
   String _fromTsoFormatDate(int ts) {
-    return DateFormat('dd MMMM yyy', 'ru')
+    return DateFormat(S.dateFormat, 'ru')
         .format(DateTime.fromMillisecondsSinceEpoch(ts));
   }
 
   Widget _priority(String? importance) {
-    return importance == "basic"
+    return importance == S.basic
         ? Padding(
             padding: const EdgeInsets.all(6.0),
             child: SvgPicture.asset(
-              'assets/icons/arrow.svg',
+              S.iconArrow,
             ),
           )
-        : (importance == "important"
+        : (importance == S.important
             ? Padding(
                 padding: const EdgeInsets.all(6.0),
                 child: SvgPicture.asset(
-                  'assets/icons/priority.svg',
-                  color:  _availableImportanceColors[
-                  _remoteConfig.getString('importanceColor').isNotEmpty
-                      ? _remoteConfig.getString('importanceColor')
-                      : _defaultImportanceColor],
+                  S.iconPriority,
+                  color: _availableImportanceColors[
+                      _remoteConfig.getString('importanceColor').isNotEmpty
+                          ? _remoteConfig.getString('importanceColor')
+                          : _defaultImportanceColor],
                 ),
               )
             : const Text(""));

@@ -23,18 +23,12 @@ class Repository {
     return todosRaw;
   }
 
-  // Future<TodoModel> fetchOneTodo(String id) async {
-  //   final oneTodo = await networkService.fetchOneTodo(id);
-  //   return oneTodo;
-  // }
-
   Future<bool?> changeTodo(
       Todo task,
       String id,
       int revision) async {
     final bodyRequest = {"status": "ok", "element": task.toJson()};
     final updatedTodo = await networkService.changeTodo(bodyRequest, id, revision);
-    if (updatedTodo == null) return null;
     return updatedTodo;
   }
 
@@ -43,7 +37,6 @@ class Repository {
       int revision) async {
     final bodeRequest = {"status": "ok", "element": task.toJson()};
     final newTodo = await networkService.addTodo(bodeRequest, revision);
-    if (newTodo == null) return null;
     return newTodo;
   }
 
@@ -51,7 +44,6 @@ class Repository {
       String id,
       int revision) async {
     final deletedTodo = await networkService.deleteTodo(id, revision);
-    if (deletedTodo == null) return null;
     return deletedTodo;
   }
 
