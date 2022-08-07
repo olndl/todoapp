@@ -1,12 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:todoapp/data/models/todo_list_model/todo_list_model.dart';
 import 'package:todoapp/data/models/todo_model/todo_model.dart';
+import '../core/constants/strings.dart';
 import '../core/errors/logger.dart';
 
 
 class NetworkService {
-  final token = "Anehull";
-  final _baseUrl = "https://beta.mrdekk.ru/todobackend";
+  final _token = S.token;
+  final _baseUrl = S.baseUrl;
 
   final _dio = Dio();
 
@@ -16,7 +17,7 @@ class NetworkService {
       Response response = await _dio.patch('$_baseUrl/list/',
           data: bodyRequest,
           options: Options(headers: {
-            'Authorization': 'Bearer $token',
+            'Authorization': 'Bearer $_token',
             'Content-Type': 'application/json',
             'X-Last-Known-Revision': '$revision'
           }));
@@ -24,7 +25,7 @@ class NetworkService {
         return TodoListModel.fromJson(response.data);
       } else {
         logger.info(
-          'fetchTodosOnServerResponce: '
+          'fetchTodosOnServerResponce:'
           '${response.statusCode} : ${response.data.toString()}',
         );
       }
@@ -41,12 +42,12 @@ class NetworkService {
   Future<TodoListModel> fetchTodos() async {
     try {
       Response response = await _dio.get('$_baseUrl/list/',
-          options: Options(headers: {'Authorization': 'Bearer $token'}));
+          options: Options(headers: {'Authorization': 'Bearer $_token'}));
       if (response.statusCode == 200) {
         return TodoListModel.fromJson(response.data);
       } else {
         logger.info(
-          'fetchTodosResponce: '
+          'fetchTodosResponce:'
           '${response.statusCode} : ${response.data.toString()}',
         );
       }
@@ -63,12 +64,12 @@ class NetworkService {
   Future<TodoModel> fetchOneTodo(String id) async {
     try {
       Response response = await _dio.get('$_baseUrl/list/$id',
-          options: Options(headers: {'Authorization': 'Bearer $token'}));
+          options: Options(headers: {'Authorization': 'Bearer $_token'}));
       if (response.statusCode == 200) {
         return TodoModel.fromJson(response.data);
       } else {
         logger.info(
-          'fetchOneTodoResponce: '
+          'fetchOneTodoResponce:'
           '${response.statusCode} : ${response.data.toString()}',
         );
       }
@@ -87,7 +88,7 @@ class NetworkService {
       Response response = await _dio.put('$_baseUrl/list/$id',
           data: bodyRequest,
           options: Options(headers: {
-            'Authorization': 'Bearer $token',
+            'Authorization': 'Bearer $_token',
             'Content-Type': 'application/json',
             'X-Last-Known-Revision': '$revision'
           }));
@@ -95,7 +96,7 @@ class NetworkService {
         return true;
       } else {
         logger.info(
-          'fetchOneTodoResponse: '
+          'fetchOneTodoResponse:'
           '${response.statusCode} : ${response.data.toString()}',
         );
         return false;
@@ -112,7 +113,7 @@ class NetworkService {
       Response response = await _dio.post('$_baseUrl/list/',
           data: bodyRequest,
           options: Options(headers: {
-            'Authorization': 'Bearer $token',
+            'Authorization': 'Bearer $_token',
             'Content-Type': 'application/json',
             'X-Last-Known-Revision': '$revision'
           }));
@@ -120,7 +121,7 @@ class NetworkService {
         return true;
       } else {
         logger.info(
-          'fetchOneTodoResponce: '
+          'fetchOneTodoResponce:'
           '${response.statusCode} : ${response.data.toString()}',
         );
         return false;
@@ -137,7 +138,7 @@ class NetworkService {
     try {
       Response response = await _dio.delete('$_baseUrl/list/$id',
           options: Options(headers: {
-            'Authorization': 'Bearer $token',
+            'Authorization': 'Bearer $_token',
             'Content-Type': 'application/json',
             'X-Last-Known-Revision': '$revision'
           }));
@@ -148,7 +149,7 @@ class NetworkService {
         return true;
       } else {
         logger.info(
-          'fetchOneTodoResponce: '
+          'fetchOneTodoResponce:'
           '${response.statusCode} : ${response.data.toString()}',
         );
         return false;

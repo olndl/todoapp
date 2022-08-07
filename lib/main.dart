@@ -36,7 +36,6 @@ Future<void> main() async {
 }
 
 class TodoApp extends StatelessWidget {
-  final _locale = AllLocale.ru;
 
   final AppRouter router;
 
@@ -53,7 +52,6 @@ class TodoApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: AllLocale.supportedLocales,
-      locale: _locale,
       theme: CustomTheme.lightTheme,
       onGenerateRoute: router.generateRoute,
     );
