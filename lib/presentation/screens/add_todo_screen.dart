@@ -20,7 +20,7 @@ class AddTodoScreen extends StatefulWidget {
 }
 
 class _AddTodoScreenState extends State<AddTodoScreen> {
-  Uuid uuid = const Uuid();
+  final Uuid uuid = const Uuid();
 
   final _controller = TextEditingController();
   bool _isSwitched = false;
@@ -49,7 +49,9 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
         _isSwitched = false;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AllLocale.of(context).incorrectDate),
+            content: Text(AllLocale
+                .of(context)
+                .incorrectDate),
           ),
         );
       });
@@ -74,191 +76,199 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
         }
       },
       child: Scaffold(
-        backgroundColor: const Color(0xfffcfaf1),
-        body: _addBody(),
-      ),
-    );
-  }
-
-  Widget _addBody() {
-    return CustomScrollView(
-      slivers: [
-        _appBar(),
-        SliverToBoxAdapter(
-          child: Column(
-            children: [
-              Card(
-                color: Colors.white,
-                margin: EdgeInsets.all(Dim.width(context) / 25),
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                child: TextField(
-                  minLines: 4,
-                  maxLines: 100,
-                  autofocus: true,
-                  controller: _controller,
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                      contentPadding: EdgeInsets.all(Dim.width(context) / 20),
-                      border: InputBorder.none,
-                      hintText: AllLocale.of(context).hintMessage),
-                  textAlign: TextAlign.left,
+        body: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              pinned: true,
+              snap: true,
+              floating: true,
+              leading: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: SvgPicture.asset(
+                  'assets/icons/close.svg',
                 ),
               ),
-              Container(
-                margin: EdgeInsets.all(Dim.width(context) / 25),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      AllLocale.of(context).priority,
-                      textAlign: TextAlign.left,
-                    ),
-                    Container(
-                      width: 106,
-                      child: DropdownButtonHideUnderline(
-                        child: ButtonTheme(
-                          child: DropdownButton(
-                            icon: SizedBox.shrink(),
-                            hint: Text(dropdownValue),
-                            items: items.map((String items) {
-                              return DropdownMenuItem(
-                                alignment: Alignment.centerLeft,
-                                value: items,
-                                child: Text(items),
-                              );
-                            }).toList(),
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                dropdownValue = newValue!;
-                              });
-                            },
-                            //style: Theme.of(context).textTheme.bodyText1,
-                          ),
+              actions: [
+                InkWell(
+                  onTap: () {
+                    final message = _controller.text;
+                    Todo newTask = Todo(
+                        id: uuid.v4(),
+                        createdAt: DateTime
+                            .now()
+                            .millisecondsSinceEpoch,
+                        text: message,
+                        lastUpdatedBy: "olndlDevice",
+                        changedAt: DateTime
+                            .now()
+                            .millisecondsSinceEpoch,
+                        deadline: _datetime,
+                        done: false,
+                        importance: dropdownValue);
+                    BlocProvider.of<AddTodoCubit>(context)
+                        .addTodo(newTask, widget.revision);
+                  },
+                  child: BlocBuilder<AddTodoCubit, AddTodoState>(
+                    builder: (context, state) {
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 15, top: 15),
+                        child: Text(
+                          AllLocale
+                              .of(context)
+                              .save,
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .button,
                         ),
-                      ),
-                    ),
-                    Container(height: 1, color: Colors.grey[350],)
-                  ],
-                ),
-              ),
-              Container(
-                  margin: EdgeInsets.all(Dim.width(context) / 25),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            AllLocale.of(context).completeDate,
-                            textAlign: TextAlign.left,
-                          ),
-                          _datetime != null ? Text(
-                           DateFormat.yMMMMd('ru').format(
-                                    DateTime.fromMillisecondsSinceEpoch(
-                                        _datetime!)),
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                                color: ColorApp.lightTheme.colorBlue,
-                                fontSize: 14),
-                          ) : const SizedBox.shrink()
-                        ],
-                      ),
-                      Switch(
-                        value: _isSwitched,
-                        onChanged: (value) {
-                          setState(() {
-                            _isSwitched = value;
-                          });
-                          if (_isSwitched) {
-                            _toSetDeadline();
-                          } else {
-                            _datetime = null;
-                          }
-                        },
-                      ),
-                    ],
-                  )),
-              const Divider(
-                thickness: .8,
-              ),
-              Container(
-                margin: EdgeInsets.all(Dim.width(context) / 25),
-                child: GestureDetector(
-                  onTap: () {},
-                  child: Row(
-                    children: [
-                      SvgPicture.asset(
-                        'assets/icons/delete.svg',
-                        color: ColorApp.lightTheme.colorGrey,
-                      ),
-                      SizedBox(
-                        width: Dim.width(context) / 23,
-                      ),
-                      Text(
-                        AllLocale.of(context).delete,
-                        style: TextStyle(color: ColorApp.lightTheme.colorGrey),
-                      )
-                    ],
+                      );
+                    },
                   ),
                 ),
+              ],
+            ),
+            SliverToBoxAdapter(
+              child: Column(
+                children: [
+                  Card(
+                    margin: EdgeInsets.all(Dim.width(context) / 25),
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    child: TextField(
+                      minLines: 4,
+                      maxLines: 100,
+                      autofocus: true,
+                      controller: _controller,
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(Dim.width(context) /
+                              20),
+                          border: InputBorder.none,
+                          hintText: AllLocale
+                              .of(context)
+                              .hintMessage),
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .bodyText1,
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(Dim.width(context) / 25),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          AllLocale
+                              .of(context)
+                              .priority,
+                          textAlign: TextAlign.left,
+                        ),
+                        Container(
+                          width: 106,
+                          child: DropdownButtonHideUnderline(
+                            child: ButtonTheme(
+                              child: DropdownButton(
+                                icon: const SizedBox.shrink(),
+                                hint: Text(dropdownValue),
+                                items: items.map((String items) {
+                                  return DropdownMenuItem(
+                                    alignment: Alignment.centerLeft,
+                                    value: items,
+                                    child: Text(items),
+                                  );
+                                }).toList(),
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    dropdownValue = newValue!;
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          height: 1, color: ColorApp.lightTheme.colorGrey,)
+                      ],
+                    ),
+                  ),
+                  Container(
+                      margin: EdgeInsets.all(Dim.width(context) / 25),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                AllLocale
+                                    .of(context)
+                                    .completeDate,
+                                textAlign: TextAlign.left,
+                              ),
+                              _datetime != null ? Text(
+                                  DateFormat.yMMMMd('ru').format(
+                                      DateTime.fromMillisecondsSinceEpoch(
+                                          _datetime!)),
+                                  textAlign: TextAlign.left,
+                                  style: Theme
+                                      .of(context)
+                                      .textTheme
+                                      .button
+                              ) : const SizedBox.shrink()
+                            ],
+                          ),
+                          Switch(
+                            value: _isSwitched,
+                            onChanged: (value) {
+                              setState(() {
+                                _isSwitched = value;
+                              });
+                              if (_isSwitched) {
+                                _toSetDeadline();
+                              } else {
+                                _datetime = null;
+                              }
+                            },
+                          ),
+                        ],
+                      )),
+                  const Divider(
+                    thickness: .8,
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(Dim.width(context) / 25),
+                    child: GestureDetector(
+                      onTap: () {},
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(
+                            'assets/icons/delete.svg',
+                            color: ColorApp.lightTheme.colorGrey,
+                          ),
+                          SizedBox(
+                            width: Dim.width(context) / 23,
+                          ),
+                          Text(
+                            AllLocale
+                                .of(context)
+                                .delete,
+                            style: TextStyle(
+                                color: ColorApp.lightTheme.colorGrey),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _appBar() {
-    return SliverAppBar(
-      backgroundColor: Color(0xfffcfaf1),
-      pinned: true,
-      snap: true,
-      floating: true,
-      leading: IconButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        icon: SvgPicture.asset(
-          'assets/icons/close.svg',
-          color: ColorApp.lightTheme.labelPrimary,
+            ),
+          ],
         ),
       ),
-      actions: [
-        InkWell(
-          onTap: () {
-            final message = _controller.text;
-            Todo newTask = Todo(
-                id: uuid.v4(),
-                createdAt: DateTime.now().millisecondsSinceEpoch,
-                text: message,
-                lastUpdatedBy: "olndlDevice",
-                changedAt: DateTime.now().millisecondsSinceEpoch,
-                deadline: _datetime,
-                done: false,
-                importance: dropdownValue);
-            BlocProvider.of<AddTodoCubit>(context)
-                .addTodo(newTask, widget.revision);
-          },
-          child: _addBtn(context),
-        ),
-      ],
-    );
-  }
-
-  Widget _addBtn(context) {
-    return BlocBuilder<AddTodoCubit, AddTodoState>(
-      builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Text(
-            AllLocale.of(context).save,
-            style: const TextStyle(color: Colors.blue),
-          ),
-        );
-      },
     );
   }
 }

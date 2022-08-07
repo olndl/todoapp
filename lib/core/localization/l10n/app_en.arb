@@ -18,6 +18,9 @@
     "changedAt": "Changed at",
     "deadline": "Deadline",
     "newShortTodo": "New",
-    "withoutDeadline": "Without deadline"
+    "withoutDeadline": "Without deadline",
+    "low": "Low",
+    "basic": "Basic",
+    "important": "Important"
 
 }

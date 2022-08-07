@@ -20,57 +20,79 @@ class TodoViewScreen extends StatelessWidget {
       title: Text(AllLocale.of(context).todoView),
       children: <Widget>[
         Center(
-          child: Column(
-              children:<Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Table(
-                     defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                     border:TableBorder.all(width: 1.0,color: Colors.grey),
-                    children: [
-                      TableRow(
-                          children: [
-                            Text(AllLocale.of(context).task, textScaleFactor: 1.2,textAlign: TextAlign.center,),
-                            Text(todo.text,textScaleFactor: 1.2,textAlign: TextAlign.center,),
-                          ]
-                      ),
-                      TableRow(
-                          children: [
-                            Text(AllLocale.of(context).createdAt,textScaleFactor: 1.2,textAlign: TextAlign.center,),
-                            Text(_fromTsoFormatDate(todo.createdAt),textScaleFactor: 1.2,textAlign: TextAlign.center,),
-                          ]
-                      ),
-                      TableRow(
-                          children: [
-                            Text("${AllLocale.of(context).changedAt}",textScaleFactor:  1.2,textAlign: TextAlign.center,),
-                            Text("${_fromTsoFormatDate(todo.changedAt)}",textScaleFactor:  1.2,textAlign: TextAlign.center,),
-                          ]
-                      ),
-                      TableRow(
-                          children: [
-                            Text("${AllLocale.of(context).deadline}",textScaleFactor:  1.2,textAlign: TextAlign.center,),
-                            Text("${todo.deadline == null
-                                ? AllLocale.of(context).withoutDeadline
-                                : _fromTsoFormatDate(todo.deadline!)}",textScaleFactor:  1.2,textAlign: TextAlign.center,),
-                          ]
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: Text(AllLocale.of(context).ok),
-                      )
-                    ],
-                  ),
-                ),
-              ]
-          ),
+          child: Column(children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Table(
+                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                border: TableBorder.all(width: 1.0, color: Colors.grey),
+                children: [
+                  TableRow(children: [
+                    Text(
+                      AllLocale.of(context).task,
+                      textScaleFactor: 1.2,
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      todo.text,
+                      textScaleFactor: 1.2,
+                      textAlign: TextAlign.center,
+                    ),
+                  ]),
+                  TableRow(children: [
+                    Text(
+                      AllLocale.of(context).createdAt,
+                      textScaleFactor: 1.2,
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      _fromTsoFormatDate(todo.createdAt),
+                      textScaleFactor: 1.2,
+                      textAlign: TextAlign.center,
+                    ),
+                  ]),
+                  TableRow(children: [
+                    Text(
+                      AllLocale.of(context).changedAt,
+                      textScaleFactor: 1.2,
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      _fromTsoFormatDate(todo.changedAt),
+                      textScaleFactor: 1.2,
+                      textAlign: TextAlign.center,
+                    ),
+                  ]),
+                  TableRow(children: [
+                    Text(
+                      AllLocale.of(context).deadline,
+                      textScaleFactor: 1.2,
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      todo.deadline == null
+                          ? AllLocale.of(context).withoutDeadline
+                          : _fromTsoFormatDate(todo.deadline!),
+                      textScaleFactor: 1.2,
+                      textAlign: TextAlign.center,
+                    ),
+                  ]),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text(AllLocale.of(context).ok),
+                  )
+                ],
+              ),
+            ),
+          ]),
         )
       ],
     );

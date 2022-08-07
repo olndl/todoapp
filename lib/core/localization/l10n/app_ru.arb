@@ -19,5 +19,8 @@
     "changedAt": "Изменено",
     "deadline": "Срок",
     "newShortTodo": "Новое",
-     "withoutDeadline": "Нет"
+    "withoutDeadline": "Нет",
+    "low": "Нет",
+    "basic": "Низкий",
+    "important": "Высокий"
 }

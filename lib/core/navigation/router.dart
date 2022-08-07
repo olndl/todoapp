@@ -30,7 +30,7 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => BlocProvider.value(
             value: todosCubit,
-            child: TodosScreen(),
+            child: const TodosScreen(),
           ),
         );
       case Routes.EDIT_TODO_ROUTE:

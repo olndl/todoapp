@@ -8,6 +8,7 @@ import 'core/errors/logger.dart';
 import 'core/navigation/router.dart';
 import 'core/localization/l10n/all_locales.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'core/theme/app_theme.dart';
 import 'firebase_options.dart';
 
 import 'data/models/todo/todo.dart';
@@ -53,6 +54,7 @@ class TodoApp extends StatelessWidget {
       ],
       supportedLocales: AllLocale.supportedLocales,
       locale: _locale,
+      theme: CustomTheme.lightTheme,
       onGenerateRoute: router.generateRoute,
     );
   }

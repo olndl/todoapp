@@ -12,8 +12,6 @@ import '../../core/navigation/routes.dart';
 import '../../data/models/todo/todo.dart';
 import '../bloc/list_todo/todos_cubit.dart';
 
-
-
 class TodosScreen extends StatefulWidget {
   const TodosScreen({Key? key}) : super(key: key);
 
@@ -38,7 +36,7 @@ class _TodosScreenState extends State<TodosScreen> {
 
     return BlocBuilder<TodosCubit, TodosState>(
       builder: (context, state) {
-        if (!(state is TodosLoaded)) {
+        if (state is! TodosLoaded) {
           return const Center(child: CircularProgressIndicator());
         }
         List<Todo> todos = List.from(state.todos);
@@ -46,123 +44,223 @@ class _TodosScreenState extends State<TodosScreen> {
         final revision = state.revision;
         final completeTodo =
             todos.where((element) => element.done == true).length;
-        final uncompletedTodoList = todos.where((element) => element.done == false).toList();
+        final uncompletedTodoList =
+            todos.where((element) => element.done == false).toList();
         final scrollController = ScrollController();
         return Scaffold(
-          backgroundColor: Color(0xfffcfaf1),
           body: RefreshIndicator(
             onRefresh: () async {
-              BlocProvider.of<TodosCubit>(context).updateTodoListOnServer(todos, revision);
-              logger.info('current revision: $revision',);
+              BlocProvider.of<TodosCubit>(context)
+                  .updateTodoListOnServer(todos, revision);
+              logger.info(
+                'current revision: $revision',
+              );
             },
-            color: ColorApp.lightTheme.colorWhite,
-            backgroundColor: Colors.blue,
             strokeWidth: 4.0,
             child: CustomScrollView(
-                slivers: [
-              _head(),
-              _subhead(context, completeTodo),
-              _body(scrollController, context, flag ? todos : uncompletedTodoList, revision)
-            ]),
+              slivers: [
+                SliverPersistentHeader(
+                  pinned: true,
+                  floating: true,
+                  delegate: _SliverAppBarDelegate(
+                    minHeight: 84,
+                    maxHeight: 150,
+                    child: IconButton(
+                      onPressed: () => {
+                        logger.info("Button <eye> pressed"),
+                        setState(() {
+                          flag = !flag;
+                        })
+                      },
+                      icon: flag == true
+                          ? SvgPicture.asset(
+                              'assets/icons/visibility_off.svg',
+                            )
+                          : SvgPicture.asset(
+                              'assets/icons/visibility.svg',
+                            ),
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: Dim.width(context) / 4.95),
+                    child: Row(
+                      children: [
+                        Text(
+                          '${AllLocale.of(context).subtitle} $completeTodo',
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    margin: EdgeInsets.only(
+                      top: Dim.height(context) / 40,
+                      left: Dim.width(context) / 56,
+                      right: Dim.width(context) / 56,
+                      bottom: Dim.height(context) / 40,
+                    ),
+                    child: Column(
+                      children: [
+                        ListView.builder(
+                          padding: EdgeInsets.only(
+                              top: Dim.height(context) / 100,
+                              bottom: Dim.height(context) / 100),
+                          controller: scrollController,
+                          shrinkWrap: true,
+                          itemCount:
+                              flag ? todos.length : uncompletedTodoList.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final item = flag
+                                ? todos[index]
+                                : uncompletedTodoList[index];
+                            bool isChanged = item.done;
+                            return ClipRRect(
+                              clipBehavior: Clip.hardEdge,
+                              child: Dismissible(
+                                key: Key(item.id),
+                                background: Container(
+                                  color: ColorApp.lightTheme.colorGreen,
+                                  alignment: Alignment.lerp(
+                                      Alignment.centerLeft,
+                                      Alignment.centerRight,
+                                      .05),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(15),
+                                    child: SvgPicture.asset(
+                                      'assets/icons/check.svg',
+                                      color: ColorApp.lightTheme.colorWhite,
+                                    ),
+                                  ),
+                                ),
+                                secondaryBackground: Container(
+                                  color: ColorApp.lightTheme.colorRed,
+                                  alignment: Alignment.lerp(
+                                      Alignment.centerRight,
+                                      Alignment.centerLeft,
+                                      .05),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(15),
+                                    child: SvgPicture.asset(
+                                      'assets/icons/delete.svg',
+                                      color: ColorApp.lightTheme.colorWhite,
+                                    ),
+                                  ),
+                                ),
+                                confirmDismiss: (direction) =>
+                                    _confirmDismissal(
+                                        direction, context, item, revision),
+                                onDismissed: (direction) => _toDismissed(
+                                    direction, context, item, revision),
+                                child: ListTile(
+                                    onTap: () => Navigator.pushNamed(
+                                            context, Routes.EDIT_TODO_ROUTE,
+                                            arguments: {
+                                              "todo": item,
+                                              "revision": revision
+                                            }),
+                                    leading: Theme(
+                                      data: Theme.of(context).copyWith(
+                                        unselectedWidgetColor:
+                                            item.importance == "important"
+                                                ? Colors.red
+                                                : Colors.grey,
+                                      ),
+                                      child: Checkbox(
+                                        checkColor: Colors.white,
+                                        activeColor: Colors.green,
+                                        value: isChanged,
+                                        onChanged: (_) async {
+                                          BlocProvider.of<TodosCubit>(context)
+                                              .changeCompletion(item, revision);
+                                          //return false;
+                                        },
+                                      ),
+                                    ),
+                                    horizontalTitleGap: 8,
+                                    trailing: IconButton(
+                                      onPressed: () {
+                                        _simpleDialogithTodoDetails(
+                                            context, item);
+                                      },
+                                      icon: SvgPicture.asset(
+                                        'assets/icons/info_outline.svg',
+                                      ),
+                                    ),
+                                    title: item.done == true
+                                        ? Text(
+                                            item.text,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyText1,
+                                          )
+                                        : Row(
+                                            children: [
+                                              _priority(item.importance),
+                                              Text(
+                                                item.text,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText1,
+                                              ),
+                                            ],
+                                          ),
+                                    subtitle: item.deadline != null
+                                        ? Text(
+                                            _fromTsoFormatDate(item.deadline!),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .subtitle1)
+                                        : null),
+                              ),
+                            );
+                          },
+                        ),
+                        ListTile(
+                          leading: SizedBox.shrink(),
+                          title: TextField(
+                            controller: _shortTodoController,
+                            onSubmitted: (text) {
+                              text.isNotEmpty
+                                  ? BlocProvider.of<TodosCubit>(context)
+                                      .addShortTodo(text)
+                                  : ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content:
+                                            Text('Error: - message is empty'),
+                                      ),
+                                    );
+                              _shortTodoController.clear();
+                            },
+                            decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: AllLocale.of(context).newShortTodo,
+                                hintStyle:
+                                    Theme.of(context).textTheme.bodyText2),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
-          floatingActionButton: _btnAdd(revision, context),
-
-          // Crash Example
-          // floatingActionButton: TextButton(
-          //   onPressed: () =>
-          //   { FirebaseCrashlytics.instance.crash(),},
-          //   child: const Text("Throw Test Exception"),
-          // ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () => Navigator.pushNamed(context, Routes.ADD_TODO_ROUTE,
+                arguments: revision),
+            child: SvgPicture.asset(
+              'assets/icons/add.svg',
+            ),
+          ),
         );
       },
-    );
-  }
-
-  Widget _head() {
-    return SliverPersistentHeader(
-      pinned: true,
-      floating: true,
-      delegate: _SliverAppBarDelegate(
-        minHeight: 84,
-        maxHeight: 150,
-        child:  IconButton(
-          onPressed: () => {
-          logger.info(
-          "Button <eye> pressed"
-          ),
-            setState((){ flag = !flag;})},
-          icon: flag == true
-          ?  SvgPicture.asset(
-            'assets/icons/visibility_off.svg',
-            color: Colors.grey,
-          )
-              : SvgPicture.asset(
-        'assets/icons/visibility.svg',
-        color: Colors.grey,
-        ),
-      ),)
-      );
-  }
-
-  Widget _subhead(context, num) {
-    return SliverToBoxAdapter(
-      child: Padding(
-        padding: EdgeInsets.only(left: Dim.width(context) / 4.95),
-        child: Row(
-          children: [
-            Text(
-              '${AllLocale.of(context).subtitle} $num',
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _body(ScrollController scrollController, context, List<Todo> todos,
-      int revision) {
-    return SliverToBoxAdapter(
-        child: _card(scrollController, context, todos, revision));
-  }
-
-  Widget _card(ScrollController scrollController, context, List<Todo> todos,
-      int revision) {
-    return Card(
-      color: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      margin: EdgeInsets.only(
-        top: Dim.height(context) / 40,
-        left: Dim.width(context) / 56,
-        right: Dim.width(context) / 56,
-        bottom: Dim.height(context) / 40,
-      ),
-      child: Column(
-        children: [
-          _bodyCard(scrollController, context, todos, revision),
-          ListTile(
-            leading: SvgPicture.asset(
-              'assets/icons/add.svg',
-              color: Colors.transparent,
-            ),
-            title: TextField(
-              controller: _shortTodoController,
-              onSubmitted: (text) {
-               text.isNotEmpty ? BlocProvider.of<TodosCubit>(context).addShortTodo(text)
-               : ScaffoldMessenger.of(context).showSnackBar(
-                 const SnackBar(
-                   content: Text('Error: - message is empty'),
-                 ),
-               );
-                _shortTodoController.clear();
-              },
-              decoration: InputDecoration(border: InputBorder.none,
-              hintText: AllLocale.of(context).newShortTodo),
-            ),
-          ),
-        ],
-      ),
     );
   }
 
@@ -171,62 +269,6 @@ class _TodosScreenState extends State<TodosScreen> {
               .isAfter(DateTime.fromMillisecondsSinceEpoch(b.createdAt))
           ? -1
           : 1;
-
-  Widget _bodyCard(controller, context, List<Todo> todos, int revision) {
-    return ListView.builder(
-        padding: EdgeInsets.only(
-            top: Dim.height(context) / 100, bottom: Dim.height(context) / 100),
-        controller: controller,
-        shrinkWrap: true,
-        itemCount: todos.length,
-        itemBuilder: (BuildContext context, int index) {
-          final item = todos[index];
-          return ClipRRect(
-              clipBehavior: Clip.hardEdge,
-              child: _todoBody(index, item, context, revision),);
-        },
-    );
-  }
-
-  Widget _todoBody(int index, Todo item, context, int revision) {
-    return Dismissible(
-      key: Key(item.id),
-      background: _fromLeftToRight(),
-      secondaryBackground: _fromRightToLeft(),
-      confirmDismiss: (direction) =>
-          _confirmDismissal(direction, context, item, revision),
-      onDismissed: (direction) =>
-          _toDismissed(direction, context, item, revision),
-      child: _todoTile(item, context, revision),
-    );
-  }
-
-  Widget _fromLeftToRight() {
-    return Container(
-      color: Colors.green,
-      alignment: Alignment.lerp(Alignment.centerLeft, Alignment.centerRight, .05),
-      child: Padding(
-          padding: EdgeInsets.all(15),
-          child: SvgPicture.asset(
-            'assets/icons/check.svg',
-            color: Colors.white,
-          )),
-    );
-  }
-
-  Widget _fromRightToLeft() {
-    return Container(
-      color: Colors.red,
-      alignment: Alignment.lerp(Alignment.centerRight, Alignment.centerLeft, .05),
-      child: Padding(
-        padding: EdgeInsets.all(15),
-        child: SvgPicture.asset(
-          'assets/icons/delete.svg',
-          color: Colors.white,
-        ),
-      ),
-    );
-  }
 
   Future<bool> _confirmDismissal(
       DismissDirection direction, context, Todo item, int revision) async {
@@ -255,60 +297,9 @@ class _TodosScreenState extends State<TodosScreen> {
     }
   }
 
-  Widget _todoTile(Todo todo, context, int revision) {
-    bool isChanged = todo.done;
-    return ListTile(
-        onTap: () => Navigator.pushNamed(context, Routes.EDIT_TODO_ROUTE,
-            arguments: {"todo": todo, "revision": revision}),
-        leading: Theme(
-          data: Theme.of(context).copyWith(
-            unselectedWidgetColor:
-                todo.importance == "important" ? Colors.red : Colors.grey,
-          ),
-          child: Checkbox(
-            checkColor: Colors.white,
-            activeColor: Colors.green,
-            value: isChanged,
-            onChanged: (_) async {
-              BlocProvider.of<TodosCubit>(context)
-                  .changeCompletion(todo, revision);
-              //return false;
-            },
-          ),
-        ),
-        horizontalTitleGap: 3,
-        trailing: IconButton(
-          onPressed: () {_simpleDialogithTodoDetails(context, todo);},
-          icon: SvgPicture.asset(
-            'assets/icons/info_outline.svg',
-            color: Colors.grey,
-          ),
-        ),
-        title: todo.done == true
-            ? Text(
-                todo.text,
-                style: const TextStyle(
-                    decoration: TextDecoration.lineThrough, color: Colors.grey),
-              )
-            : Row(
-                children: [
-                  _priority(todo.importance),
-                  Text(
-                    todo.text,
-                  ),
-                ],
-              ),
-        subtitle: todo.deadline != null
-            ? Text(
-                _fromTsoFormatDate(todo.deadline!),
-                style: const TextStyle(color: Colors.grey))
-            : null);
-  }
-
-
   String _fromTsoFormatDate(int ts) {
-    return DateFormat('dd MMMM yyy', 'ru').format(
-        DateTime.fromMillisecondsSinceEpoch(ts));
+    return DateFormat('dd MMMM yyy', 'ru')
+        .format(DateTime.fromMillisecondsSinceEpoch(ts));
   }
 
   Widget _priority(String? importance) {
@@ -317,7 +308,6 @@ class _TodosScreenState extends State<TodosScreen> {
             padding: const EdgeInsets.all(6.0),
             child: SvgPicture.asset(
               'assets/icons/arrow.svg',
-              color: Colors.grey,
             ),
           )
         : (importance == "important"
@@ -325,21 +315,9 @@ class _TodosScreenState extends State<TodosScreen> {
                 padding: const EdgeInsets.all(6.0),
                 child: SvgPicture.asset(
                   'assets/icons/priority.svg',
-                  color: Colors.red,
                 ),
               )
             : const Text(""));
-  }
-
-  Widget _btnAdd(int revision, context) {
-    return FloatingActionButton(
-      onPressed: () => Navigator.pushNamed(context, Routes.ADD_TODO_ROUTE,
-          arguments: revision),
-      child: SvgPicture.asset(
-        'assets/icons/add.svg',
-        color: Colors.white,
-      ),
-    );
   }
 
   _simpleDialogithTodoDetails(BuildContext context, Todo todo) {
@@ -350,7 +328,7 @@ class _TodosScreenState extends State<TodosScreen> {
       },
     );
   }
-  }
+}
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   final double minHeight;
@@ -368,7 +346,6 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   double get maxExtent => max(maxHeight, minHeight);
-
 
   @override
   Widget build(
@@ -393,7 +370,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
           ),
           alignment: Alignment.lerp(
             const Alignment(0, 1),
-            const Alignment(.5, 1.5),
+            const Alignment(-.4, .85),
             progress,
           ),
           child: Row(
@@ -403,17 +380,15 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
                 child: Text(
                   AllLocale.of(context).title,
                   style: TextStyle.lerp(
-                    Theme.of(context)
-                        .textTheme
-                        .headline4,
-                    Theme.of(context)
-                        .textTheme
-                        .headline6,
+                    Theme.of(context).textTheme.headline5,
+                    Theme.of(context).textTheme.headline6,
                     progress,
                   ),
                 ),
               ),
-              SizedBox(width: 95,),
+              SizedBox(
+                width: 95,
+              ),
               child
             ],
           ),
