@@ -1,3 +1,4 @@
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -28,6 +29,39 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
   int? _datetime;
 
   String dropdownValue = S.low;
+
+
+  final Map<String, dynamic> _availableImportanceColors = {
+    "purple": ColorApp.lightTheme.colorSpecial,
+    "red": ColorApp.lightTheme.colorRed,
+  };
+
+
+  final String _defaultImportanceColor = "red";
+  final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
+
+  Future<void> _initConfig() async {
+    await _remoteConfig.setConfigSettings(RemoteConfigSettings(
+      fetchTimeout: const Duration(
+          seconds: 1),
+      minimumFetchInterval: const Duration(
+          seconds:
+          10),
+    ));
+
+    _fetchConfig();
+  }
+
+
+  void _fetchConfig() async {
+    await _remoteConfig.fetchAndActivate();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initConfig();
+  }
 
   void _toSetDeadline() async {
     DateTime? pickedDate = await showDatePicker(
@@ -168,7 +202,10 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                                     child: Text(
                                       "!! ${AllLocale.of(context).important}",
                                       style: TextStyle(
-                                          color: ColorApp.lightTheme.colorRed),
+                                          color: _availableImportanceColors[
+                                          _remoteConfig.getString('importanceColor').isNotEmpty
+                                              ? _remoteConfig.getString('importanceColor')
+                                              : _defaultImportanceColor]),
                                     ),
                                   )
                                 ],

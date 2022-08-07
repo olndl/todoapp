@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -27,10 +28,37 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
   late bool _isSwitched;
   int? datetime;
 
+  final Map<String, dynamic> _availableImportanceColors = {
+    "purple": ColorApp.lightTheme.colorSpecial,
+    "red": ColorApp.lightTheme.colorRed,
+  };
+
+
+  final String _defaultImportanceColor = "red";
+  final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
+
+  Future<void> _initConfig() async {
+    await _remoteConfig.setConfigSettings(RemoteConfigSettings(
+      fetchTimeout: const Duration(
+          seconds: 1),
+      minimumFetchInterval: const Duration(
+          seconds:
+          10),
+    ));
+
+    _fetchConfig();
+  }
+
+
+  void _fetchConfig() async {
+    await _remoteConfig.fetchAndActivate();
+  }
+
   @override
   void initState() {
     _controller.text = widget.todo.text;
     datetime = widget.todo.deadline;
+    _initConfig();
     _isSwitched = datetime != null ? true : false;
     super.initState();
   }
@@ -160,7 +188,10 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
                                     child: Text(
                                       "!! ${AllLocale.of(context).important}",
                                       style: TextStyle(
-                                          color: ColorApp.lightTheme.colorRed),
+                                          color: _availableImportanceColors[
+                                          _remoteConfig.getString('importanceColor').isNotEmpty
+                                              ? _remoteConfig.getString('importanceColor')
+                                              : _defaultImportanceColor]),
                                     ),
                                   )
                                 ],

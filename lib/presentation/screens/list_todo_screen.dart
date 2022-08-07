@@ -21,6 +21,7 @@ class TodosScreen extends StatefulWidget {
 }
 
 class _TodosScreenState extends State<TodosScreen> {
+  bool flag = true;
   late TextEditingController _shortTodoController;
 
   final Map<String, dynamic> _availableImportanceColors = {
@@ -31,6 +32,7 @@ class _TodosScreenState extends State<TodosScreen> {
 
   final String _defaultImportanceColor = "red";
   final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
+
   Future<void> _initConfig() async {
     await _remoteConfig.setConfigSettings(RemoteConfigSettings(
       fetchTimeout: const Duration(
@@ -56,7 +58,6 @@ class _TodosScreenState extends State<TodosScreen> {
     _initConfig();
   }
 
-  bool flag = true;
 
   @override
   Widget build(BuildContext context) {

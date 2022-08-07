@@ -21,7 +21,7 @@ class CustomTheme {
 
       textTheme: TextTheme(
         // Large title 32/38
-        headline5: TextStyle(
+        headline5: const TextStyle(
           fontSize: 32.0,
           fontWeight: FontWeight.bold,
           height: 38 / 32,
