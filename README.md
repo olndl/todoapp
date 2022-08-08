@@ -18,7 +18,7 @@
 - [ ] Divided into features and layers
 
 ## APK
-- [Download the latest version of the app](https://disk.yandex.ru/d/jabwxSf1lZ4fMw)
+- [Download the latest version of the app](https://disk.yandex.ru/d/-VEH9JkVb3oDgQ)
 
 
 ## Screenshots
@@ -26,7 +26,7 @@
   <table>
     <tr>
       <td style="text-align: center">
-        <img src="https://github.com/olndl/todoapp/blob/develop/assets/screens/todos_ru.png" width="250" />
+        <img src="https://github.com/olndl/todoapp/blob/develop/assets/screens/ru_list.png" width="250" />
       </td>
       <td style="text-align: center">
         <img src="https://github.com/olndl/todoapp/blob/develop/assets/screens/add_todo.png" width="250" />
@@ -43,32 +43,32 @@
         <img src="https://github.com/olndl/todoapp/blob/develop/assets/screens/long_todo.png" width="250" />
       </td>
       <td style="text-align: center">
-        <img src="https://github.com/olndl/todoapp/blob/develop/assets/screens/complete.jpeg" width="250 height="100" />
+        <img src="https://github.com/olndl/todoapp/blob/develop/assets/screens/check.png" width="250 height="100" />
       </td>
       <td style="text-align: center">
-        <img src="https://github.com/olndl/todoapp/blob/develop/assets/screens/delete.jpeg" width="250" />
+        <img src="https://github.com/olndl/todoapp/blob/develop/assets/screens/dismis.png" width="250" />
       </td>
       <td style="text-align: center">
-        <img src="https://github.com/olndl/todoapp/blob/develop/assets/screens/del.png" width="250" />
+        <img src="https://github.com/olndl/todoapp/blob/develop/assets/screens/long_dis.png" width="250" />
       </td>
     </tr>
   </table>
 </div>
 
-## Remote Config (rus/eng device language)
+## Remote Config (eng/rus device language)
 <div style="text-align: center">
   <table>
     <tr>
       <td style="text-align: center">
-        <img src="https://github.com/olndl/todoapp/blob/develop/assets/screens/rc_main.png" width="250" />
+        <img src="https://github.com/olndl/todoapp/blob/develop/assets/screens/eng_list.png" width="250" />
       </td>
       <td style="text-align: center">
-        <img src="https://github.com/olndl/todoapp/blob/develop/assets/screens/rc_add.png" width="250" />
+        <img src="https://github.com/olndl/todoapp/blob/develop/assets/screens/eng_add.png" width="250" />
       </td>
     </tr>
    <tr>
     <td style="text-align: center">
-        <img src="https://github.com/olndl/todoapp/blob/develop/assets/screens/todos_ru.png" width="250" />
+        <img src="https://github.com/olndl/todoapp/blob/develop/assets/screens/ru_list.png" width="250" />
       </td>
       <td style="text-align: center">
         <img src="https://github.com/olndl/todoapp/blob/develop/assets/screens/add_todo.png" width="250" />
