@@ -146,6 +146,7 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
                               EdgeInsets.all(Dim.width(context) / 20),
                           border: InputBorder.none,
                           hintText: AllLocale.of(context).hintMessage),
+                      style: Theme.of(context).textTheme.bodyText1,
                       textAlign: TextAlign.left,
                     ),
                   ),

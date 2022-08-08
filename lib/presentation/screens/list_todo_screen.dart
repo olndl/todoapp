@@ -230,7 +230,7 @@ class _TodosScreenState extends State<TodosScreen> {
                                             item.text,
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .bodyText1,
+                                                .headline1,
                                           )
                                         : Row(
                                             children: [
@@ -270,6 +270,7 @@ class _TodosScreenState extends State<TodosScreen> {
                                     );
                               _shortTodoController.clear();
                             },
+                            style: Theme.of(context).textTheme.bodyText1,
                             decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: AllLocale.of(context).newShortTodo,

@@ -40,6 +40,13 @@ class CustomTheme {
             color: ColorApp.lightTheme.labelPrimary,
             height: 32 / 20,
             letterSpacing: .5),
+        headline1: TextStyle(
+            fontSize: 16.0,
+            fontWeight: FontWeight.normal,
+            height: 20 / 16,
+            color: ColorApp.lightTheme.colorGrey,
+            decoration: TextDecoration.lineThrough,
+            letterSpacing: 0),
         subtitle2: TextStyle(
           fontSize: 18.0,
           color: ColorApp.lightTheme.colorGrey
