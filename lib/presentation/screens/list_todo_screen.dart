@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:todoapp/presentation/screens/components/main_header.dart';
 import 'package:todoapp/presentation/screens/view_todo_screen.dart';
 import '../../core/constants/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -82,41 +83,7 @@ class _TodosScreenState extends State<TodosScreen> {
             strokeWidth: 4.0,
             child: CustomScrollView(
               slivers: [
-                SliverPersistentHeader(
-                  pinned: true,
-                  floating: true,
-                  delegate: _SliverAppBarDelegate(
-                    minHeight: 84,
-                    maxHeight: 150,
-                    child: IconButton(
-                      onPressed: () => {
-                        setState(() {
-                          flag = !flag;
-                        })
-                      },
-                      icon: flag == true
-                          ? SvgPicture.asset(
-                              S.iconVisibilityOff,
-                            )
-                          : SvgPicture.asset(
-                              S.iconVisibility,
-                            ),
-                    ),
-                  ),
-                ),
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.only(left: Dim.width(context) / 4.95),
-                    child: Row(
-                      children: [
-                        Text(
-                          '${AllLocale.of(context).subtitle} $completeTodo',
-                          style: Theme.of(context).textTheme.subtitle2,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                MainHeader(numberOfCompleteTodo: completeTodo,),
                 SliverToBoxAdapter(
                   child: Card(
                     shape: RoundedRectangleBorder(
@@ -367,77 +334,3 @@ class _TodosScreenState extends State<TodosScreen> {
   }
 }
 
-class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  final double minHeight;
-  final double maxHeight;
-  final Widget child;
-
-  _SliverAppBarDelegate({
-    required this.minHeight,
-    required this.maxHeight,
-    required this.child,
-  });
-
-  @override
-  double get minExtent => minHeight;
-
-  @override
-  double get maxExtent => max(maxHeight, minHeight);
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    final progress = shrinkOffset / maxExtent;
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        AnimatedOpacity(
-          duration: const Duration(milliseconds: 150),
-          opacity: 1,
-          child: ColoredBox(
-            color: ColorApp.lightTheme.backPrimary,
-          ),
-        ),
-        AnimatedContainer(
-          duration: const Duration(milliseconds: 100),
-          padding: EdgeInsets.lerp(
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            const EdgeInsets.only(bottom: 16),
-            progress,
-          ),
-          alignment: Alignment.lerp(
-            const Alignment(0, 1),
-            const Alignment(-.4, .85),
-            progress,
-          ),
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 60),
-                child: Text(
-                  AllLocale.of(context).title,
-                  style: TextStyle.lerp(
-                    Theme.of(context).textTheme.headline5,
-                    Theme.of(context).textTheme.headline6,
-                    progress,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                width: 95,
-              ),
-              child
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  @override
-  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
-    return maxHeight != oldDelegate.maxHeight ||
-        minHeight != oldDelegate.minHeight ||
-        child != oldDelegate.child;
-  }
-}

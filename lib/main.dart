@@ -13,7 +13,7 @@ import 'firebase_options.dart';
 
 import 'data/models/todo/todo.dart';
 
-Future<void> main() async {
+void main() {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
     await Firebase.initializeApp(
