@@ -12,11 +12,12 @@ import 'core/localization/l10n/all_locales.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'core/theme/app_theme.dart';
 import 'firebase_options.dart';
+
 void main() {
-  runZonedGuarded(() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform);
+  // runZonedGuarded(() async {
+  //    WidgetsFlutterBinding.ensureInitialized();
+    // await Firebase.initializeApp(
+    //     options: DefaultFirebaseOptions.currentPlatform);
 
     initLogger();
     logger.info('Start main');
@@ -31,9 +32,9 @@ void main() {
         ),
       ),
     );
-  },
-      (error, stack) =>
-          FirebaseCrashlytics.instance.recordError(error, stack, fatal: true));
+  // },
+  //     (error, stack) =>
+  //         FirebaseCrashlytics.instance.recordError(error, stack, fatal: true));
 }
 
 class TodoApp extends StatelessWidget {

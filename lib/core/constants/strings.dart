@@ -13,6 +13,8 @@ class S {
   static const String iconAdd  = 'assets/icons/add.svg';
   static const String iconArrow = 'assets/icons/arrow.svg';
   static const String iconPriority = 'assets/icons/priority.svg';
+  static const String iconCheckedTile = 'assets/icons/checked.svg';
+  static const String iconUncheckedNormTile = 'assets/icons/unchecked-normal.svg';
   static const String iconClose =  'assets/icons/close.svg';
   static const String deviceId = "olndlDevice";
   static const String errorEmptyMessage = "Message is empty";

@@ -9,8 +9,8 @@ class TodoListPage extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          ChipsBarWidget(),
-          HomeWidget()
+          AppBarWidget(),
+          SliverToBoxAdapter(child: HomeWidget(),)
         ],
       ),
       floatingActionButton: const FloatingActionButtonWidget(),
