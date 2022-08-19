@@ -4,15 +4,14 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todoapp/presentation/view/todo_list_page.dart';
 import 'core/errors/logger.dart';
 import 'core/navigation/router.dart';
 import 'core/localization/l10n/all_locales.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'core/theme/app_theme.dart';
 import 'firebase_options.dart';
-
-import 'data/models/todo/todo.dart';
-
 void main() {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
@@ -21,13 +20,15 @@ void main() {
 
     initLogger();
     logger.info('Start main');
-
-    await Hive.initFlutter();
-    Hive.registerAdapter(TodoAdapter());
-    await Hive.openBox<Todo>('todo_box');
+    //
+    // await Hive.initFlutter();
+    // Hive.registerAdapter(TodoAdapter());
+    // await Hive.openBox<Todo>('todo_box');
     runApp(
-      TodoApp(
-        router: AppRouter(),
+      ProviderScope(
+        child: TodoApp(
+          //router: AppRouter(),
+        ),
       ),
     );
   },
@@ -37,9 +38,9 @@ void main() {
 
 class TodoApp extends StatelessWidget {
 
-  final AppRouter router;
+  //final AppRouter router;
 
-  const TodoApp({Key? key, required this.router}) : super(key: key);
+  const TodoApp({Key? key,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +54,8 @@ class TodoApp extends StatelessWidget {
       ],
       supportedLocales: AllLocale.supportedLocales,
       theme: CustomTheme.lightTheme,
-      onGenerateRoute: router.generateRoute,
+      //onGenerateRoute: router.generateRoute,
+      home: TodoListPage(),
     );
   }
 }

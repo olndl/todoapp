@@ -12,6 +12,7 @@ import '../../core/errors/logger.dart';
 import '../../core/localization/l10n/all_locales.dart';
 import '../../core/navigation/routes.dart';
 import '../../data/models/todo/todo.dart';
+import '../../domain/model/todo.dart';
 import '../bloc/list_todo/todos_cubit.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 
