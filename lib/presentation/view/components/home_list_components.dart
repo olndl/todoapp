@@ -9,9 +9,9 @@ import '../../../core/constants/strings.dart';
 import '../../../core/localization/l10n/all_locales.dart';
 import '../../../domain/model/todo.dart';
 import '../../../domain/model/todo_list.dart';
-import '../../viewmodel/todolist/filter_kind_viewmodel.dart';
+import '../../viewmodel/todolist/filter_todo_viewmodel.dart';
 import '../../viewmodel/todolist/todo_list_viewmodel.dart';
-import '../todo_form_page.dart';
+import '../todo_add_edit_page.dart';
 
 class HomeWidget extends ConsumerWidget {
   HomeWidget({Key? key}) : super(key: key);
@@ -81,7 +81,7 @@ class TodoListWidget extends ConsumerWidget {
         ListView.builder(
           padding: EdgeInsets.only(
               top: Dim.height(context) / 100,
-              bottom: Dim.height(context) / 100),
+              bottom: Dim.height(context) / 100,),
           controller: ScrollController(),
           shrinkWrap: true,
           itemCount: todoList.length,
@@ -89,7 +89,7 @@ class TodoListWidget extends ConsumerWidget {
             return TodoItemCardWidget(todo: todoList[index]);
           },
         ),
-        //ShortTodoWidget()
+        ShortTodoWidget()
       ],
     );
   }
@@ -110,134 +110,129 @@ class TodoItemCardWidget extends ConsumerWidget {
     return ClipRRect(
       clipBehavior: Clip.hardEdge,
       child: Dismissible(
-          key: Key(todo.id),
-          background: Container(
-            color: ColorApp.lightTheme.colorGreen,
-            alignment: Alignment.lerp(
-                Alignment.centerLeft, Alignment.centerRight, .05),
-            child: Padding(
-              padding: const EdgeInsets.all(15),
-              child: SvgPicture.asset(
-                S.iconCheck,
-                color: ColorApp.lightTheme.colorWhite,
-              ),
+        key: Key(todo.id),
+        background: Container(
+          color: ColorApp.lightTheme.colorGreen,
+          alignment:
+              Alignment.lerp(Alignment.centerLeft, Alignment.centerRight, .05),
+          child: Padding(
+            padding: const EdgeInsets.all(15),
+            child: SvgPicture.asset(
+              S.iconCheck,
+              color: ColorApp.lightTheme.colorWhite,
             ),
           ),
-          secondaryBackground: Container(
-            color: ColorApp.lightTheme.colorRed,
-            alignment: Alignment.lerp(
-              Alignment.centerRight,
-              Alignment.centerLeft,
-              .05,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(15),
-              child: SvgPicture.asset(
-                S.iconDelete,
-                color: ColorApp.lightTheme.colorWhite,
-              ),
+        ),
+        secondaryBackground: Container(
+          color: ColorApp.lightTheme.colorRed,
+          alignment: Alignment.lerp(
+            Alignment.centerRight,
+            Alignment.centerLeft,
+            .05,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(15),
+            child: SvgPicture.asset(
+              S.iconDelete,
+              color: ColorApp.lightTheme.colorWhite,
             ),
           ),
-          confirmDismiss: (direction) async {
-            if (direction == DismissDirection.startToEnd) {
-              ref.read(_todoListProvider.notifier).completeTodo(todo);
-              return false;
-            } else {
-              bool delete = true;
-              final snackbarController =
-                  ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                      '${AllLocale.of(context).deletedTask} ${todo.title}'),
-                  action: SnackBarAction(
-                      label: AllLocale.of(context).undo,
-                      onPressed: () => delete = false),
+        ),
+        confirmDismiss: (direction) async {
+          if (direction == DismissDirection.startToEnd) {
+            ref.read(_todoListProvider.notifier).completeTodo(todo);
+            return false;
+          } else {
+            bool delete = true;
+            final snackbarController =
+                ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  '${AllLocale.of(context).deletedTask} ${todo.text}',
                 ),
-              );
-              await snackbarController.closed;
-              return delete;
-            }
-          },
-          onDismissed: (direction) {
-            if (direction == DismissDirection.endToStart) {
-              ref.read(_todoListProvider.notifier).deleteTodo(todo.id);
-            }
-          },
-          child: InkWell(
-            child: Container(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: todo.isCompleted
-                            ? CheckedIconWidget(todo: todo)
-                            : UncheckedIconWidget(todo: todo),
-                      ),
-                      Expanded(
-                        flex: 6,
-                        child: todo.isCompleted == true
-                            ? Text(
-                                todo.title,
-                                style: Theme.of(context).textTheme.headline1,
-                              )
-                            : Row(
-                                children: [
-                                  PriorityIconWidget(
-                                      importance: todo.importance),
-                                  Text(
-                                    todo.title,
-                                    style:
-                                        Theme.of(context).textTheme.bodyText1,
-                                  ),
-                                ],
-                              ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: IconButton(
-                          onPressed: () {},
-                          icon: SvgPicture.asset(
-                            S.iconInfoOutline,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const Expanded(
-                        flex: 1,
-                        child: SizedBox.shrink()
-                      ),
-                      Expanded(
-                        flex: 6,
-                        child:  todo.dueDate != null
-                            ? Text(
-                            DateFormat(S.dateFormat, 'ru').format(
-                              DateTime.fromMillisecondsSinceEpoch(
-                                  todo.dueDate!),
-                            ),
-                            style: Theme.of(context).textTheme.subtitle1)
-                            : const SizedBox.shrink(),
-                      ),
-                      const Expanded(
-                          flex: 1,
-                          child: SizedBox.shrink()
-                      ),
-                    ],
-                  ),
-                ],
+                action: SnackBarAction(
+                  label: AllLocale.of(context).undo,
+                  onPressed: () => delete = false,
+                ),
               ),
+            );
+            await snackbarController.closed;
+            return delete;
+          }
+        },
+        onDismissed: (direction) {
+          if (direction == DismissDirection.endToStart) {
+            ref.read(_todoListProvider.notifier).deleteTodo(todo.id);
+          }
+        },
+        child: InkWell(
+          child: Container(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: todo.done
+                          ? CheckedIconWidget(todo: todo)
+                          : UncheckedIconWidget(todo: todo),
+                    ),
+                    Expanded(
+                      flex: 6,
+                      child: todo.done == true
+                          ? Text(
+                              todo.text,
+                              style: Theme.of(context).textTheme.headline1,
+                            )
+                          : Row(
+                              children: [
+                                PriorityIconWidget(importance: todo.importance),
+                                Text(
+                                  todo.text,
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                ),
+                              ],
+                            ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: IconButton(
+                        onPressed: () {},
+                        icon: SvgPicture.asset(
+                          S.iconInfoOutline,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                Row(
+                  children: [
+                    const Expanded(flex: 1, child: SizedBox.shrink()),
+                    Expanded(
+                      flex: 6,
+                      child: todo.deadline != null
+                          ? Text(
+                              DateFormat(S.dateFormat, 'ru').format(
+                                DateTime.fromMillisecondsSinceEpoch(
+                                    todo.deadline!,),
+                              ),
+                              style: Theme.of(context).textTheme.subtitle1,)
+                          : const SizedBox.shrink(),
+                    ),
+                    const Expanded(flex: 1, child: SizedBox.shrink()),
+                  ],
+                ),
+              ],
             ),
-            onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => TodoFormPage(todo),
-                )),
-          )),
+          ),
+          onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => TodoFormPage(todo),
+              ),),
+        ),
+      ),
     );
   }
 }
@@ -258,10 +253,9 @@ class UncheckedIconWidget extends ConsumerWidget {
       onTap: () => ref.read(_todoListProvider.notifier).completeTodo(todo),
       splashColor: Colors.transparent,
       child: SvgPicture.asset(
-        S.iconUncheckedNormTile,
-        color: todo.importance == S.important
-            ? ColorApp.lightTheme.colorRed
-            : ColorApp.lightTheme.colorGrey,
+        todo.importance == S.important
+            ? S.iconUncheckedHighTile
+            : S.iconUncheckedNormTile,
       ),
     );
   }
@@ -309,47 +303,57 @@ class PriorityIconWidget extends StatelessWidget {
             ? Padding(
                 padding: const EdgeInsets.all(6.0),
                 child: SvgPicture.asset(S.iconPriority,
-                    color: ColorApp.lightTheme.colorRed),
+                    color: ColorApp.lightTheme.colorRed,),
               )
             : const SizedBox.shrink());
   }
 }
 
-class ShortTodoWidgetWidget extends ConsumerWidget {
-  final Todo todo;
-
-  ShortTodoWidgetWidget({
+class ShortTodoWidget extends ConsumerWidget {
+  ShortTodoWidget({
     Key? key,
-    required this.todo,
   }) : super(key: key);
+
+  final TextEditingController _shortTodoController = TextEditingController();
+  final _todoListProvider = todoListViewModelStateNotifierProvider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Container();
-    //   ListTile(
-    //   leading: const SizedBox.shrink(),
-    //   title: TextField(
-    //     controller: _shortTodoController,
-    //     onSubmitted: (text) {
-    //       text.isNotEmpty
-    //           ? BlocProvider.of<TodosCubit>(context)
-    //           .addShortTodo(text)
-    //           : ScaffoldMessenger.of(context).showSnackBar(
-    //         SnackBar(
-    //           content: Text(
-    //               AllLocale.of(context).emptyInput),
-    //         ),
-    //       );
-    //       _shortTodoController.clear();
-    //     },
-    //     style: Theme.of(context).textTheme.bodyText1,
-    //     decoration: InputDecoration(
-    //         border: InputBorder.none,
-    //         hintText: AllLocale.of(context).newShortTodo,
-    //         hintStyle:
-    //         Theme.of(context).textTheme.bodyText2),
-    //   ),
-    // );
+    return Container(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              const Expanded(flex: 1, child: SizedBox.shrink()),
+              Expanded(
+                flex: 6,
+                child: TextField(
+                  controller: _shortTodoController,
+                  onSubmitted: (text) {
+                    text.isNotEmpty
+                        ? ref.read(_todoListProvider.notifier).addTodo(
+                            text, DateTime.now().millisecondsSinceEpoch, S.low,)
+                        : ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(AllLocale.of(context).emptyInput),
+                            ),
+                          );
+                    _shortTodoController.clear();
+                  },
+                  style: Theme.of(context).textTheme.bodyText1,
+                  decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: AllLocale.of(context).newShortTodo,
+                      hintStyle: Theme.of(context).textTheme.bodyText2,),
+                ),
+              ),
+              const Expanded(flex: 1, child: SizedBox.shrink()),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -385,7 +389,7 @@ class AppBarWidget extends StatelessWidget {
           delegate: MySliverAppBar(
               viewModel: viewModel,
               expandedHeight: 150,
-              numberOfCompleteTodo: 5),
+              numberOfCompleteTodo: 5,),
         );
       },
     );
@@ -400,17 +404,17 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
   MySliverAppBar(
       {required this.viewModel,
       required this.numberOfCompleteTodo,
-      required this.expandedHeight});
+      required this.expandedHeight,});
 
   @override
   Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
+      BuildContext context, double shrinkOffset, bool overlapsContent,) {
     final progress = shrinkOffset / maxExtent;
     return Stack(
       clipBehavior: Clip.none,
       fit: StackFit.expand,
       children: [
-        Container(
+        ColoredBox(
           color: ColorApp.lightTheme.backPrimary,
         ),
         AnimatedOpacity(
@@ -456,22 +460,23 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
           child: AnimatedContainer(
             padding: EdgeInsets.lerp(
               EdgeInsets.only(
-                  left: MediaQuery.of(context).size.width / 1.3,
-                  top: MediaQuery.of(context).size.height / 6.4),
-              EdgeInsets.only(left: MediaQuery.of(context).size.width / 1.3),
+                  left: MediaQuery.of(context).size.width / 1.25,
+                  top: MediaQuery.of(context).size.height / 6.4,),
+              EdgeInsets.only(left: MediaQuery.of(context).size.width / 1.25),
               progress,
             ),
-            duration: const Duration(milliseconds: 150),
+            duration: const Duration(milliseconds: 10),
             child: InputChip(
               label: viewModel.isFilteredByAll()
-                  ? const Text('All')
-                  : const Text('Incomplete'),
+                  ? SvgPicture.asset(S.iconVisibility)
+                  : SvgPicture.asset(S.iconVisibilityOff),
               selected: viewModel.isFilteredByAll(),
               onSelected: (val) => val
                   ? viewModel.filterByAll()
                   : viewModel.filterByIncomplete(),
-              selectedColor:
-                  viewModel.isFilteredByAll() ? Colors.lightGreen : Colors.grey,
+              selectedColor: Colors.transparent,
+              backgroundColor: Colors.transparent,
+              showCheckmark: false,
             ),
           ),
         ),

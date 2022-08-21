@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../../../domain/domain_module.dart';
 import '../../../domain/model/todo.dart';
 import '../../../domain/model/todo_list.dart';
@@ -8,7 +7,7 @@ import '../../../domain/usecase/delete_todo_usecase.dart';
 import '../../../domain/usecase/get_todo_list_usecase.dart';
 import '../../../domain/usecase/update_todo_usecase.dart';
 import '../../state/state.dart';
-import 'filter_kind_viewmodel.dart';
+import 'filter_todo_viewmodel.dart';
 
 final filteredTodoListProvider = Provider.autoDispose<State<TodoList>>((ref) {
   final filterKind = ref.watch(filterKindViewModelStateNotifierProvider);
@@ -30,6 +29,7 @@ final filteredTodoListProvider = Provider.autoDispose<State<TodoList>>((ref) {
     error: (exception) => State.error(exception),
   );
 });
+
 
 final todoListViewModelStateNotifierProvider =
 StateNotifierProvider.autoDispose<TodoListViewModel, State<TodoList>>((ref) {
@@ -55,12 +55,12 @@ class TodoListViewModel extends StateNotifier<State<TodoList>> {
   }
 
   completeTodo(final Todo todo) {
-    final newTodo = todo.copyWith(isCompleted: true);
+    final newTodo = todo.copyWith(done: true);
     updateTodo(newTodo);
   }
 
   undoTodo(final Todo todo) {
-    final newTodo = todo.copyWith(isCompleted: false);
+    final newTodo = todo.copyWith(done: false);
     updateTodo(newTodo);
   }
 
@@ -77,47 +77,44 @@ class TodoListViewModel extends StateNotifier<State<TodoList>> {
   addTodo(
       final String title,
       final int? dueDate,
-      // final String color,
-      // final bool isCompleted,
-      // final String importance,
+      final String importance,
       ) async {
-    print('REVISIA add TODO: ${state.data!.revision}');
+    print('REVISION add TODO: ${state.data!.revision}');
     print('${state.data!.revision}');
     print('${title}');
     print('${dueDate}');
-    // print('${isCompleted}');
-    // print('${importance}');
+    print('${importance}');
     try {
       final newTodo = await _createTodoUseCase.execute(
           state.data!.revision,
           title,
           dueDate,
-          // color,
-          // isCompleted,
-          // importance,
+          importance,
       );
       state = State.success(state.data!.addTodo(newTodo),);
+      print('REVISION AFTER addTODO: ${state.data!.revision}');
     } on Exception catch (e) {
       state = State.error(e);
     }
   }
 
   updateTodo(final Todo newTodo) async {
-    print('REVISIA completeTODO: ${state.data!.revision}');
+    print('REVISION completeTODO: ${state.data!.revision}');
     try {
       await _updateTodoUseCase.execute(
           state.data!.revision,
           newTodo.id,
           newTodo.createdAt,
-          newTodo.title,
+          newTodo.text,
           newTodo.lastUpdatedBy,
           newTodo.changedAt,
-          newTodo.dueDate ?? 0,
+          newTodo.deadline ?? 0,
           newTodo.color ?? '',
-          newTodo.isCompleted,
-          newTodo.importance
+          newTodo.done,
+          newTodo.importance,
       );
       state = State.success(state.data!.updateTodo(newTodo));
+      print('REVISION AFTER complete TODO: ${state.data!.revision}');
     } on Exception catch (e) {
       state = State.error(e);
     }

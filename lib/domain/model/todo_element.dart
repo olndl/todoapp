@@ -7,9 +7,9 @@ part 'todo_element.g.dart';
 @freezed
 class TodoElement with _$TodoElement {
   const factory TodoElement({
-    required int revision,
-    required String status,
-    required Todo element,
+    @JsonKey(name: 'revision') required int revision,
+    @JsonKey(name: 'status') required String status,
+    @JsonKey(name: 'element') required Todo element,
   }) = _TodoElement;
 
   const TodoElement._();

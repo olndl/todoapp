@@ -1,11 +1,9 @@
-
 import 'package:uuid/uuid.dart';
-
 import '../../domain/model/todo.dart';
 import '../../domain/model/todo_list.dart';
 import '../../domain/repository/todos_repository.dart';
-import '../datasource/database/todos_database.dart';
-import '../mapper/todo_mapper.dart';
+import '../datasource/remote_database/todos_database.dart';
+
 
 class TodosRepositoryImpl implements TodosRepository {
   final TodosDatabase database;
@@ -23,17 +21,19 @@ class TodosRepositoryImpl implements TodosRepository {
     final int revision,
     final String title,
     final int? dueDate,
-    // final String color,
-    // final bool isCompleted,
-    // final String importance,
+    final String importance,
   ) async {
-    final todo = await database.insertTodo(
-        TodoMapper.transformToNewTodoMap(
-            title, dueDate,
-            // color,
-            // isCompleted,
-            // importance
-        ), revision);
+    final todo = Todo(
+        id: Uuid().v4(),
+        createdAt: DateTime.now().millisecondsSinceEpoch,
+        text: title,
+        lastUpdatedBy: "olndlDevice",
+        changedAt:  DateTime.now().millisecondsSinceEpoch,
+        deadline: dueDate,
+        color: '0XFFFFFF',
+        done: false,
+        importance: importance,);
+    await database.insertTodo(todo, revision);
     return todo;
   }
 
@@ -45,7 +45,7 @@ class TodosRepositoryImpl implements TodosRepository {
     final String title,
     final String lastUpdatedBy,
     final int changedAt,
-    final int dueDate,
+    final int? dueDate,
     final String color,
     final bool isCompleted,
     final String importance,
@@ -53,13 +53,13 @@ class TodosRepositoryImpl implements TodosRepository {
     final todo = Todo(
         id: id,
         createdAt: createdAt,
-        title: title,
+        text: title,
         lastUpdatedBy: lastUpdatedBy,
         changedAt: changedAt,
-        dueDate: dueDate,
+        deadline: dueDate,
         color: color,
-        isCompleted: isCompleted,
-        importance: importance);
+        done: isCompleted,
+        importance: importance,);
     await database.updateTodo(todo, revision);
   }
 

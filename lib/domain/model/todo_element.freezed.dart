@@ -20,8 +20,11 @@ TodoElement _$TodoElementFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$TodoElement {
+  @JsonKey(name: 'revision')
   int get revision => throw _privateConstructorUsedError;
+  @JsonKey(name: 'status')
   String get status => throw _privateConstructorUsedError;
+  @JsonKey(name: 'element')
   Todo get element => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -35,7 +38,10 @@ abstract class $TodoElementCopyWith<$Res> {
   factory $TodoElementCopyWith(
           TodoElement value, $Res Function(TodoElement) then) =
       _$TodoElementCopyWithImpl<$Res>;
-  $Res call({int revision, String status, Todo element});
+  $Res call(
+      {@JsonKey(name: 'revision') int revision,
+      @JsonKey(name: 'status') String status,
+      @JsonKey(name: 'element') Todo element});
 
   $TodoCopyWith<$Res> get element;
 }
@@ -85,7 +91,10 @@ abstract class _$$_TodoElementCopyWith<$Res>
           _$_TodoElement value, $Res Function(_$_TodoElement) then) =
       __$$_TodoElementCopyWithImpl<$Res>;
   @override
-  $Res call({int revision, String status, Todo element});
+  $Res call(
+      {@JsonKey(name: 'revision') int revision,
+      @JsonKey(name: 'status') String status,
+      @JsonKey(name: 'element') Todo element});
 
   @override
   $TodoCopyWith<$Res> get element;
@@ -128,17 +137,22 @@ class __$$_TodoElementCopyWithImpl<$Res> extends _$TodoElementCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_TodoElement extends _TodoElement {
   const _$_TodoElement(
-      {required this.revision, required this.status, required this.element})
+      {@JsonKey(name: 'revision') required this.revision,
+      @JsonKey(name: 'status') required this.status,
+      @JsonKey(name: 'element') required this.element})
       : super._();
 
   factory _$_TodoElement.fromJson(Map<String, dynamic> json) =>
       _$$_TodoElementFromJson(json);
 
   @override
+  @JsonKey(name: 'revision')
   final int revision;
   @override
+  @JsonKey(name: 'status')
   final String status;
   @override
+  @JsonKey(name: 'element')
   final Todo element;
 
   @override
@@ -179,19 +193,22 @@ class _$_TodoElement extends _TodoElement {
 
 abstract class _TodoElement extends TodoElement {
   const factory _TodoElement(
-      {required final int revision,
-      required final String status,
-      required final Todo element}) = _$_TodoElement;
+      {@JsonKey(name: 'revision') required final int revision,
+      @JsonKey(name: 'status') required final String status,
+      @JsonKey(name: 'element') required final Todo element}) = _$_TodoElement;
   const _TodoElement._() : super._();
 
   factory _TodoElement.fromJson(Map<String, dynamic> json) =
       _$_TodoElement.fromJson;
 
   @override
+  @JsonKey(name: 'revision')
   int get revision;
   @override
+  @JsonKey(name: 'status')
   String get status;
   @override
+  @JsonKey(name: 'element')
   Todo get element;
   @override
   @JsonKey(ignore: true)

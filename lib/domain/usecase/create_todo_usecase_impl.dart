@@ -12,17 +12,13 @@ class CreateTodoUseCaseImpl implements CreateTodoUseCase {
       final int revision,
       final String title,
       final int? dueDate,
-      // final String color,
-      // final bool isCompleted,
-      // final String importance,
+      final String importance,
   ) {
     return _repository.createTodo(
         revision,
         title,
         dueDate,
-        // color,
-        // isCompleted,
-        // importance
+        importance,
     );
   }
 }

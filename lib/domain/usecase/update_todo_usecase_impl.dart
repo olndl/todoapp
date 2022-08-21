@@ -14,12 +14,12 @@ class UpdateTodoUseCaseImpl implements UpdateTodoUseCase {
       final String title,
       final String lastUpdatedBy,
       final int changedAt,
-      final int dueDate,
-      final String color,
+      final int? dueDate,
+      final String? color,
       final bool isCompleted,
       final String importance,
   ) {
-    return _repository.updateTodo(revision, id, createdAt, title, lastUpdatedBy, changedAt, dueDate, color,
+    return _repository.updateTodo(revision, id, createdAt, title, lastUpdatedBy, changedAt, dueDate!, color!,
         isCompleted, importance);
   }
 }

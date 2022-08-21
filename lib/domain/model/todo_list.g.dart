@@ -9,7 +9,7 @@ part of 'todo_list.dart';
 _$_TodoList _$$_TodoListFromJson(Map<String, dynamic> json) => _$_TodoList(
       revision: json['revision'] as int,
       status: json['status'] as String,
-      values: (json['list'] as List<dynamic>)
+      list: (json['list'] as List<dynamic>)
           .map((e) => Todo.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
@@ -18,5 +18,5 @@ Map<String, dynamic> _$$_TodoListToJson(_$_TodoList instance) =>
     <String, dynamic>{
       'revision': instance.revision,
       'status': instance.status,
-      'list': instance.values,
+      'list': instance.list,
     };

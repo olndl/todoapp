@@ -20,14 +20,3 @@ class FilterKindViewModel extends StateNotifier<FilterKind> {
 
   bool isFilteredByIncomplete() => state == FilterKind.incomplete;
 }
-
-
-
-// final counterProvider = StateNotifierProvider<Counter, int>((ref) {
-//   return Counter();
-// });
-//
-// class Counter extends StateNotifier<int> {
-//   Counter() : super(0);
-//   void increment() => state++;
-// }

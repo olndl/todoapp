@@ -33,47 +33,47 @@ class CustomTheme {
             fontWeight: FontWeight.bold,
             height: 32 / 20,
             color: ColorApp.lightTheme.labelPrimary,
-            letterSpacing: .5),
+            letterSpacing: .5,),
         headline4: TextStyle(
             fontSize: 20.0,
             fontWeight: FontWeight.bold,
             color: ColorApp.lightTheme.labelPrimary,
             height: 32 / 20,
-            letterSpacing: .5),
+            letterSpacing: .5,),
         headline1: TextStyle(
             fontSize: 16.0,
             fontWeight: FontWeight.normal,
             height: 20 / 16,
             color: ColorApp.lightTheme.colorGrey,
             decoration: TextDecoration.lineThrough,
-            letterSpacing: 0),
+            letterSpacing: 0,),
         subtitle2: TextStyle(
           fontSize: 18.0,
-          color: ColorApp.lightTheme.colorGrey
+          color: ColorApp.lightTheme.colorGrey,
         ),
         button: TextStyle(
             fontSize: 14.0,
             fontWeight: FontWeight.w800,
             height: 24 / 14,
             color: ColorApp.lightTheme.colorBlue,
-            letterSpacing: .16),
+            letterSpacing: .16,),
         bodyText1: const TextStyle(
             fontSize: 16.0,
             fontWeight: FontWeight.normal,
             height: 20 / 16,
-            letterSpacing: 0),
+            letterSpacing: 0,),
         bodyText2: TextStyle(
             fontSize: 16.0,
             fontWeight: FontWeight.normal,
             height: 20 / 16,
             color: ColorApp.lightTheme.colorGrey,
-            letterSpacing: 0),
+            letterSpacing: 0,),
         subtitle1: TextStyle(
             fontSize: 14.0,
             fontWeight: FontWeight.normal,
             color: ColorApp.lightTheme.colorGrey,
             height: 20 / 14,
-            letterSpacing: 0),
+            letterSpacing: 0,),
       ),
       // listTileTheme: (),
 
@@ -86,7 +86,7 @@ class CustomTheme {
 
       floatingActionButtonTheme: FloatingActionButtonThemeData(
           backgroundColor: ColorApp.lightTheme.colorBlue,
-          foregroundColor: ColorApp.lightTheme.colorWhite),
+          foregroundColor: ColorApp.lightTheme.colorWhite,),
     );
   }
 }

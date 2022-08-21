@@ -20,10 +20,12 @@ TodoList _$TodoListFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$TodoList {
+  @JsonKey(name: 'revision')
   int get revision => throw _privateConstructorUsedError;
+  @JsonKey(name: 'status')
   String get status => throw _privateConstructorUsedError;
   @JsonKey(name: 'list')
-  List<Todo> get values => throw _privateConstructorUsedError;
+  List<Todo> get list => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +38,9 @@ abstract class $TodoListCopyWith<$Res> {
   factory $TodoListCopyWith(TodoList value, $Res Function(TodoList) then) =
       _$TodoListCopyWithImpl<$Res>;
   $Res call(
-      {int revision, String status, @JsonKey(name: 'list') List<Todo> values});
+      {@JsonKey(name: 'revision') int revision,
+      @JsonKey(name: 'status') String status,
+      @JsonKey(name: 'list') List<Todo> list});
 }
 
 /// @nodoc
@@ -51,7 +55,7 @@ class _$TodoListCopyWithImpl<$Res> implements $TodoListCopyWith<$Res> {
   $Res call({
     Object? revision = freezed,
     Object? status = freezed,
-    Object? values = freezed,
+    Object? list = freezed,
   }) {
     return _then(_value.copyWith(
       revision: revision == freezed
@@ -62,9 +66,9 @@ class _$TodoListCopyWithImpl<$Res> implements $TodoListCopyWith<$Res> {
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as String,
-      values: values == freezed
-          ? _value.values
-          : values // ignore: cast_nullable_to_non_nullable
+      list: list == freezed
+          ? _value.list
+          : list // ignore: cast_nullable_to_non_nullable
               as List<Todo>,
     ));
   }
@@ -77,7 +81,9 @@ abstract class _$$_TodoListCopyWith<$Res> implements $TodoListCopyWith<$Res> {
       __$$_TodoListCopyWithImpl<$Res>;
   @override
   $Res call(
-      {int revision, String status, @JsonKey(name: 'list') List<Todo> values});
+      {@JsonKey(name: 'revision') int revision,
+      @JsonKey(name: 'status') String status,
+      @JsonKey(name: 'list') List<Todo> list});
 }
 
 /// @nodoc
@@ -94,7 +100,7 @@ class __$$_TodoListCopyWithImpl<$Res> extends _$TodoListCopyWithImpl<$Res>
   $Res call({
     Object? revision = freezed,
     Object? status = freezed,
-    Object? values = freezed,
+    Object? list = freezed,
   }) {
     return _then(_$_TodoList(
       revision: revision == freezed
@@ -105,9 +111,9 @@ class __$$_TodoListCopyWithImpl<$Res> extends _$TodoListCopyWithImpl<$Res>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as String,
-      values: values == freezed
-          ? _value._values
-          : values // ignore: cast_nullable_to_non_nullable
+      list: list == freezed
+          ? _value._list
+          : list // ignore: cast_nullable_to_non_nullable
               as List<Todo>,
     ));
   }
@@ -117,30 +123,32 @@ class __$$_TodoListCopyWithImpl<$Res> extends _$TodoListCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_TodoList extends _TodoList {
   const _$_TodoList(
-      {required this.revision,
-      required this.status,
-      @JsonKey(name: 'list') required final List<Todo> values})
-      : _values = values,
+      {@JsonKey(name: 'revision') required this.revision,
+      @JsonKey(name: 'status') required this.status,
+      @JsonKey(name: 'list') required final List<Todo> list})
+      : _list = list,
         super._();
 
   factory _$_TodoList.fromJson(Map<String, dynamic> json) =>
       _$$_TodoListFromJson(json);
 
   @override
+  @JsonKey(name: 'revision')
   final int revision;
   @override
+  @JsonKey(name: 'status')
   final String status;
-  final List<Todo> _values;
+  final List<Todo> _list;
   @override
   @JsonKey(name: 'list')
-  List<Todo> get values {
+  List<Todo> get list {
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_values);
+    return EqualUnmodifiableListView(_list);
   }
 
   @override
   String toString() {
-    return 'TodoList(revision: $revision, status: $status, values: $values)';
+    return 'TodoList(revision: $revision, status: $status, list: $list)';
   }
 
   @override
@@ -150,7 +158,7 @@ class _$_TodoList extends _TodoList {
             other is _$_TodoList &&
             const DeepCollectionEquality().equals(other.revision, revision) &&
             const DeepCollectionEquality().equals(other.status, status) &&
-            const DeepCollectionEquality().equals(other._values, _values));
+            const DeepCollectionEquality().equals(other._list, _list));
   }
 
   @JsonKey(ignore: true)
@@ -159,7 +167,7 @@ class _$_TodoList extends _TodoList {
       runtimeType,
       const DeepCollectionEquality().hash(revision),
       const DeepCollectionEquality().hash(status),
-      const DeepCollectionEquality().hash(_values));
+      const DeepCollectionEquality().hash(_list));
 
   @JsonKey(ignore: true)
   @override
@@ -176,20 +184,22 @@ class _$_TodoList extends _TodoList {
 
 abstract class _TodoList extends TodoList {
   const factory _TodoList(
-      {required final int revision,
-      required final String status,
-      @JsonKey(name: 'list') required final List<Todo> values}) = _$_TodoList;
+      {@JsonKey(name: 'revision') required final int revision,
+      @JsonKey(name: 'status') required final String status,
+      @JsonKey(name: 'list') required final List<Todo> list}) = _$_TodoList;
   const _TodoList._() : super._();
 
   factory _TodoList.fromJson(Map<String, dynamic> json) = _$_TodoList.fromJson;
 
   @override
+  @JsonKey(name: 'revision')
   int get revision;
   @override
+  @JsonKey(name: 'status')
   String get status;
   @override
   @JsonKey(name: 'list')
-  List<Todo> get values;
+  List<Todo> get list;
   @override
   @JsonKey(ignore: true)
   _$$_TodoListCopyWith<_$_TodoList> get copyWith =>

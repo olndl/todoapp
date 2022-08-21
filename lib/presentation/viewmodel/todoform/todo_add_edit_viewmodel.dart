@@ -10,15 +10,15 @@ final todoFormViewModelProvider = Provider.autoDispose.family<TodoFormViewModel,
 class TodoFormViewModel {
   late final TodoListViewModel _todoListViewModel;
   late String _id;
-  late int _createdAt;
-  String _title ='';
-  late String _lastUpdatedBy;
-  late int _changedAt;
-  int? _dueDate;
-  String? _color;
-  late bool _isCompleted;
-  late String _importance;
-  bool _isNewTodo = false;
+  var _createdAt = 0;
+  var _title ='';
+  var _lastUpdatedBy= '';
+  var _changedAt = 0;
+  var _dueDate;
+  var _color = '';
+  var _isCompleted = false;
+  var _importance = 'low';
+  var _isNewTodo = false;
 
 
   TodoFormViewModel(final Reader read, final Todo? todo) {
@@ -32,12 +32,12 @@ class TodoFormViewModel {
     } else {
       _id = todo.id;
       _createdAt = todo.createdAt;
-      _title = todo.title;
+      _title = todo.text;
       _lastUpdatedBy = todo.lastUpdatedBy;
       _changedAt = todo.changedAt;
-      _dueDate = todo.dueDate;
-      _color = todo.color;
-      _isCompleted = todo.isCompleted;
+      _dueDate = todo.deadline;
+      _color = todo.color!;
+      _isCompleted = todo.done;
       _importance = todo.importance;
     }
   }
@@ -45,22 +45,22 @@ class TodoFormViewModel {
   createOrUpdateTodo() {
     if (_isNewTodo) {
       print('title: $_title dudate: $_dueDate');
-      _todoListViewModel.addTodo(_title, _dueDate,
-          // _color,
-          // _isCompleted,
-          // _importance
+      _todoListViewModel.addTodo(
+          _title,
+          _dueDate,
+          _importance,
       );
     } else {
       final newTodo = Todo(
           id: _id,
           createdAt: _createdAt,
-          title: _title,
+          text: _title,
           lastUpdatedBy: _lastUpdatedBy,
           changedAt: _changedAt,
-          dueDate: _dueDate,
+          deadline: _dueDate,
           color: _color,
-          isCompleted: _isCompleted,
-          importance: _importance);
+          done: _isCompleted,
+          importance: _importance,);
       _todoListViewModel.updateTodo(newTodo);
     }
   }
@@ -73,7 +73,7 @@ class TodoFormViewModel {
 
   String initialTitleValue() => _title;
 
-  //String initialDescriptionValue() => _description;
+  String initialImportanceValue() => _importance;
 
   int? initialDueDateValue() => _dueDate;
 
@@ -83,37 +83,21 @@ class TodoFormViewModel {
 
   bool shouldShowDeleteTodoIcon() => !_isNewTodo;
 
-  setTitle(final String value) => _title = value;
+  bool shouldShowSwitchOn() => _dueDate != null;
 
-  //setDescription(final String value) => _description = value;
+  setTitle(final String value) => _title = value;
 
   setTodoStatus(final bool status) => _isCompleted = status;
 
-  setDueDate(final int value) => _dueDate = value;
+  setDueDate(final int? value) => _dueDate = value;
 
-  String? validateTitle() {
-    if (_title.isEmpty) {
-      return 'Enter a title.';
-    } else if (_title.length > 20) {
-      return 'Limit the title to 20 characters.';
+  setImportance(final String value) => _importance = value;
+
+  String shortTitle() {
+    if (_title.length > 106) {
+      return '${_title.substring(0,106)}...';
     } else {
-      return null;
+      return _title;
     }
   }
-
-  // String? validateDescription() {
-  //   if (_description.length > 100) {
-  //     return 'Limit the description to 100 characters.';
-  //   } else {
-  //     return null;
-  //   }
-  // }
-
-  // String? validateDueDate() {
-  //   if (_isNewTodo && _dueDate.isBefore(DateTime.now().millisecondsSinceEpoch)) {
-  //     return "DueDate must be after today's date.";
-  //   } else {
-  //     return null;
-  //   }
-  // }
 }

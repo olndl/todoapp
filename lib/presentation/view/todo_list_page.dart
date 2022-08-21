@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todoapp/presentation/screens/components/main_header.dart';
-import 'components/homeWidget.dart';
+import 'components/home_list_components.dart';
 
 class TodoListPage extends StatelessWidget {
 
@@ -14,19 +13,6 @@ class TodoListPage extends StatelessWidget {
         ],
       ),
       floatingActionButton: const FloatingActionButtonWidget(),
-
-      //
-      // appBar: AppBar(
-      //   title: const Text('ToDo App'),
-      // ),
-      // body: Column(
-      //   children: [
-      //     ChipsBarWidget(),
-      //     const Divider(height: 2, color: Colors.grey),
-      //     HomeWidget()
-      //   ],
-      // ),
-      // floatingActionButton: const FloatingActionButtonWidget(),
     );
   }
 }

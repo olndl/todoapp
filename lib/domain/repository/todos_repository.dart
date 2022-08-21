@@ -7,9 +7,7 @@ abstract class TodosRepository {
       final int revision,
       final String title,
       final int? dueDate,
-      // final String color,
-      // final bool isCompleted,
-      // final String importance,
+      final String importance,
   );
   Future<void> updateTodo(
       final int revision,
@@ -18,7 +16,7 @@ abstract class TodosRepository {
       final String title,
       final String lastUpdatedBy,
       final int changedAt,
-      final int dueDate,
+      final int? dueDate,
       final String color,
       final bool isCompleted,
       final String importance,

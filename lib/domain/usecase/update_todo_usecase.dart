@@ -6,8 +6,8 @@ abstract class UpdateTodoUseCase {
       final String title,
       final String lastUpdatedBy,
       final int changedAt,
-      final int dueDate,
-      final String color,
+      final int? dueDate,
+      final String? color,
       final bool isCompleted,
       final String importance,
   );
