@@ -1,5 +1,4 @@
 import 'package:todoapp/data/datasource/remote_database/todos_database.dart';
-
 import '../../../domain/model/todo.dart';
 import '../../../domain/model/todo_list.dart';
 import 'network_service.dart';

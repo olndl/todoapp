@@ -1,14 +1,19 @@
 import 'package:dio/dio.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:todoapp/core/errors/logger.dart';
 
+import '../../../core/constants/strings.dart';
 import '../../../domain/model/todo.dart';
 import '../../../domain/model/todo_element.dart';
 import '../../../domain/model/todo_list.dart';
+import '../local_database/db.dart';
 
 class NetworkService {
-  final _token = 'Anehull';
-  final _baseUrl = 'https://beta.mrdekk.ru/todobackend';
+  final _token = S.token;
+  final _baseUrl = S.baseUrl;
 
   final _dio = Dio();
+  var databaseFuture = DatabaseHelper.db.database;
 
   Future<TodoList> fetchTodosOnServer(Map bodyRequest, int revision) async {
     try {
@@ -38,27 +43,22 @@ class NetworkService {
   }
 
   Future<TodoList> fetchTodos() async {
+    late final TodoList todoList;
+    final Database database = await databaseFuture;
     try {
       Response response = await _dio.get('$_baseUrl/list/',
-          options: Options(headers: {'Authorization': 'Bearer $_token'}),);
+        options: Options(headers: {'Authorization': 'Bearer $_token'}),);
       if (response.statusCode == 200) {
-        print('REVISION ${TodoList.fromJson(response.data).revision}');
-        return TodoList.fromJson(response.data);
-      } else {
-        print(
-          'fetchTodosResponce:'
-          '${response.statusCode} : ${response.data.toString()}',
-        );
+        todoList = TodoList.fromJson(response.data);
       }
-      return TodoList.fromJson(response.data);
-    } catch (error, stacktrace) {
-      print(
-        'Exception occured: '
-        ' $error stackTrace: $stacktrace',
-      );
-      throw Exception('Data not found / Connection issue');
+    } on DioError catch (e) {
+      logger.info(e);
+      final todoMap = await database.query(S.todoTableName);
+      todoList = TodoList.fromJson(todoMap.last);
     }
+    return todoList;
   }
+
 
   Future<TodoElement> fetchOneTodo(String id) async {
     try {

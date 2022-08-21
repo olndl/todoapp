@@ -20,7 +20,8 @@ mixin _$State<T> {
   TResult when<TResult extends Object?>({
     required TResult Function() init,
     required TResult Function() loading,
-    required TResult Function(T data) success,
+    required TResult Function(T data) successRemote,
+    required TResult Function(T data) successLocal,
     required TResult Function(Exception exception) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -28,7 +29,8 @@ mixin _$State<T> {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? init,
     TResult Function()? loading,
-    TResult Function(T data)? success,
+    TResult Function(T data)? successRemote,
+    TResult Function(T data)? successLocal,
     TResult Function(Exception exception)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -36,7 +38,8 @@ mixin _$State<T> {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
     TResult Function()? loading,
-    TResult Function(T data)? success,
+    TResult Function(T data)? successRemote,
+    TResult Function(T data)? successLocal,
     TResult Function(Exception exception)? error,
     required TResult orElse(),
   }) =>
@@ -45,7 +48,8 @@ mixin _$State<T> {
   TResult map<TResult extends Object?>({
     required TResult Function(_init<T> value) init,
     required TResult Function(_loading<T> value) loading,
-    required TResult Function(_success<T> value) success,
+    required TResult Function(_successRemote<T> value) successRemote,
+    required TResult Function(_successLocal<T> value) successLocal,
     required TResult Function(_error<T> value) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -53,7 +57,8 @@ mixin _$State<T> {
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(_init<T> value)? init,
     TResult Function(_loading<T> value)? loading,
-    TResult Function(_success<T> value)? success,
+    TResult Function(_successRemote<T> value)? successRemote,
+    TResult Function(_successLocal<T> value)? successLocal,
     TResult Function(_error<T> value)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -61,7 +66,8 @@ mixin _$State<T> {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_init<T> value)? init,
     TResult Function(_loading<T> value)? loading,
-    TResult Function(_success<T> value)? success,
+    TResult Function(_successRemote<T> value)? successRemote,
+    TResult Function(_successLocal<T> value)? successLocal,
     TResult Function(_error<T> value)? error,
     required TResult orElse(),
   }) =>
@@ -123,7 +129,8 @@ class _$_init<T> extends _init<T> {
   TResult when<TResult extends Object?>({
     required TResult Function() init,
     required TResult Function() loading,
-    required TResult Function(T data) success,
+    required TResult Function(T data) successRemote,
+    required TResult Function(T data) successLocal,
     required TResult Function(Exception exception) error,
   }) {
     return init();
@@ -134,7 +141,8 @@ class _$_init<T> extends _init<T> {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? init,
     TResult Function()? loading,
-    TResult Function(T data)? success,
+    TResult Function(T data)? successRemote,
+    TResult Function(T data)? successLocal,
     TResult Function(Exception exception)? error,
   }) {
     return init?.call();
@@ -145,7 +153,8 @@ class _$_init<T> extends _init<T> {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
     TResult Function()? loading,
-    TResult Function(T data)? success,
+    TResult Function(T data)? successRemote,
+    TResult Function(T data)? successLocal,
     TResult Function(Exception exception)? error,
     required TResult orElse(),
   }) {
@@ -160,7 +169,8 @@ class _$_init<T> extends _init<T> {
   TResult map<TResult extends Object?>({
     required TResult Function(_init<T> value) init,
     required TResult Function(_loading<T> value) loading,
-    required TResult Function(_success<T> value) success,
+    required TResult Function(_successRemote<T> value) successRemote,
+    required TResult Function(_successLocal<T> value) successLocal,
     required TResult Function(_error<T> value) error,
   }) {
     return init(this);
@@ -171,7 +181,8 @@ class _$_init<T> extends _init<T> {
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(_init<T> value)? init,
     TResult Function(_loading<T> value)? loading,
-    TResult Function(_success<T> value)? success,
+    TResult Function(_successRemote<T> value)? successRemote,
+    TResult Function(_successLocal<T> value)? successLocal,
     TResult Function(_error<T> value)? error,
   }) {
     return init?.call(this);
@@ -182,7 +193,8 @@ class _$_init<T> extends _init<T> {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_init<T> value)? init,
     TResult Function(_loading<T> value)? loading,
-    TResult Function(_success<T> value)? success,
+    TResult Function(_successRemote<T> value)? successRemote,
+    TResult Function(_successLocal<T> value)? successLocal,
     TResult Function(_error<T> value)? error,
     required TResult orElse(),
   }) {
@@ -240,7 +252,8 @@ class _$_loading<T> extends _loading<T> {
   TResult when<TResult extends Object?>({
     required TResult Function() init,
     required TResult Function() loading,
-    required TResult Function(T data) success,
+    required TResult Function(T data) successRemote,
+    required TResult Function(T data) successLocal,
     required TResult Function(Exception exception) error,
   }) {
     return loading();
@@ -251,7 +264,8 @@ class _$_loading<T> extends _loading<T> {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? init,
     TResult Function()? loading,
-    TResult Function(T data)? success,
+    TResult Function(T data)? successRemote,
+    TResult Function(T data)? successLocal,
     TResult Function(Exception exception)? error,
   }) {
     return loading?.call();
@@ -262,7 +276,8 @@ class _$_loading<T> extends _loading<T> {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
     TResult Function()? loading,
-    TResult Function(T data)? success,
+    TResult Function(T data)? successRemote,
+    TResult Function(T data)? successLocal,
     TResult Function(Exception exception)? error,
     required TResult orElse(),
   }) {
@@ -277,7 +292,8 @@ class _$_loading<T> extends _loading<T> {
   TResult map<TResult extends Object?>({
     required TResult Function(_init<T> value) init,
     required TResult Function(_loading<T> value) loading,
-    required TResult Function(_success<T> value) success,
+    required TResult Function(_successRemote<T> value) successRemote,
+    required TResult Function(_successLocal<T> value) successLocal,
     required TResult Function(_error<T> value) error,
   }) {
     return loading(this);
@@ -288,7 +304,8 @@ class _$_loading<T> extends _loading<T> {
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(_init<T> value)? init,
     TResult Function(_loading<T> value)? loading,
-    TResult Function(_success<T> value)? success,
+    TResult Function(_successRemote<T> value)? successRemote,
+    TResult Function(_successLocal<T> value)? successLocal,
     TResult Function(_error<T> value)? error,
   }) {
     return loading?.call(this);
@@ -299,7 +316,8 @@ class _$_loading<T> extends _loading<T> {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_init<T> value)? init,
     TResult Function(_loading<T> value)? loading,
-    TResult Function(_success<T> value)? success,
+    TResult Function(_successRemote<T> value)? successRemote,
+    TResult Function(_successLocal<T> value)? successLocal,
     TResult Function(_error<T> value)? error,
     required TResult orElse(),
   }) {
@@ -316,28 +334,29 @@ abstract class _loading<T> extends State<T> {
 }
 
 /// @nodoc
-abstract class _$$_successCopyWith<T, $Res> {
-  factory _$$_successCopyWith(
-          _$_success<T> value, $Res Function(_$_success<T>) then) =
-      __$$_successCopyWithImpl<T, $Res>;
+abstract class _$$_successRemoteCopyWith<T, $Res> {
+  factory _$$_successRemoteCopyWith(
+          _$_successRemote<T> value, $Res Function(_$_successRemote<T>) then) =
+      __$$_successRemoteCopyWithImpl<T, $Res>;
   $Res call({T data});
 }
 
 /// @nodoc
-class __$$_successCopyWithImpl<T, $Res> extends _$StateCopyWithImpl<T, $Res>
-    implements _$$_successCopyWith<T, $Res> {
-  __$$_successCopyWithImpl(
-      _$_success<T> _value, $Res Function(_$_success<T>) _then)
-      : super(_value, (v) => _then(v as _$_success<T>));
+class __$$_successRemoteCopyWithImpl<T, $Res>
+    extends _$StateCopyWithImpl<T, $Res>
+    implements _$$_successRemoteCopyWith<T, $Res> {
+  __$$_successRemoteCopyWithImpl(
+      _$_successRemote<T> _value, $Res Function(_$_successRemote<T>) _then)
+      : super(_value, (v) => _then(v as _$_successRemote<T>));
 
   @override
-  _$_success<T> get _value => super._value as _$_success<T>;
+  _$_successRemote<T> get _value => super._value as _$_successRemote<T>;
 
   @override
   $Res call({
     Object? data = freezed,
   }) {
-    return _then(_$_success<T>(
+    return _then(_$_successRemote<T>(
       data == freezed
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
@@ -348,22 +367,22 @@ class __$$_successCopyWithImpl<T, $Res> extends _$StateCopyWithImpl<T, $Res>
 
 /// @nodoc
 
-class _$_success<T> extends _success<T> {
-  const _$_success(this.data) : super._();
+class _$_successRemote<T> extends _successRemote<T> {
+  const _$_successRemote(this.data) : super._();
 
   @override
   final T data;
 
   @override
   String toString() {
-    return 'State<$T>.success(data: $data)';
+    return 'State<$T>.successRemote(data: $data)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_success<T> &&
+            other is _$_successRemote<T> &&
             const DeepCollectionEquality().equals(other.data, data));
   }
 
@@ -373,18 +392,19 @@ class _$_success<T> extends _success<T> {
 
   @JsonKey(ignore: true)
   @override
-  _$$_successCopyWith<T, _$_success<T>> get copyWith =>
-      __$$_successCopyWithImpl<T, _$_success<T>>(this, _$identity);
+  _$$_successRemoteCopyWith<T, _$_successRemote<T>> get copyWith =>
+      __$$_successRemoteCopyWithImpl<T, _$_successRemote<T>>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() init,
     required TResult Function() loading,
-    required TResult Function(T data) success,
+    required TResult Function(T data) successRemote,
+    required TResult Function(T data) successLocal,
     required TResult Function(Exception exception) error,
   }) {
-    return success(data);
+    return successRemote(data);
   }
 
   @override
@@ -392,10 +412,11 @@ class _$_success<T> extends _success<T> {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? init,
     TResult Function()? loading,
-    TResult Function(T data)? success,
+    TResult Function(T data)? successRemote,
+    TResult Function(T data)? successLocal,
     TResult Function(Exception exception)? error,
   }) {
-    return success?.call(data);
+    return successRemote?.call(data);
   }
 
   @override
@@ -403,12 +424,13 @@ class _$_success<T> extends _success<T> {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
     TResult Function()? loading,
-    TResult Function(T data)? success,
+    TResult Function(T data)? successRemote,
+    TResult Function(T data)? successLocal,
     TResult Function(Exception exception)? error,
     required TResult orElse(),
   }) {
-    if (success != null) {
-      return success(data);
+    if (successRemote != null) {
+      return successRemote(data);
     }
     return orElse();
   }
@@ -418,10 +440,11 @@ class _$_success<T> extends _success<T> {
   TResult map<TResult extends Object?>({
     required TResult Function(_init<T> value) init,
     required TResult Function(_loading<T> value) loading,
-    required TResult Function(_success<T> value) success,
+    required TResult Function(_successRemote<T> value) successRemote,
+    required TResult Function(_successLocal<T> value) successLocal,
     required TResult Function(_error<T> value) error,
   }) {
-    return success(this);
+    return successRemote(this);
   }
 
   @override
@@ -429,10 +452,11 @@ class _$_success<T> extends _success<T> {
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(_init<T> value)? init,
     TResult Function(_loading<T> value)? loading,
-    TResult Function(_success<T> value)? success,
+    TResult Function(_successRemote<T> value)? successRemote,
+    TResult Function(_successLocal<T> value)? successLocal,
     TResult Function(_error<T> value)? error,
   }) {
-    return success?.call(this);
+    return successRemote?.call(this);
   }
 
   @override
@@ -440,24 +464,178 @@ class _$_success<T> extends _success<T> {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_init<T> value)? init,
     TResult Function(_loading<T> value)? loading,
-    TResult Function(_success<T> value)? success,
+    TResult Function(_successRemote<T> value)? successRemote,
+    TResult Function(_successLocal<T> value)? successLocal,
     TResult Function(_error<T> value)? error,
     required TResult orElse(),
   }) {
-    if (success != null) {
-      return success(this);
+    if (successRemote != null) {
+      return successRemote(this);
     }
     return orElse();
   }
 }
 
-abstract class _success<T> extends State<T> {
-  const factory _success(final T data) = _$_success<T>;
-  const _success._() : super._();
+abstract class _successRemote<T> extends State<T> {
+  const factory _successRemote(final T data) = _$_successRemote<T>;
+  const _successRemote._() : super._();
 
   T get data;
   @JsonKey(ignore: true)
-  _$$_successCopyWith<T, _$_success<T>> get copyWith =>
+  _$$_successRemoteCopyWith<T, _$_successRemote<T>> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$_successLocalCopyWith<T, $Res> {
+  factory _$$_successLocalCopyWith(
+          _$_successLocal<T> value, $Res Function(_$_successLocal<T>) then) =
+      __$$_successLocalCopyWithImpl<T, $Res>;
+  $Res call({T data});
+}
+
+/// @nodoc
+class __$$_successLocalCopyWithImpl<T, $Res>
+    extends _$StateCopyWithImpl<T, $Res>
+    implements _$$_successLocalCopyWith<T, $Res> {
+  __$$_successLocalCopyWithImpl(
+      _$_successLocal<T> _value, $Res Function(_$_successLocal<T>) _then)
+      : super(_value, (v) => _then(v as _$_successLocal<T>));
+
+  @override
+  _$_successLocal<T> get _value => super._value as _$_successLocal<T>;
+
+  @override
+  $Res call({
+    Object? data = freezed,
+  }) {
+    return _then(_$_successLocal<T>(
+      data == freezed
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as T,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_successLocal<T> extends _successLocal<T> {
+  const _$_successLocal(this.data) : super._();
+
+  @override
+  final T data;
+
+  @override
+  String toString() {
+    return 'State<$T>.successLocal(data: $data)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_successLocal<T> &&
+            const DeepCollectionEquality().equals(other.data, data));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(data));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_successLocalCopyWith<T, _$_successLocal<T>> get copyWith =>
+      __$$_successLocalCopyWithImpl<T, _$_successLocal<T>>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() init,
+    required TResult Function() loading,
+    required TResult Function(T data) successRemote,
+    required TResult Function(T data) successLocal,
+    required TResult Function(Exception exception) error,
+  }) {
+    return successLocal(data);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? init,
+    TResult Function()? loading,
+    TResult Function(T data)? successRemote,
+    TResult Function(T data)? successLocal,
+    TResult Function(Exception exception)? error,
+  }) {
+    return successLocal?.call(data);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? init,
+    TResult Function()? loading,
+    TResult Function(T data)? successRemote,
+    TResult Function(T data)? successLocal,
+    TResult Function(Exception exception)? error,
+    required TResult orElse(),
+  }) {
+    if (successLocal != null) {
+      return successLocal(data);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_init<T> value) init,
+    required TResult Function(_loading<T> value) loading,
+    required TResult Function(_successRemote<T> value) successRemote,
+    required TResult Function(_successLocal<T> value) successLocal,
+    required TResult Function(_error<T> value) error,
+  }) {
+    return successLocal(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_init<T> value)? init,
+    TResult Function(_loading<T> value)? loading,
+    TResult Function(_successRemote<T> value)? successRemote,
+    TResult Function(_successLocal<T> value)? successLocal,
+    TResult Function(_error<T> value)? error,
+  }) {
+    return successLocal?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_init<T> value)? init,
+    TResult Function(_loading<T> value)? loading,
+    TResult Function(_successRemote<T> value)? successRemote,
+    TResult Function(_successLocal<T> value)? successLocal,
+    TResult Function(_error<T> value)? error,
+    required TResult orElse(),
+  }) {
+    if (successLocal != null) {
+      return successLocal(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _successLocal<T> extends State<T> {
+  const factory _successLocal(final T data) = _$_successLocal<T>;
+  const _successLocal._() : super._();
+
+  T get data;
+  @JsonKey(ignore: true)
+  _$$_successLocalCopyWith<T, _$_successLocal<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -526,7 +704,8 @@ class _$_error<T> extends _error<T> {
   TResult when<TResult extends Object?>({
     required TResult Function() init,
     required TResult Function() loading,
-    required TResult Function(T data) success,
+    required TResult Function(T data) successRemote,
+    required TResult Function(T data) successLocal,
     required TResult Function(Exception exception) error,
   }) {
     return error(exception);
@@ -537,7 +716,8 @@ class _$_error<T> extends _error<T> {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? init,
     TResult Function()? loading,
-    TResult Function(T data)? success,
+    TResult Function(T data)? successRemote,
+    TResult Function(T data)? successLocal,
     TResult Function(Exception exception)? error,
   }) {
     return error?.call(exception);
@@ -548,7 +728,8 @@ class _$_error<T> extends _error<T> {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
     TResult Function()? loading,
-    TResult Function(T data)? success,
+    TResult Function(T data)? successRemote,
+    TResult Function(T data)? successLocal,
     TResult Function(Exception exception)? error,
     required TResult orElse(),
   }) {
@@ -563,7 +744,8 @@ class _$_error<T> extends _error<T> {
   TResult map<TResult extends Object?>({
     required TResult Function(_init<T> value) init,
     required TResult Function(_loading<T> value) loading,
-    required TResult Function(_success<T> value) success,
+    required TResult Function(_successRemote<T> value) successRemote,
+    required TResult Function(_successLocal<T> value) successLocal,
     required TResult Function(_error<T> value) error,
   }) {
     return error(this);
@@ -574,7 +756,8 @@ class _$_error<T> extends _error<T> {
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(_init<T> value)? init,
     TResult Function(_loading<T> value)? loading,
-    TResult Function(_success<T> value)? success,
+    TResult Function(_successRemote<T> value)? successRemote,
+    TResult Function(_successLocal<T> value)? successLocal,
     TResult Function(_error<T> value)? error,
   }) {
     return error?.call(this);
@@ -585,7 +768,8 @@ class _$_error<T> extends _error<T> {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_init<T> value)? init,
     TResult Function(_loading<T> value)? loading,
-    TResult Function(_success<T> value)? success,
+    TResult Function(_successRemote<T> value)? successRemote,
+    TResult Function(_successLocal<T> value)? successLocal,
     TResult Function(_error<T> value)? error,
     required TResult orElse(),
   }) {

@@ -15,14 +15,24 @@ final filteredTodoListProvider = Provider.autoDispose<State<TodoList>>((ref) {
 
   return todoListState.when(
     init: () => const State.init(),
-    success: (todoList) {
+    successRemote: (todoList) {
       switch (filterKind) {
         case FilterKind.all:
-          return State.success(todoList);
+          return State.successRemote(todoList);
         case FilterKind.completed:
-          return State.success(todoList.filterByCompleted(),);
+          return State.successRemote(todoList.filterByCompleted(),);
         case FilterKind.incomplete:
-          return State.success(todoList.filterByIncomplete(),);
+          return State.successRemote(todoList.filterByIncomplete(),);
+      }
+    },
+    successLocal:  (todoList) {
+      switch (filterKind) {
+        case FilterKind.all:
+          return State.successRemote(todoList);
+        case FilterKind.completed:
+          return State.successRemote(todoList.filterByCompleted(),);
+        case FilterKind.incomplete:
+          return State.successRemote(todoList.filterByIncomplete(),);
       }
     },
     loading: () => const State.loading(),
@@ -68,10 +78,15 @@ class TodoListViewModel extends StateNotifier<State<TodoList>> {
     try {
       state = const State.loading();
       final todoList = await _getTodoListUseCase.execute();
-      state = State.success(todoList,);
+      state = State.successRemote(todoList,);
     } on Exception catch (e) {
       state = State.error(e);
     }
+  }
+
+
+  getCountComplete() {
+    return state.dataRemote?.list.where((element) => element.done).length;
   }
 
   addTodo(
@@ -79,30 +94,23 @@ class TodoListViewModel extends StateNotifier<State<TodoList>> {
       final int? dueDate,
       final String importance,
       ) async {
-    print('REVISION add TODO: ${state.data!.revision}');
-    print('${state.data!.revision}');
-    print('${title}');
-    print('${dueDate}');
-    print('${importance}');
     try {
       final newTodo = await _createTodoUseCase.execute(
-          state.data!.revision,
+          state.dataRemote!.revision,
           title,
           dueDate,
           importance,
       );
-      state = State.success(state.data!.addTodo(newTodo),);
-      print('REVISION AFTER addTODO: ${state.data!.revision}');
+      state = State.successRemote(state.dataRemote!.addTodo(newTodo),);
     } on Exception catch (e) {
       state = State.error(e);
     }
   }
 
   updateTodo(final Todo newTodo) async {
-    print('REVISION completeTODO: ${state.data!.revision}');
     try {
       await _updateTodoUseCase.execute(
-          state.data!.revision,
+          state.dataRemote!.revision,
           newTodo.id,
           newTodo.createdAt,
           newTodo.text,
@@ -113,8 +121,7 @@ class TodoListViewModel extends StateNotifier<State<TodoList>> {
           newTodo.done,
           newTodo.importance,
       );
-      state = State.success(state.data!.updateTodo(newTodo));
-      print('REVISION AFTER complete TODO: ${state.data!.revision}');
+      state = State.successRemote(state.dataRemote!.updateTodo(newTodo));
     } on Exception catch (e) {
       state = State.error(e);
     }
@@ -122,8 +129,8 @@ class TodoListViewModel extends StateNotifier<State<TodoList>> {
 
   deleteTodo(final String id) async {
     try {
-      await _deleteTodoUseCase.execute(id, state.data!.revision,);
-      state = State.success(state.data!.removeTodoById(id));
+      await _deleteTodoUseCase.execute(id, state.dataRemote!.revision,);
+      state = State.successRemote(state.dataRemote!.removeTodoById(id));
     } on Exception catch (e) {
       state = State.error(e);
     }

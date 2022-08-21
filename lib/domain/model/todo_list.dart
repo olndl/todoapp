@@ -20,8 +20,6 @@ class TodoList with _$TodoList {
 
   int get length => list.length;
 
-  int get completedTodoCount => list.where((todo) => todo.done).length;
-
   TodoList addTodo(Todo todo) => copyWith(revision: revision + 1 ,list: [...list, todo]);
 
   TodoList updateTodo(Todo newTodo) => copyWith(revision: revision + 1, list: list.map((todo) => newTodo.id == todo.id ? newTodo : todo).toList());

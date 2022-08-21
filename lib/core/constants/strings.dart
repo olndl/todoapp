@@ -21,4 +21,14 @@ class S {
   static const String iconClose =  'assets/icons/close.svg';
   static const String deviceId = 'olndlDevice';
   static const String errorEmptyMessage = 'Message is empty';
+  static const String databaseName = 'todo_database.db';
+  static const String todoTableName = 'todo';
+  static const String createTodoTable = '''
+    CREATE TABLE $todoTableName (
+      revision INTEGER,
+      status TEXT,
+      list TEXT
+    )
+''';
+
 }

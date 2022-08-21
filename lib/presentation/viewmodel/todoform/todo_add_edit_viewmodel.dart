@@ -44,7 +44,6 @@ class TodoFormViewModel {
 
   createOrUpdateTodo() {
     if (_isNewTodo) {
-      print('title: $_title dudate: $_dueDate');
       _todoListViewModel.addTodo(
           _title,
           _dueDate,
