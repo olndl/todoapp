@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/strings.dart';
@@ -8,12 +9,10 @@ import '../../../viewmodel/todolist/filter_todo_viewmodel.dart';
 import '../../../viewmodel/todolist/todo_list_viewmodel.dart';
 
 class MySliverAppBar extends SliverPersistentHeaderDelegate {
-  final FilterKindViewModel filterKindViewModel;
   final TodoListViewModel todoListViewModel;
   final double expandedHeight;
 
   MySliverAppBar({
-    required this.filterKindViewModel,
     required this.todoListViewModel,
     required this.expandedHeight,
   });
@@ -71,31 +70,35 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
             ),
           ),
         ),
-        Positioned(
-          child: AnimatedContainer(
-            padding: EdgeInsets.lerp(
-              EdgeInsets.only(
-                left: MediaQuery.of(context).size.width / 1.25,
-                top: MediaQuery.of(context).size.height / 6.4,
+        Consumer(builder: (BuildContext context, WidgetRef ref, _) {
+          final filterKindViewModel =
+              ref.watch(filterKindViewModelStateNotifierProvider.notifier);
+          return Positioned(
+            child: AnimatedContainer(
+              padding: EdgeInsets.lerp(
+                EdgeInsets.only(
+                  left: MediaQuery.of(context).size.width / 1.25,
+                  top: MediaQuery.of(context).size.height / 6.4,
+                ),
+                EdgeInsets.only(left: MediaQuery.of(context).size.width / 1.25),
+                progress,
               ),
-              EdgeInsets.only(left: MediaQuery.of(context).size.width / 1.25),
-              progress,
+              duration: const Duration(milliseconds: 10),
+              child: InputChip(
+                label: filterKindViewModel.isFilteredByAll()
+                    ? SvgPicture.asset(S.iconVisibility)
+                    : SvgPicture.asset(S.iconVisibilityOff),
+                selected: filterKindViewModel.isFilteredByAll(),
+                onSelected: (val) => val
+                    ? filterKindViewModel.filterByAll()
+                    : filterKindViewModel.filterByIncomplete(),
+                selectedColor: Colors.transparent,
+                backgroundColor: Colors.transparent,
+                showCheckmark: false,
+              ),
             ),
-            duration: const Duration(milliseconds: 10),
-            child: InputChip(
-              label: filterKindViewModel.isFilteredByAll()
-                  ? SvgPicture.asset(S.iconVisibility)
-                  : SvgPicture.asset(S.iconVisibilityOff),
-              selected: filterKindViewModel.isFilteredByAll(),
-              onSelected: (val) => val
-                  ? filterKindViewModel.filterByAll()
-                  : filterKindViewModel.filterByIncomplete(),
-              selectedColor: Colors.transparent,
-              backgroundColor: Colors.transparent,
-              showCheckmark: false,
-            ),
-          ),
-        ),
+          );
+        }),
       ],
     );
   }
