@@ -24,6 +24,10 @@ class TodoFormViewModel {
   TodoFormViewModel(final Reader read, final Todo? todo) {
     _todoListViewModel = read(todoListViewModelStateNotifierProvider.notifier);
     _initTodo(todo);
+    initialDueDateValue();
+    shouldShowSwitchOn();
+    setDueDate(todo?.deadline);
+    initialImportanceValue();
   }
 
   _initTodo(final Todo? todo) {
@@ -44,7 +48,6 @@ class TodoFormViewModel {
 
   createOrUpdateTodo() {
     if (_isNewTodo) {
-      print('title: $_title dudate: $_dueDate');
       _todoListViewModel.addTodo(
           _title,
           _dueDate,

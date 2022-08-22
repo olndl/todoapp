@@ -52,6 +52,7 @@ class TodoListViewModel extends StateNotifier<State<TodoList>> {
       this._updateTodoUseCase,
       this._deleteTodoUseCase,) : super(const State.init()) {
     _getTodoList();
+    getCountComplete();
   }
 
   completeTodo(final Todo todo) {
@@ -74,16 +75,15 @@ class TodoListViewModel extends StateNotifier<State<TodoList>> {
     }
   }
 
+  getCountComplete() {
+    return state.data?.completedTodoCount;
+  }
+
   addTodo(
       final String title,
       final int? dueDate,
       final String importance,
       ) async {
-    print('REVISION add TODO: ${state.data!.revision}');
-    print('${state.data!.revision}');
-    print('${title}');
-    print('${dueDate}');
-    print('${importance}');
     try {
       final newTodo = await _createTodoUseCase.execute(
           state.data!.revision,
@@ -92,14 +92,12 @@ class TodoListViewModel extends StateNotifier<State<TodoList>> {
           importance,
       );
       state = State.success(state.data!.addTodo(newTodo),);
-      print('REVISION AFTER addTODO: ${state.data!.revision}');
     } on Exception catch (e) {
       state = State.error(e);
     }
   }
 
   updateTodo(final Todo newTodo) async {
-    print('REVISION completeTODO: ${state.data!.revision}');
     try {
       await _updateTodoUseCase.execute(
           state.data!.revision,
@@ -113,8 +111,7 @@ class TodoListViewModel extends StateNotifier<State<TodoList>> {
           newTodo.done,
           newTodo.importance,
       );
-      state = State.success(state.data!.updateTodo(newTodo));
-      print('REVISION AFTER complete TODO: ${state.data!.revision}');
+      state = State.success(state.data!.updateTodo(newTodo),);
     } on Exception catch (e) {
       state = State.error(e);
     }

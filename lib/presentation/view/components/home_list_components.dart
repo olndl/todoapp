@@ -376,6 +376,7 @@ class FloatingActionButtonWidget extends StatelessWidget {
 
 class AppBarWidget extends StatelessWidget {
   final _provider = filterKindViewModelStateNotifierProvider;
+  final _listprovider = todoListViewModelStateNotifierProvider;
 
   @override
   Widget build(final BuildContext context) {
@@ -383,13 +384,15 @@ class AppBarWidget extends StatelessWidget {
       builder: (context, ref, _) {
         final viewModel = ref.watch(_provider.notifier);
         ref.watch(_provider);
+        final todoListState = ref.watch(_listprovider.notifier);
+        ref.watch(_listprovider);
         return SliverPersistentHeader(
           pinned: true,
           floating: true,
           delegate: MySliverAppBar(
               viewModel: viewModel,
               expandedHeight: 150,
-              numberOfCompleteTodo: 5,),
+              numberOfCompleteTodo: todoListState.getCountComplete() != null ? '${todoListState.getCountComplete()}' : 'loading...',),
         );
       },
     );
@@ -398,7 +401,7 @@ class AppBarWidget extends StatelessWidget {
 
 class MySliverAppBar extends SliverPersistentHeaderDelegate {
   final FilterKindViewModel viewModel;
-  final int numberOfCompleteTodo;
+  final String numberOfCompleteTodo;
   final double expandedHeight;
 
   MySliverAppBar(
@@ -449,7 +452,7 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
                   height: MediaQuery.of(context).size.height / 100,
                 ),
                 Text(
-                  '${AllLocale.of(context).subtitle} $numberOfCompleteTodo',
+                  '${AllLocale.of(context).subtitle} '+numberOfCompleteTodo,
                   style: Theme.of(context).textTheme.subtitle2,
                 ),
               ],

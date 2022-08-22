@@ -23,11 +23,11 @@ class TodoFormPageState extends ConsumerState<TodoFormPage> {
   void initState() {
     super.initState();
     _viewModel = ref.read(todoFormViewModelProvider(widget._todo));
-    _dueDateTextFieldController = TextEditingController(
-      text: _viewModel.initialDueDateValue() != null ? DateFormat('yyyy/MM/dd')
-          .format(DateTime.fromMillisecondsSinceEpoch(
-          _viewModel.initialDueDateValue()!,),) : null,
-    );
+    // _dueDateTextFieldController = TextEditingController(
+    //   text: _viewModel.initialDueDateValue() != null ? DateFormat('yyyy/MM/dd')
+    //       .format(DateTime.fromMillisecondsSinceEpoch(
+    //       _viewModel.initialDueDateValue()!,),) : null,
+    // );
   }
 
   @override

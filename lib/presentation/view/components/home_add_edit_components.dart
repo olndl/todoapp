@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:todoapp/core/constants/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:todoapp/presentation/view/todo_add_edit_page.dart';
 import '../../../core/constants/dimension.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/localization/l10n/all_locales.dart';
@@ -12,27 +13,34 @@ import '../../viewmodel/todoform/todo_add_edit_viewmodel.dart';
 
 class BodyWidget extends StatelessWidget {
   final TodoFormViewModel viewModel;
-  BodyWidget({Key? key, required this.viewModel}) : super(key: key);
 
+  BodyWidget({Key? key, required this.viewModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return  CustomScrollView(
-        slivers: [
-          AppBarFormWidget(viewModel: viewModel,),
-          SliverToBoxAdapter(child: BodyFormWidget(viewModel: viewModel,),)
-        ],
+    return CustomScrollView(
+      slivers: [
+        AppBarFormWidget(
+          viewModel: viewModel,
+        ),
+        SliverToBoxAdapter(
+          child: BodyFormWidget(
+            viewModel: viewModel,
+          ),
+        )
+      ],
     );
   }
 }
 
 class AppBarFormWidget extends StatelessWidget {
   final TodoFormViewModel viewModel;
+
   const AppBarFormWidget({Key? key, required this.viewModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return  SliverAppBar(
+    return SliverAppBar(
       pinned: true,
       snap: true,
       floating: true,
@@ -50,12 +58,12 @@ class AppBarFormWidget extends StatelessWidget {
             viewModel.createOrUpdateTodo();
             Navigator.pop(context);
           },
-          child:  Padding(
-                padding: const EdgeInsets.only(right: 15, top: 15),
-                child: Text(
-                  AllLocale.of(context).save,
-                  style: Theme.of(context).textTheme.button,
-                ),
+          child: Padding(
+            padding: const EdgeInsets.only(right: 15, top: 15),
+            child: Text(
+              AllLocale.of(context).save,
+              style: Theme.of(context).textTheme.button,
+            ),
           ),
         ),
       ],
@@ -63,24 +71,26 @@ class AppBarFormWidget extends StatelessWidget {
   }
 }
 
-
 class BodyFormWidget extends StatelessWidget {
   final TodoFormViewModel viewModel;
+
   const BodyFormWidget({Key? key, required this.viewModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
-        children: [
-          TitleFormWidget(viewModel),
-          ImportanceFormWidget(viewModel: viewModel),
-          DueDateFormWidget(viewModel),
-          const Divider(
-            thickness: .8,
-          ),
-          DeleteTodoIconWidget(viewModel: viewModel,)
-        ],
-      );
+      children: [
+        TitleFormWidget(viewModel),
+        ImportanceFormWidget(viewModel: viewModel),
+        DueDateFormWidget(viewModel),
+        const Divider(
+          thickness: .8,
+        ),
+        DeleteTodoIconWidget(
+          viewModel: viewModel,
+        )
+      ],
+    );
   }
 }
 
@@ -88,8 +98,8 @@ class FormWidget extends StatelessWidget {
   final TodoFormViewModel viewModel;
   final GlobalKey formKey;
 
-  FormWidget({Key? key, required this.viewModel, required this.formKey}) : super(key: key);
-
+  FormWidget({Key? key, required this.viewModel, required this.formKey})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -108,8 +118,8 @@ class FormWidget extends StatelessWidget {
 
 class TitleFormWidget extends ConsumerWidget {
   final TodoFormViewModel viewModel;
-  TitleFormWidget(this.viewModel, {Key? key}) : super(key: key);
 
+  TitleFormWidget(this.viewModel, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -125,28 +135,26 @@ class TitleFormWidget extends ConsumerWidget {
         onChanged: (value) => viewModel.setTitle(value),
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
-            contentPadding:
-            EdgeInsets.all(Dim.width(context) / 20),
+            contentPadding: EdgeInsets.all(Dim.width(context) / 20),
             border: InputBorder.none,
             hintText: AllLocale.of(context).hintMessage),
         style: Theme.of(context).textTheme.bodyText1,
         textAlign: TextAlign.left,
       ),
     );
-
   }
 }
 
-
 class ImportanceFormWidget extends StatelessWidget {
   final TodoFormViewModel viewModel;
+
   ImportanceFormWidget({Key? key, required this.viewModel}) : super(key: key);
 
   String dropdownValue = S.low;
 
   @override
   Widget build(BuildContext context) {
-    return   Container(
+    return Container(
       margin: EdgeInsets.all(Dim.width(context) / 25),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,8 +169,7 @@ class ImportanceFormWidget extends StatelessWidget {
               child: ButtonTheme(
                 child: DropdownButton(
                   value: viewModel.initialImportanceValue(),
-                  style: TextStyle(
-                      color: ColorApp.lightTheme.labelPrimary),
+                  style: TextStyle(color: ColorApp.lightTheme.labelPrimary),
                   icon: const SizedBox.shrink(),
                   items: [
                     DropdownMenuItem(
@@ -170,18 +177,21 @@ class ImportanceFormWidget extends StatelessWidget {
                       child: Text(AllLocale.of(context).low),
                     ),
                     DropdownMenuItem(
-                        value: S.basic,
-                        child: Text(AllLocale.of(context).basic),),
+                      value: S.basic,
+                      child: Text(AllLocale.of(context).basic),
+                    ),
                     DropdownMenuItem(
                       value: S.important,
                       child: Text(
                         '!! ${AllLocale.of(context).important}',
                         style: TextStyle(
-                            color: ColorApp.lightTheme.colorRed,),
+                          color: ColorApp.lightTheme.colorRed,
+                        ),
                       ),
                     )
                   ],
-                  onChanged:  (String? newImportance) => viewModel.setImportance(newImportance!),
+                  onChanged: (String? newImportance) =>
+                      viewModel.setImportance(newImportance!),
                 ),
               ),
             ),
@@ -196,10 +206,7 @@ class ImportanceFormWidget extends StatelessWidget {
   }
 }
 
-
-
-
-class DueDateFormWidget extends ConsumerStatefulWidget{
+class DueDateFormWidget extends ConsumerStatefulWidget {
   final TodoFormViewModel viewModel;
 
   const DueDateFormWidget(this.viewModel);
@@ -209,28 +216,28 @@ class DueDateFormWidget extends ConsumerStatefulWidget{
 }
 
 class DueDateFormWidgetState extends ConsumerState<DueDateFormWidget> {
-  final _dueDateFormFocusNode = DisabledFocusNode();
-  late TextEditingController _dueDateTextFieldController;
-
+  TextEditingController _dueDateTextFieldController = TextEditingController();
+  late bool _switch;
 
   @override
   void initState() {
     super.initState();
-    _dueDateTextFieldController = TextEditingController(
-      text: widget.viewModel.initialDueDateValue() !=null ?
-      DateFormat('dd MMMM yyyy').format(DateTime.fromMillisecondsSinceEpoch(widget.viewModel.initialDueDateValue()!)) :
-      'No',
-    );
+    // _dueDateTextFieldController = TextEditingController(
+    //   text: widget.viewModel.initialDueDateValue() != null ? DateFormat('yyyy/MM/dd')
+    //       .format(DateTime.fromMillisecondsSinceEpoch(
+    //       widget.viewModel.initialDueDateValue()!,),) : null,
+    // );
+    _switch = _dueDateTextFieldController.text.isNotEmpty;
   }
 
   @override
   void dispose() {
-    _dueDateFormFocusNode.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
-    return  Container(
+    return Container(
       margin: EdgeInsets.all(Dim.width(context) / 25),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -242,25 +249,74 @@ class DueDateFormWidgetState extends ConsumerState<DueDateFormWidget> {
                 AllLocale.of(context).completeDate,
                 textAlign: TextAlign.left,
               ),
-              _dueDateTextFieldController.text != null
+              widget.viewModel.initialDueDateValue() != null
                   ? Text(
-                  _dueDateTextFieldController.text,
-                  textAlign: TextAlign.left,
-                  style: Theme.of(context).textTheme.button,)
+                      DateFormat('dd MMMM yyyy').format(
+                          DateTime.fromMillisecondsSinceEpoch(
+                              widget.viewModel.initialDueDateValue()!)),
+                      textAlign: TextAlign.left,
+                      style: Theme.of(context).textTheme.button,
+                    )
                   : const SizedBox.shrink()
             ],
           ),
-        widget.viewModel.shouldShowSwitchOn()
-              ? SwitchOnIconWidget(viewModel:  widget.viewModel)
-              : SwitchOffIconWidget(viewModel:  widget.viewModel),
+          Switch(
+              value: _switch,
+              onChanged: (value) {
+                setState(() {
+                  _switch = value;
+                });
+                if (value) {
+                  _dueDateTextFieldController.text =
+                      _toSetDeadline(context) as String;
+                } else {
+                  _dueDateTextFieldController.clear();
+                  widget.viewModel.setDueDate(null);
+                }
+              })
+
+          // widget.viewModel.shouldShowSwitchOn()
+          //       ? InkResponse(
+          //   onTap: () => widget.viewModel.setDueDate(null),
+          //   splashColor: Colors.transparent,
+          //   child: SvgPicture.asset(S.iconSwitchOn),
+          // )
+          //       : InkResponse(
+          //   onTap: () =>  _toSetDeadline(context),
+          //   splashColor: Colors.transparent,
+          //   child: SvgPicture.asset(
+          //     S.iconSwitchOff,
+          //   ),
+          // ),
         ],
       ),
     );
   }
 
-
+  Future<String?> _toSetDeadline(BuildContext context) async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: widget.viewModel.initialDueDateValue() != null
+          ? DateTime.fromMillisecondsSinceEpoch(
+              widget.viewModel.initialDueDateValue()!)
+          : DateTime.now(),
+      firstDate: widget.viewModel.datePickerFirstDate(),
+      lastDate: widget.viewModel.datePickerLastDate(),
+    );
+    if (pickedDate != null) {
+      widget.viewModel.setDueDate(pickedDate.millisecondsSinceEpoch);
+      return DateFormat('dd MMMM yyyy').format(pickedDate);
+    } else {
+      widget.viewModel.setDueDate(null);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AllLocale.of(context).incorrectDate),
+        ),
+      );
+      return null;
+    }
+  }
 }
-
 
 class SwitchOnIconWidget extends StatelessWidget {
   final TodoFormViewModel viewModel;
@@ -269,7 +325,6 @@ class SwitchOnIconWidget extends StatelessWidget {
     Key? key,
     required this.viewModel,
   }) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -281,20 +336,20 @@ class SwitchOnIconWidget extends StatelessWidget {
   }
 }
 
-
 class SwitchOffIconWidget extends StatelessWidget {
+  final TextEditingController dueDateTextFieldController;
   final TodoFormViewModel viewModel;
-
 
   SwitchOffIconWidget({
     Key? key,
     required this.viewModel,
+    required this.dueDateTextFieldController,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkResponse(
-      onTap: () =>  _toSetDeadline(context),
+      onTap: () => _toSetDeadline(context),
       splashColor: Colors.transparent,
       child: SvgPicture.asset(
         S.iconSwitchOff,
@@ -302,27 +357,29 @@ class SwitchOffIconWidget extends StatelessWidget {
     );
   }
 
-
-  void _toSetDeadline(BuildContext context) async {
+  Future<void> _toSetDeadline(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
-      initialDate: viewModel.initialDueDateValue() != null ? DateTime.fromMillisecondsSinceEpoch(viewModel.initialDueDateValue()!) : DateTime.now(),
+      initialDate: viewModel.initialDueDateValue() != null
+          ? DateTime.fromMillisecondsSinceEpoch(
+              viewModel.initialDueDateValue()!)
+          : DateTime.now(),
       firstDate: viewModel.datePickerFirstDate(),
       lastDate: viewModel.datePickerLastDate(),
     );
     if (pickedDate != null) {
-      //_dueDateTextFieldController.text =  DateFormat('dd MMMM yyyy').format(pickedDate);
+      dueDateTextFieldController.text =
+          DateFormat('dd MMMM yyyy').format(pickedDate);
       viewModel.setDueDate(pickedDate.millisecondsSinceEpoch);
     } else {
-        viewModel.setDueDate(null);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AllLocale.of(context).incorrectDate),
-          ),
-        );
+      viewModel.setDueDate(null);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AllLocale.of(context).incorrectDate),
+        ),
+      );
     }
   }
-
 }
 
 class DisabledFocusNode extends FocusNode {
@@ -333,8 +390,9 @@ class DisabledFocusNode extends FocusNode {
 class SaveButtonWidget extends ConsumerWidget {
   final TodoFormViewModel viewModel;
   final GlobalKey formKey;
-  SaveButtonWidget({required this.viewModel, required this.formKey, Key? key}) : super(key: key);
 
+  SaveButtonWidget({required this.viewModel, required this.formKey, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -356,58 +414,64 @@ class SaveButtonWidget extends ConsumerWidget {
 
 class DeleteTodoIconWidget extends StatelessWidget {
   final TodoFormViewModel viewModel;
-  const DeleteTodoIconWidget({Key? key, required this.viewModel}) : super(key: key);
+
+  const DeleteTodoIconWidget({Key? key, required this.viewModel})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return  InkWell(
-      onTap: () => viewModel.shouldShowDeleteTodoIcon() ? _showConfirmDeleteTodoDialog(context) : {},
+    return InkWell(
+      onTap: () => viewModel.shouldShowDeleteTodoIcon()
+          ? _showConfirmDeleteTodoDialog(context)
+          : {},
       child: Container(
         margin: EdgeInsets.all(Dim.width(context) / 25),
         child: Row(
           children: [
             SvgPicture.asset(
               S.iconDelete,
-                color: viewModel.shouldShowDeleteTodoIcon() ? ColorApp.lightTheme.colorRed : ColorApp.lightTheme.colorGrey,
+              color: viewModel.shouldShowDeleteTodoIcon()
+                  ? ColorApp.lightTheme.colorRed
+                  : ColorApp.lightTheme.colorGrey,
             ),
             SizedBox(
               width: Dim.width(context) / 23,
             ),
             Text(
               AllLocale.of(context).delete,
-              style:
-              TextStyle(color: viewModel.shouldShowDeleteTodoIcon() ? ColorApp.lightTheme.colorRed : ColorApp.lightTheme.colorGrey),
+              style: TextStyle(
+                  color: viewModel.shouldShowDeleteTodoIcon()
+                      ? ColorApp.lightTheme.colorRed
+                      : ColorApp.lightTheme.colorGrey),
             )
           ],
         ),
       ),
     );
   }
-_showConfirmDeleteTodoDialog(BuildContext context) async {
-  final bool result = await showDialog(
-    context: context,
-    builder: (_) {
-      return AlertDialog(
-        content: const Text('Delete ToDo?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('CANCEL'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('DELETE'),
-          ),
-        ],
-      );
-    },
-  );
-  if (result) {
-    viewModel.deleteTodo();
-    Navigator.pop(context);
+
+  _showConfirmDeleteTodoDialog(BuildContext context) async {
+    final bool result = await showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          content: const Text('Delete ToDo?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('CANCEL'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('DELETE'),
+            ),
+          ],
+        );
+      },
+    );
+    if (result) {
+      viewModel.deleteTodo();
+      Navigator.pop(context);
+    }
   }
 }
-}
-
-
-
