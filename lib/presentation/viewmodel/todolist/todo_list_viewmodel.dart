@@ -20,9 +20,13 @@ final filteredTodoListProvider = Provider.autoDispose<State<TodoList>>((ref) {
         case FilterKind.all:
           return State.success(todoList);
         case FilterKind.completed:
-          return State.success(todoList.filterByCompleted(),);
+          return State.success(
+            todoList.filterByCompleted(),
+          );
         case FilterKind.incomplete:
-          return State.success(todoList.filterByIncomplete(),);
+          return State.success(
+            todoList.filterByIncomplete(),
+          );
       }
     },
     loading: () => const State.loading(),
@@ -30,9 +34,9 @@ final filteredTodoListProvider = Provider.autoDispose<State<TodoList>>((ref) {
   );
 });
 
-
 final todoListViewModelStateNotifierProvider =
-StateNotifierProvider.autoDispose<TodoListViewModel, State<TodoList>>((ref) {
+    StateNotifierProvider.autoDispose<TodoListViewModel, State<TodoList>>(
+        (ref) {
   return TodoListViewModel(
     ref.watch(getTodoListUseCaseProvider),
     ref.watch(createTodoUseCaseProvider),
@@ -47,10 +51,12 @@ class TodoListViewModel extends StateNotifier<State<TodoList>> {
   final UpdateTodoUseCase _updateTodoUseCase;
   final DeleteTodoUseCase _deleteTodoUseCase;
 
-  TodoListViewModel(this._getTodoListUseCase,
-      this._createTodoUseCase,
-      this._updateTodoUseCase,
-      this._deleteTodoUseCase,) : super(const State.init()) {
+  TodoListViewModel(
+    this._getTodoListUseCase,
+    this._createTodoUseCase,
+    this._updateTodoUseCase,
+    this._deleteTodoUseCase,
+  ) : super(const State.init()) {
     _getTodoList();
     getCountComplete();
   }
@@ -69,7 +75,9 @@ class TodoListViewModel extends StateNotifier<State<TodoList>> {
     try {
       state = const State.loading();
       final todoList = await _getTodoListUseCase.execute();
-      state = State.success(todoList,);
+      state = State.success(
+        todoList,
+      );
     } on Exception catch (e) {
       state = State.error(e);
     }
@@ -80,18 +88,20 @@ class TodoListViewModel extends StateNotifier<State<TodoList>> {
   }
 
   addTodo(
-      final String title,
-      final int? dueDate,
-      final String importance,
-      ) async {
+    final String title,
+    final int? dueDate,
+    final String importance,
+  ) async {
     try {
       final newTodo = await _createTodoUseCase.execute(
-          state.data!.revision,
-          title,
-          dueDate,
-          importance,
+        state.data!.revision,
+        title,
+        dueDate,
+        importance,
       );
-      state = State.success(state.data!.addTodo(newTodo),);
+      state = State.success(
+        state.data!.addTodo(newTodo),
+      );
     } on Exception catch (e) {
       state = State.error(e);
     }
@@ -100,18 +110,20 @@ class TodoListViewModel extends StateNotifier<State<TodoList>> {
   updateTodo(final Todo newTodo) async {
     try {
       await _updateTodoUseCase.execute(
-          state.data!.revision,
-          newTodo.id,
-          newTodo.createdAt,
-          newTodo.text,
-          newTodo.lastUpdatedBy,
-          newTodo.changedAt,
-          newTodo.deadline ?? 0,
-          newTodo.color ?? '',
-          newTodo.done,
-          newTodo.importance,
+        state.data!.revision,
+        newTodo.id,
+        newTodo.createdAt,
+        newTodo.text,
+        newTodo.lastUpdatedBy,
+        newTodo.changedAt,
+        newTodo.deadline ?? 0,
+        newTodo.color ?? '',
+        newTodo.done,
+        newTodo.importance,
       );
-      state = State.success(state.data!.updateTodo(newTodo),);
+      state = State.success(
+        state.data!.updateTodo(newTodo),
+      );
     } on Exception catch (e) {
       state = State.error(e);
     }
@@ -119,7 +131,10 @@ class TodoListViewModel extends StateNotifier<State<TodoList>> {
 
   deleteTodo(final String id) async {
     try {
-      await _deleteTodoUseCase.execute(id, state.data!.revision,);
+      await _deleteTodoUseCase.execute(
+        id,
+        state.data!.revision,
+      );
       state = State.success(state.data!.removeTodoById(id));
     } on Exception catch (e) {
       state = State.error(e);

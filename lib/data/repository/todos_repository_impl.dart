@@ -1,3 +1,4 @@
+import 'package:todoapp/domain/model/todo_element.dart';
 import 'package:uuid/uuid.dart';
 import '../../domain/model/todo.dart';
 import '../../domain/model/todo_list.dart';
@@ -66,4 +67,10 @@ class TodosRepositoryImpl implements TodosRepository {
   @override
   Future<void> deleteTodo(String id, int revision) async =>
       await database.deleteTodo(id, revision);
+
+  @override
+  Future<Todo> getTodo(String id) async {
+    final todoElement = await database.getTodo(id);
+    return todoElement;
+  }
 }

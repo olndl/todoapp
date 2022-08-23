@@ -1,4 +1,5 @@
 import '../model/todo.dart';
+import '../model/todo_element.dart';
 import '../model/todo_list.dart';
 
 abstract class TodosRepository {
@@ -22,4 +23,6 @@ abstract class TodosRepository {
       final String importance,
   );
   Future<void> deleteTodo(final String id, final int revision);
+
+  Future<Todo> getTodo(final String id);
 }

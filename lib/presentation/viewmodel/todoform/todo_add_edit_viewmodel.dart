@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
+import '../../../core/constants/strings.dart';
 import '../../../domain/model/todo.dart';
 import '../todolist/todo_list_viewmodel.dart';
 
@@ -11,7 +14,7 @@ class TodoFormViewModel {
   late final TodoListViewModel _todoListViewModel;
   late String _id;
   var _createdAt = 0;
-  var _title ='';
+  var _title = '';
   var _lastUpdatedBy= '';
   var _changedAt = 0;
   var _dueDate;
@@ -19,20 +22,20 @@ class TodoFormViewModel {
   var _isCompleted = false;
   var _importance = 'low';
   var _isNewTodo = false;
+  var _postCategory;
 
 
   TodoFormViewModel(final Reader read, final Todo? todo) {
     _todoListViewModel = read(todoListViewModelStateNotifierProvider.notifier);
     _initTodo(todo);
-    initialDueDateValue();
-    shouldShowSwitchOn();
-    setDueDate(todo?.deadline);
-    initialImportanceValue();
   }
+
+
 
   _initTodo(final Todo? todo) {
     if (todo == null) {
       _isNewTodo = true;
+      _postCategory = S.low;
     } else {
       _id = todo.id;
       _createdAt = todo.createdAt;
@@ -43,6 +46,7 @@ class TodoFormViewModel {
       _color = todo.color!;
       _isCompleted = todo.done;
       _importance = todo.importance;
+      _postCategory = todo.importance;
     }
   }
 
@@ -76,6 +80,8 @@ class TodoFormViewModel {
 
   String initialTitleValue() => _title;
 
+  String get postCategory => _postCategory ?? S.low;
+
   String initialImportanceValue() => _importance;
 
   int? initialDueDateValue() => _dueDate;
@@ -96,11 +102,4 @@ class TodoFormViewModel {
 
   setImportance(final String value) => _importance = value;
 
-  String shortTitle() {
-    if (_title.length > 106) {
-      return '${_title.substring(0,106)}...';
-    } else {
-      return _title;
-    }
-  }
 }

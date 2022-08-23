@@ -28,7 +28,7 @@ void main() {
     runApp(
       ProviderScope(
         child: TodoApp(
-          //router: AppRouter(),
+          router: AppRouter(),
         ),
       ),
     );
@@ -39,9 +39,9 @@ void main() {
 
 class TodoApp extends StatelessWidget {
 
-  //final AppRouter router;
+  final AppRouter router;
 
-  const TodoApp({Key? key,}) : super(key: key);
+  const TodoApp({Key? key, required this.router,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -55,8 +55,8 @@ class TodoApp extends StatelessWidget {
       ],
       supportedLocales: AllLocale.supportedLocales,
       theme: CustomTheme.lightTheme,
-      //onGenerateRoute: router.generateRoute,
-      home: TodoListPage(),
+      onGenerateRoute: router.generateRoute,
+      //home: TodoListPage(),
     );
   }
 }

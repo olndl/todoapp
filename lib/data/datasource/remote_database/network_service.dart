@@ -60,19 +60,19 @@ class NetworkService {
     }
   }
 
-  Future<TodoElement> fetchOneTodo(String id) async {
+  Future<Todo> fetchOneTodo(String id) async {
     try {
       Response response = await _dio.get('$_baseUrl/list/$id',
           options: Options(headers: {'Authorization': 'Bearer $_token'}),);
       if (response.statusCode == 200) {
-        return TodoElement.fromJson(response.data);
+        return TodoElement.fromJson(response.data).element;
       } else {
         print(
           'fetchOneTodoResponce:'
           '${response.statusCode} : ${response.data.toString()}',
         );
       }
-      return TodoElement.fromJson(response.data);
+      return TodoElement.fromJson(response.data).element;
     } catch (error, stacktrace) {
       print(
         'Exception occurred: '
@@ -110,7 +110,7 @@ class NetworkService {
 
   Future<Todo> addTodo(Map bodyRequest, int revision) async {
     print('bodyRequest: $bodyRequest, revision: $revision');
-    // try {
+    try {
       Response response = await _dio.post('$_baseUrl/list/',
           data: bodyRequest,
           options: Options(headers: {
@@ -127,12 +127,12 @@ class NetworkService {
         );
         return Todo.fromJson(bodyRequest['list']);
       }
-    // } catch (e) {
-    //   print(
-    //     'Error adding todo: $e',
-    //   );
-    //   throw Exception("Cannot add / Connection issue");
-    // }
+    } catch (e) {
+      print(
+        'Error adding todo: $e',
+      );
+      throw Exception("Cannot add / Connection issue");
+    }
   }
 
   Future<void> deleteTodo(String id, int revision) async {

@@ -1,4 +1,5 @@
 import 'package:todoapp/data/datasource/remote_database/todos_database.dart';
+import 'package:todoapp/domain/model/todo_element.dart';
 
 import '../../../domain/model/todo.dart';
 import '../../../domain/model/todo_list.dart';
@@ -36,6 +37,12 @@ class TodosDatabaseImpl implements TodosDatabase {
   @override
   Future<void> deleteTodo(String id, int revision) async {
     await networkService.deleteTodo(id, revision);
+  }
+
+  @override
+  Future<Todo> getTodo(String id) async{
+    final todoElement = await networkService.fetchOneTodo(id);
+    return todoElement;
   }
 
 }
