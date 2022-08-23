@@ -42,7 +42,6 @@ class NetworkService {
       Response response = await _dio.get('$_baseUrl/list/',
           options: Options(headers: {'Authorization': 'Bearer $_token'}),);
       if (response.statusCode == 200) {
-        print('REVISION ${TodoList.fromJson(response.data).revision}');
         return TodoList.fromJson(response.data);
       } else {
         print(

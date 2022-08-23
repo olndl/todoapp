@@ -9,11 +9,8 @@ class AddTodoButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      onPressed: () {
-        //context
-            //.read<NavigationController>()
-            //.navigateTo(Routes.ADD_TODO_ROUTE, arguments: null);
-      },
+      onPressed: () => Navigator.pushNamed(
+          context, Routes.ADD_TODO_ROUTE,),
       child: const Icon(Icons.add),
     );
   }

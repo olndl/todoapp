@@ -76,8 +76,6 @@ class TodoFormViewModel {
     if (!_isNewTodo) _todoListViewModel.deleteTodo(_id);
   }
 
-  String appBarTitle() => _isNewTodo ? 'Add ToDo' : 'Edit ToDo';
-
   String initialTitleValue() => _title;
 
   String get postCategory => _postCategory ?? S.low;

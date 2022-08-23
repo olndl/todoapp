@@ -6,8 +6,12 @@ class UnknownPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text('Unknown page: $name'),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        FlutterLogo(),
+        Text('Unknown page: $name'),
+      ],
     );
   }
 }

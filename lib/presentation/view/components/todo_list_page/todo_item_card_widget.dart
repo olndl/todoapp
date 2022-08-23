@@ -12,7 +12,6 @@ import '../../../../core/localization/l10n/all_locales.dart';
 import '../../../../core/navigation/routes.dart';
 import '../../../../domain/model/todo.dart';
 import '../../../viewmodel/todolist/todo_list_viewmodel.dart';
-import '../../todo_add_edit_page.dart';
 import 'checked_icon_widget.dart';
 
 class TodoItemCardWidget extends ConsumerWidget {
@@ -118,7 +117,7 @@ class TodoItemCardWidget extends ConsumerWidget {
                     Expanded(
                       flex: 1,
                       child: IconButton(
-                        onPressed: () => Routes.VIEW_TODO_ROUTE,
+                        onPressed: () => Navigator.pushNamed(context, Routes.VIEW_TODO_ROUTE, arguments: todo),
                         icon: SvgPicture.asset(
                           S.iconInfoOutline,
                         ),
@@ -148,7 +147,8 @@ class TodoItemCardWidget extends ConsumerWidget {
               ],
             ),
           ),
-          onTap: () => Routes.EDIT_TODO_ROUTE,
+          onTap: () => Navigator.pushNamed(context, Routes.EDIT_TODO_ROUTE,
+              arguments: todo),
         ),
       ),
     );

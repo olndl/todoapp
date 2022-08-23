@@ -1,9 +1,10 @@
-import 'package:todoapp/domain/model/todo_element.dart';
+import 'package:todoapp/core/constants/device_id.dart';
 import 'package:uuid/uuid.dart';
 import '../../domain/model/todo.dart';
 import '../../domain/model/todo_list.dart';
 import '../../domain/repository/todos_repository.dart';
 import '../datasource/remote_database/todos_database.dart';
+
 
 
 class TodosRepositoryImpl implements TodosRepository {
@@ -28,7 +29,7 @@ class TodosRepositoryImpl implements TodosRepository {
         id: Uuid().v4(),
         createdAt: DateTime.now().millisecondsSinceEpoch,
         text: title,
-        lastUpdatedBy: "olndlDevice",
+        lastUpdatedBy: await DeviceId().deviceId,
         changedAt:  DateTime.now().millisecondsSinceEpoch,
         deadline: dueDate,
         color: '0XFFFFFF',
