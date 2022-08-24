@@ -38,6 +38,7 @@ dependencies:
   state_notifier: ^0.7.2+1
   device_info: ^2.0.3
   platform_device_id: ^1.0.1
+  flutter_slidable: ^2.0.0
 
 
 dev_dependencies:

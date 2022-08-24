@@ -5,6 +5,8 @@ import 'package:todoapp/domain/usecase/delete_todo_usecase.dart';
 import 'package:todoapp/domain/usecase/delete_todo_usecase_impl.dart';
 import 'package:todoapp/domain/usecase/get_todo_list_usecase.dart';
 import 'package:todoapp/domain/usecase/get_todo_list_usecase_impl.dart';
+import 'package:todoapp/domain/usecase/patch_todo_usecase.dart';
+import 'package:todoapp/domain/usecase/patch_todo_usecase_impl.dart';
 import 'package:todoapp/domain/usecase/update_todo_usecase.dart';
 import 'package:todoapp/domain/usecase/update_todo_usecase_impl.dart';
 
@@ -18,3 +20,5 @@ final updateTodoUseCaseProvider =
     Provider<UpdateTodoUseCase>((ref) => UpdateTodoUseCaseImpl(ref.watch(todosRepositoryProvider)));
 final deleteTodoUseCaseProvider =
     Provider<DeleteTodoUseCase>((ref) => DeleteTodoUseCaseImpl(ref.watch(todosRepositoryProvider)));
+final patchTodoUseCaseProvider =
+Provider<PatchTodoListUseCase>((ref) => PatchTodoListUseCaseImpl(ref.watch(todosRepositoryProvider)));

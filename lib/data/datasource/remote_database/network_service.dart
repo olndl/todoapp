@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../../../domain/model/todo.dart';
 import '../../../domain/model/todo_element.dart';
@@ -12,6 +13,7 @@ class NetworkService {
 
   Future<TodoList> fetchTodosOnServer(Map bodyRequest, int revision) async {
     try {
+      debugPrint('Revon before: $revision');
       Response response = await _dio.patch('$_baseUrl/list/',
           data: bodyRequest,
           options: Options(headers: {
@@ -20,6 +22,7 @@ class NetworkService {
             'X-Last-Known-Revision': '$revision'
           },),);
       if (response.statusCode == 200) {
+        debugPrint('Revon after: ${response.data}');
         return TodoList.fromJson(response.data);
       } else {
         print(

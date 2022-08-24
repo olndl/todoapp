@@ -4,6 +4,10 @@ import '../model/todo_list.dart';
 
 abstract class TodosRepository {
   Future<TodoList> getTodoList();
+  Future<TodoList> patchTodoList(
+      final int revision,
+      final TodoList todoList,
+      );
   Future<Todo> createTodo(
       final int revision,
       final String title,

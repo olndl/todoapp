@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todoapp/domain/usecase/patch_todo_usecase.dart';
 import '../../../domain/domain_module.dart';
 import '../../../domain/model/todo.dart';
 import '../../../domain/model/todo_list.dart';
@@ -42,6 +43,7 @@ final todoListViewModelStateNotifierProvider =
     ref.watch(createTodoUseCaseProvider),
     ref.watch(updateTodoUseCaseProvider),
     ref.watch(deleteTodoUseCaseProvider),
+    ref.watch(patchTodoUseCaseProvider),
   );
 });
 
@@ -50,12 +52,14 @@ class TodoListViewModel extends StateNotifier<State<TodoList>> {
   final CreateTodoUseCase _createTodoUseCase;
   final UpdateTodoUseCase _updateTodoUseCase;
   final DeleteTodoUseCase _deleteTodoUseCase;
+  final PatchTodoListUseCase _patchTodoUseCase;
 
   TodoListViewModel(
     this._getTodoListUseCase,
     this._createTodoUseCase,
     this._updateTodoUseCase,
     this._deleteTodoUseCase,
+      this._patchTodoUseCase,
   ) : super(const State.init()) {
     _getTodoList();
     getCountComplete();
@@ -75,6 +79,20 @@ class TodoListViewModel extends StateNotifier<State<TodoList>> {
     try {
       state = const State.loading();
       final todoList = await _getTodoListUseCase.execute();
+      state = State.success(
+        todoList,
+      );
+    } on Exception catch (e) {
+      state = State.error(e);
+    }
+  }
+
+  patchTodoList() async {
+    try {
+      final todoList = await _patchTodoUseCase.execute(
+        state.data!.revision,
+        state.data!,
+      );
       state = State.success(
         todoList,
       );

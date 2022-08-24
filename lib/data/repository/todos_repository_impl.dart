@@ -19,6 +19,15 @@ class TodosRepositoryImpl implements TodosRepository {
   }
 
   @override
+  Future<TodoList> patchTodoList(
+      final int revision,
+      final TodoList todoList,
+      ) async {
+    final patchedTodoList = await database.patchTodos(todoList, revision);
+    return patchedTodoList;
+  }
+
+  @override
   Future<Todo> createTodo(
     final int revision,
     final String title,
