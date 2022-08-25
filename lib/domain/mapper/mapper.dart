@@ -1,7 +1,7 @@
 import '../model/todo.dart';
 
 class TodoMapper {
-  Todo transformToModel(final Map<String, dynamic> entity) {
+  Todo transformToModel(Map<String, dynamic> entity) {
     return Todo(
       id: entity['id'],
       createdAt: entity['created_at'],
@@ -14,6 +14,10 @@ class TodoMapper {
     );
   }
 
+  // int? transformToSyncAtParameter(Map<String, dynamic> entity) {
+  //   return entity['sync_at'];
+  // }
+
   Map<String, dynamic> transformToMap(Todo model) {
     return {
       'id': model.id,
@@ -24,7 +28,8 @@ class TodoMapper {
       'deadline': model.deadline,
       'color': model.color,
       'done': model.done ? 1 : 0,
-      'importance': model.importance
+      'importance': model.importance,
+      //'sync_at': syncAt
     };
   }
 }

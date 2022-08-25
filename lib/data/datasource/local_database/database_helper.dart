@@ -15,6 +15,7 @@ class DatabaseHelper {
   static const columnDone= 'done';
   static const columnDeadline = 'deadline';
   static const columnImportance = 'importance';
+  //static const columnSyncAt = 'sync_at';
 
   DatabaseHelper._instance();
 
