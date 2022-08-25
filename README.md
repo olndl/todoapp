@@ -60,7 +60,7 @@
   <table>
     <tr>
       <td style="text-align: center">
-        <img src="https://github.com/olndl/todoapp/blob/develop/assets/screens/eng_list.png" width="250" />
+        <img src="https://github.com/olndl/todoapp/blob/develop/assets/screens/todoeng.png" width="250" />
       </td>
       <td style="text-align: center">
         <img src="https://github.com/olndl/todoapp/blob/develop/assets/screens/eng_add.png" width="250" />
