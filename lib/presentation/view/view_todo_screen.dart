@@ -12,74 +12,72 @@ class TodoViewScreen extends StatelessWidget {
   const TodoViewScreen({Key? key, required this.todo}) : super(key: key);
 
   String _fromTsoFormatDate(int ts) {
-    return DateFormat.yMMMMd(Platform.localeName)
-        .format(DateTime.fromMillisecondsSinceEpoch(ts));
+    return '${DateFormat.yMMMd(Platform.localeName).format(DateTime.fromMillisecondsSinceEpoch(ts))}\n${DateFormat.jms(Platform.localeName).format(DateTime.fromMillisecondsSinceEpoch(ts))}';
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     body: SimpleDialog(
+      body: SimpleDialog(
         title: Text(AllLocale.of(context).todoView),
         children: <Widget>[
           Center(
             child: Column(children: <Widget>[
               Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Table(
-                  defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                  border: TableBorder.all(width: 1.0, color: Colors.grey),
+                padding: const EdgeInsets.all(23.0),
+                child: Column(
                   children: [
-                    TableRow(children: [
-                      Text(
-                        AllLocale.of(context).task,
-                        textScaleFactor: 1.2,
-                        textAlign: TextAlign.center,
-                      ),
-                      Text(
-                        todo.text,
-                        textScaleFactor: 1.2,
-                        textAlign: TextAlign.center,
-                      ),
-                    ]),
-                    TableRow(children: [
-                      Text(
-                        AllLocale.of(context).createdAt,
-                        textScaleFactor: 1.2,
-                        textAlign: TextAlign.center,
-                      ),
-                      Text(
-                        _fromTsoFormatDate(todo.createdAt),
-                        textScaleFactor: 1.2,
-                        textAlign: TextAlign.center,
-                      ),
-                    ]),
-                    TableRow(children: [
-                      Text(
-                        AllLocale.of(context).changedAt,
-                        textScaleFactor: 1.2,
-                        textAlign: TextAlign.center,
-                      ),
-                      Text(
-                        _fromTsoFormatDate(todo.changedAt),
-                        textScaleFactor: 1.2,
-                        textAlign: TextAlign.center,
-                      ),
-                    ]),
-                    TableRow(children: [
-                      Text(
-                        AllLocale.of(context).deadline,
-                        textScaleFactor: 1.2,
-                        textAlign: TextAlign.center,
-                      ),
-                      Text(
-                        todo.deadline == null
-                            ? AllLocale.of(context).withoutDeadline
-                            : _fromTsoFormatDate(todo.deadline!),
-                        textScaleFactor: 1.2,
-                        textAlign: TextAlign.center,
-                      ),
-                    ]),
+                    Row(
+                      children: [
+                        Text(
+                          AllLocale.of(context).task,
+                          textScaleFactor: 1.2,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Expanded(
+                          child: Text(
+                            todo.text,
+                            textScaleFactor: 1.2,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          AllLocale.of(context).createdAt,
+                          textScaleFactor: 1.2,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Expanded(
+                          child: Text(
+                            _fromTsoFormatDate(todo.createdAt),
+                            textScaleFactor: 1.2,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          AllLocale.of(context).changedAt,
+                          textScaleFactor: 1.2,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Expanded(
+                          child: Text(
+                            _fromTsoFormatDate(todo.changedAt),
+                            textScaleFactor: 1.2,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
