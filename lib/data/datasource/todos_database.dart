@@ -1,6 +1,6 @@
-import '../../../domain/model/todo.dart';
-import '../../../domain/model/todo_element.dart';
-import '../../../domain/model/todo_list.dart';
+import '../../domain/model/todo.dart';
+import '../../domain/model/todo_element.dart';
+import '../../domain/model/todo_list.dart';
 
 abstract class TodosDatabase {
   Future<TodoList> allTodos();

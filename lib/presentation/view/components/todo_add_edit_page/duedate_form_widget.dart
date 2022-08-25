@@ -5,34 +5,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/constants/dimension.dart';
 import '../../../../core/localization/l10n/all_locales.dart';
+import '../../../../domain/model/todo.dart';
 import '../../../viewmodel/todoform/todo_add_edit_viewmodel.dart';
-import '../../../viewmodel/todolist/toggle_calendar_viewmodel.dart';
+import '../../../viewmodel/todolist/switcher_provider.dart';
 
-class DueDateFormWidget extends ConsumerStatefulWidget {
+class DueDateFormWidget extends ConsumerWidget {
+  final Todo? todo;
   final TodoFormViewModel viewModel;
 
-  const DueDateFormWidget(this.viewModel);
+  const DueDateFormWidget(this.viewModel, this.todo, {Key? key});
 
   @override
-  DueDateFormWidgetState createState() => DueDateFormWidgetState();
-}
-
-class DueDateFormWidgetState extends ConsumerState<DueDateFormWidget> {
-  String? _datetime;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    var toggleController = ref.watch(toggleCalendarControllerProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final toSwitch = ref.watch(switcherProvider(todo));
     return Container(
       margin: EdgeInsets.all(Dim.width(context) / 25),
       child: Row(
@@ -45,9 +30,13 @@ class DueDateFormWidgetState extends ConsumerState<DueDateFormWidget> {
                 AllLocale.of(context).completeDate,
                 textAlign: TextAlign.left,
               ),
-              _datetime != null
+              todo?.deadline != null
                   ? Text(
-                      _datetime!,
+                      DateFormat.yMMMMd(Platform.localeName).format(
+                        DateTime.fromMillisecondsSinceEpoch(
+                          todo?.deadline ?? 0,
+                        ),
+                      ),
                       textAlign: TextAlign.left,
                       style: Theme.of(context).textTheme.button,
                     )
@@ -55,16 +44,13 @@ class DueDateFormWidgetState extends ConsumerState<DueDateFormWidget> {
             ],
           ),
           Switch(
-            value: toggleController,
+            value: toSwitch,
             onChanged: (value) {
-              ref
-                  .read(toggleCalendarControllerProvider.notifier)
-                  .toggleCalendar(value);
+              ref.read(switcherProvider(todo).notifier).toggleCalendar(value);
               if (value) {
-                _toSetDeadline();
+                toSetDeadline(context, ref);
               } else {
-                _datetime = null;
-                widget.viewModel.setDueDate(null);
+                viewModel.setDueDate(null);
               }
             },
           )
@@ -73,19 +59,17 @@ class DueDateFormWidgetState extends ConsumerState<DueDateFormWidget> {
     );
   }
 
-  void _toSetDeadline() async {
+  Future<void> toSetDeadline(BuildContext context, WidgetRef ref) async {
     DateTime? pickedDate = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime.now(),
-        lastDate: DateTime(2101));
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2222),
+    );
     if (pickedDate != null) {
-      widget.viewModel.setDueDate(pickedDate.millisecondsSinceEpoch);
-      setState(() {
-        _datetime = DateFormat.yMMMMd(Platform.localeName).format(pickedDate);
-      });
+      viewModel.setDueDate(pickedDate.millisecondsSinceEpoch);
     } else {
-      ref.read(toggleCalendarControllerProvider.notifier).toggleCalendar(false);
+      ref.read(switcherProvider(todo).notifier).toggleCalendar(false);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(AllLocale.of(context).incorrectDate),

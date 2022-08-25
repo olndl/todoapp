@@ -1,14 +1,14 @@
-import 'package:todoapp/data/datasource/remote_database/todos_database.dart';
+import 'package:todoapp/data/datasource/todos_database.dart';
 import 'package:todoapp/domain/model/todo_element.dart';
 
 import '../../../domain/model/todo.dart';
 import '../../../domain/model/todo_list.dart';
 import 'network_service.dart';
 
-class TodosDatabaseImpl implements TodosDatabase {
+class RemoteTodosDatabaseImpl implements TodosDatabase {
   final NetworkService networkService;
 
-  TodosDatabaseImpl({required this.networkService});
+  RemoteTodosDatabaseImpl({required this.networkService});
 
 
   @override

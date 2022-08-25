@@ -1,21 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todoapp/core/errors/logger.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/dimension.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/localization/l10n/all_locales.dart';
+import '../../../../domain/model/todo.dart';
 import '../../../viewmodel/todoform/todo_add_edit_viewmodel.dart';
-import '../../../viewmodel/todolist/todo_importance_provider.dart';
+import '../../../viewmodel/todolist/importance_provider.dart';
 
 class ImportanceFormWidget extends ConsumerWidget {
+  final Todo? _todo;
   final TodoFormViewModel viewModel;
 
-  ImportanceFormWidget(this.viewModel, {Key? key}) : super(key: key);
+  ImportanceFormWidget(this.viewModel, this._todo, {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final category = ref.watch(todoImportanceProvider).todoCategory;
+    final category = viewModel.initialImportanceValue();
+    ref.watch(todoImportanceProvider(_todo)).todoCategory;
     return Container(
       margin: EdgeInsets.all(Dim.width(context) / 25),
       child: Column(
@@ -57,8 +62,8 @@ class ImportanceFormWidget extends ConsumerWidget {
                     ],
                     onChanged: (String? newImportance) {
                       ref
-                          .read(todoImportanceProvider)
-                          .categoryOnChanged(newImportance!);
+                          .read(todoImportanceProvider(_todo))
+                          .categoryOnChanged(newImportance!, _todo);
                       viewModel.setImportance(newImportance);
                     }),
               ),

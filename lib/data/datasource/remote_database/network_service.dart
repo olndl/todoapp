@@ -1,15 +1,19 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:sqflite/sqflite.dart';
 
+import '../../../core/constants/strings.dart';
 import '../../../domain/model/todo.dart';
 import '../../../domain/model/todo_element.dart';
 import '../../../domain/model/todo_list.dart';
+import '../local_database/database_helper.dart';
 
 class NetworkService {
   final _token = 'Anehull';
   final _baseUrl = 'https://beta.mrdekk.ru/todobackend';
 
   final _dio = Dio();
+  var databaseFuture = DatabaseHelper.db.database;
 
   Future<TodoList> fetchTodosOnServer(Map bodyRequest, int revision) async {
     try {
@@ -41,26 +45,26 @@ class NetworkService {
   }
 
   Future<TodoList> fetchTodos() async {
+    late final TodoList listResponce;
+    final Database database = await databaseFuture;
     try {
       Response response = await _dio.get('$_baseUrl/list/',
           options: Options(headers: {'Authorization': 'Bearer $_token'}),);
       if (response.statusCode == 200) {
-        return TodoList.fromJson(response.data);
-      } else {
-        print(
-          'fetchTodosResponce:'
-          '${response.statusCode} : ${response.data.toString()}',
-        );
+        listResponce = TodoList.fromJson(response.data);
+        //return TodoList.fromJson(response.data);
       }
-      return TodoList.fromJson(response.data);
-    } catch (error, stacktrace) {
-      print(
-        'Exception occured: '
-        ' $error stackTrace: $stacktrace',
-      );
-      throw Exception('Data not found / Connection issue');
+      //return TodoList.fromJson(response.data);
+    }  on DioError catch (error, stacktrace) {
+      final todoMap = await database.query(S.databaseName);
+      final listObject=
+          todoMap.map((todo) => Todo.fromJson(todo)).toList();
+        listResponce = TodoList.fromJson({'status': 'ok', 'revision': 1, 'list': listObject});
+      //throw Exception('Data not found / Connection issue');
     }
+    return listResponce;
   }
+
 
   Future<Todo> fetchOneTodo(String id) async {
     try {

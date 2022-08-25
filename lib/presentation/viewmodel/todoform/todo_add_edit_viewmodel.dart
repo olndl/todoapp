@@ -18,11 +18,10 @@ class TodoFormViewModel {
   var _lastUpdatedBy= '';
   var _changedAt = 0;
   var _dueDate;
-  var _color = '';
+  var _color;
   var _isCompleted = false;
   var _importance = 'low';
   var _isNewTodo = false;
-  var _postCategory;
 
 
   TodoFormViewModel(final Reader read, final Todo? todo) {
@@ -35,7 +34,6 @@ class TodoFormViewModel {
   _initTodo(final Todo? todo) {
     if (todo == null) {
       _isNewTodo = true;
-      _postCategory = S.low;
     } else {
       _id = todo.id;
       _createdAt = todo.createdAt;
@@ -46,7 +44,6 @@ class TodoFormViewModel {
       _color = todo.color!;
       _isCompleted = todo.done;
       _importance = todo.importance;
-      _postCategory = todo.importance;
     }
   }
 
@@ -77,8 +74,6 @@ class TodoFormViewModel {
   }
 
   String initialTitleValue() => _title;
-
-  String get postCategory => _postCategory ?? S.low;
 
   String initialImportanceValue() => _importance;
 
