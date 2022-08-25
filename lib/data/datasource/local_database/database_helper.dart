@@ -4,8 +4,8 @@ import 'package:sqflite/sqflite.dart';
 import '../../../core/constants/strings.dart';
 
 class DatabaseHelper {
-  static const tableName = 'todos_table';
   static const databaseVersion = 1;
+  static const columnAutoId = 'id_auto';
   static const columnId = 'id';
   static const columnCreatedAt = 'created_at';
   static const columnText = 'text';
@@ -29,7 +29,7 @@ class DatabaseHelper {
 
   Future<Database> _initDB() async {
     Directory directory = await getApplicationDocumentsDirectory();
-    String databasePath = directory.path + S.databaseTable;
+    String databasePath = directory.path + S.databaseName;
 
     var db = await openDatabase(databasePath, version: databaseVersion, onCreate: _onCreate);
     return db;
@@ -37,7 +37,8 @@ class DatabaseHelper {
 
   Future<void> _onCreate(Database db, int newVersion) async {
     await db.execute('''
-          CREATE TABLE $tableName(
+          CREATE TABLE ${S.databaseName}(
+            $columnAutoId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             $columnId STRING NOT NULL,
             $columnCreatedAt INTEGER NOT NULL,
             $columnText TEXT NOT NULL,
@@ -45,7 +46,7 @@ class DatabaseHelper {
             $columnChangeAt INTEGER NOT NULL,
             $columnColor TEXT,
             $columnDone INTEGER NOT NULL,  
-            $columnDeadline INTEGER
+            $columnDeadline INTEGER,
             $columnImportance TEXT NOT NULL
           )
         ''',);

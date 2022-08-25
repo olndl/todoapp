@@ -1,19 +1,21 @@
 import 'package:sqflite/sqflite.dart';
+import 'package:todoapp/core/errors/logger.dart';
+import 'package:todoapp/domain/mapper/mapper.dart';
 import 'package:todoapp/domain/model/todo.dart';
 import 'package:todoapp/domain/model/todo_list.dart';
+import '../../../core/constants/strings.dart';
 import '../todos_database.dart';
 import 'database_helper.dart';
 
 class LocalTodosDatabaseImpl implements TodosDatabase {
-  static const _databaseName = 'todos_database';
   var databaseFuture = DatabaseHelper.db.database;
 
   @override
   Future<TodoList> allTodos() async {
     late final List<Todo> todoList;
     final Database database = await databaseFuture;
-    final todoMap = await database.query(_databaseName);
-    todoList = todoMap.map((todo) => Todo.fromJson(todo)).toList();
+    final todoMap = await database.query(S.databaseName);
+    todoList = todoMap.map((todo) => TodoMapper().transformToModel(todo)).toList();
     var todoObject = {'status': 'ok', 'revision': 1, 'list': todoList};
     return TodoList.fromJson(todoObject);
   }
@@ -24,13 +26,13 @@ class LocalTodosDatabaseImpl implements TodosDatabase {
     late final Todo todoEntity;
     await database.transaction((txn) async {
       final id = await txn.insert(
-        _databaseName,
-        todo.toJson(),
+        S.databaseName,
+        TodoMapper().transformToMap(todo),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
-      final results = await txn.query(_databaseName,
-          where: '${DatabaseHelper.columnId} = ?', whereArgs: [id],);
-      todoEntity = Todo.fromJson(results.first);
+      final results = await txn.query(S.databaseName,
+          where: '${DatabaseHelper.columnAutoId} = ?', whereArgs: [id],);
+      todoEntity = TodoMapper().transformToModel(results.first);
     });
     return todoEntity;
   }
@@ -40,8 +42,8 @@ class LocalTodosDatabaseImpl implements TodosDatabase {
     final Database database = await databaseFuture;
     final String id = todo.id;
     await database.update(
-      _databaseName,
-      todo.toJson(),
+      S.databaseName,
+      TodoMapper().transformToMap(todo),
       where: '${DatabaseHelper.columnId} = ?',
       whereArgs: [id],
     );
@@ -51,19 +53,19 @@ class LocalTodosDatabaseImpl implements TodosDatabase {
   Future<void> deleteTodo(String id, int revision) async {
     final Database database = await databaseFuture;
     await database.delete(
-      _databaseName,
+      S.databaseName,
       where: '${DatabaseHelper.columnId} = ?',
       whereArgs: [id],
     );
   }
 
-  Future<void> updateLocalPokemonDatatable(List<Todo> todoList) async {
+  Future<void> updateLocalTodoDatatable(List<Todo> todoList) async {
     final Database database = await databaseFuture;
     Batch batch = database.batch();
     for (var todo in todoList) {
       batch.insert(
-        _databaseName,
-        todo.toJson(),
+        S.databaseName,
+        TodoMapper().transformToMap(todo),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     }

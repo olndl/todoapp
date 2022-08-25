@@ -98,11 +98,6 @@ class DioClient {
         '/list/$id',
         data: bodyRequest,
       );
-      if (response.statusCode == 200) {
-        logger.info(
-          'Success changed!',
-        );
-      }
     } on DioError catch (err) {
       final errorMessage = DioException.fromDioError(err).toString();
       throw errorMessage;
@@ -122,7 +117,7 @@ class DioClient {
       if (response.statusCode == 200) {
         return TodoElement.fromJson(response.data).element;
       } else {
-        return Todo.fromJson(bodyRequest['list']);
+        return Todo.fromJson(bodyRequest['element']);
       }
     } on DioError catch (err) {
       final errorMessage = DioException.fromDioError(err).toString();
@@ -139,11 +134,6 @@ class DioClient {
       Response response = await _dio.delete(
         '/list/$id',
       );
-      if (response.statusCode == 200) {
-        logger.info(
-          'Todo deleted! - ${TodoElement.fromJson(response.data)}',
-        );
-      }
     } on DioError catch (err) {
       final errorMessage = DioException.fromDioError(err).toString();
       throw errorMessage;
