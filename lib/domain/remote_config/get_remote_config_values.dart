@@ -5,7 +5,7 @@ class GetRemoteConfigValuesInteractor {
 
   final RemoteConfigRepository _remoteConfigRepository;
 
-  String getNameValidationRegEx() {
+  String getSpecialColor() {
     return _remoteConfigRepository.getSpecialColor();
   }
 }
