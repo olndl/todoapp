@@ -1,8 +1,6 @@
 import 'dart:io';
-
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
-
 import '../../../core/constants/strings.dart';
 
 class DatabaseHelper {
@@ -31,13 +29,13 @@ class DatabaseHelper {
 
   Future<Database> _initDB() async {
     Directory directory = await getApplicationDocumentsDirectory();
-    String databasePath = directory.path + S.DATABASE_NAME;
+    String databasePath = directory.path + S.databaseTable;
 
     var db = await openDatabase(databasePath, version: databaseVersion, onCreate: _onCreate);
     return db;
   }
 
-  void _onCreate(Database db, int newVersion) async {
+  Future<void> _onCreate(Database db, int newVersion) async {
     await db.execute('''
           CREATE TABLE $tableName(
             $columnId STRING NOT NULL,
@@ -50,7 +48,7 @@ class DatabaseHelper {
             $columnDeadline INTEGER
             $columnImportance TEXT NOT NULL
           )
-        ''');
+        ''',);
   }
 
   Future close() async {

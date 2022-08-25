@@ -20,6 +20,6 @@ class UpdateTodoUseCaseImpl implements UpdateTodoUseCase {
       final String importance,
   ) {
     return _repository.updateTodo(revision, id, createdAt, title, lastUpdatedBy, changedAt, dueDate!, color!,
-        isCompleted, importance);
+        isCompleted, importance,);
   }
 }

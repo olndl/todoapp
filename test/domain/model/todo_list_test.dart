@@ -11,7 +11,7 @@ void main() {
           _buildTodo('1'),
           _buildTodo('2'),
           _buildTodo('3'),
-        ], revision: 112, status: 'ok')[2];
+        ], revision: 112, status: 'ok',)[2];
         final expected = _buildTodo('2');
         expect(actual, expected);
       });
@@ -24,7 +24,7 @@ void main() {
           _buildTodo('1'),
           _buildTodo('2'),
           _buildTodo('3'),
-        ], revision: 345, status: 'ok');
+        ], revision: 345, status: 'ok',);
         expect(() => todoList[4], throwsRangeError);
       });
     });
@@ -44,7 +44,7 @@ void main() {
         final actual = TodoList(list: [
           _buildTodo('1'),
           _buildTodo('2'),
-        ], status: 'ok', revision: 555)
+        ], status: 'ok', revision: 555,)
             .length;
         expect(actual, 2);
       });
@@ -61,5 +61,5 @@ Todo _buildTodo(final String id) {
       changedAt: DateTime.parse('2021-09-12').millisecondsSinceEpoch,
       deadline: DateTime.parse('2021-09-15').millisecondsSinceEpoch,
       done: false,
-      importance: 'importance$id');
+      importance: 'importance$id',);
 }

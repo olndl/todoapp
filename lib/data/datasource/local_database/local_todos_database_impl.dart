@@ -29,7 +29,7 @@ class LocalTodosDatabaseImpl implements TodosDatabase {
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
       final results = await txn.query(_databaseName,
-          where: '${DatabaseHelper.columnId} = ?', whereArgs: [id]);
+          where: '${DatabaseHelper.columnId} = ?', whereArgs: [id],);
       todoEntity = Todo.fromJson(results.first);
     });
     return todoEntity;
@@ -60,14 +60,14 @@ class LocalTodosDatabaseImpl implements TodosDatabase {
   Future<void> updateLocalPokemonDatatable(List<Todo> todoList) async {
     final Database database = await databaseFuture;
     Batch batch = database.batch();
-    todoList.forEach((todo) async {
+    for (var todo in todoList) {
       batch.insert(
         _databaseName,
         todo.toJson(),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
-    });
-    batch.commit();
+    }
+    await batch.commit();
   }
 
   @override

@@ -3,44 +3,38 @@ import 'package:flutter/cupertino.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../../core/constants/strings.dart';
+import '../../../core/errors/logger.dart';
 import '../../../domain/model/todo.dart';
 import '../../../domain/model/todo_element.dart';
 import '../../../domain/model/todo_list.dart';
 import '../local_database/database_helper.dart';
 
 class NetworkService {
-  final _token = 'Anehull';
-  final _baseUrl = 'https://beta.mrdekk.ru/todobackend';
+  final _token = S.token;
+  final _baseUrl = S.baseUrl;
 
   final _dio = Dio();
   var databaseFuture = DatabaseHelper.db.database;
 
   Future<TodoList> fetchTodosOnServer(Map bodyRequest, int revision) async {
     try {
-      debugPrint('Revon before: $revision');
-      Response response = await _dio.patch('$_baseUrl/list/',
-          data: bodyRequest,
-          options: Options(headers: {
+      Response response = await _dio.patch(
+        '$_baseUrl/list/',
+        data: bodyRequest,
+        options: Options(
+          headers: {
             'Authorization': 'Bearer $_token',
             'Content-Type': 'application/json',
             'X-Last-Known-Revision': '$revision'
-          },),);
+          },
+        ),
+      );
       if (response.statusCode == 200) {
-        debugPrint('Revon after: ${response.data}');
         return TodoList.fromJson(response.data);
-      } else {
-        print(
-          'fetchTodosOnServerResponce:'
-          '${response.statusCode} : ${response.data.toString()}',
-        );
       }
       return TodoList.fromJson(response.data);
     } catch (error, stacktrace) {
-      print(
-        'Exception occured: '
-        ' $error stackTrace: $stacktrace',
-      );
-      throw Exception('Data not found / Connection issue');
+      throw Exception('Wrong! + $stacktrace');
     }
   }
 
@@ -48,119 +42,107 @@ class NetworkService {
     late final TodoList listResponce;
     final Database database = await databaseFuture;
     try {
-      Response response = await _dio.get('$_baseUrl/list/',
-          options: Options(headers: {'Authorization': 'Bearer $_token'}),);
+      Response response = await _dio.get(
+        '$_baseUrl/list/',
+        options: Options(headers: {'Authorization': 'Bearer $_token'}),
+      );
       if (response.statusCode == 200) {
         listResponce = TodoList.fromJson(response.data);
         //return TodoList.fromJson(response.data);
       }
       //return TodoList.fromJson(response.data);
-    }  on DioError catch (error, stacktrace) {
+    } on DioError catch (error, stacktrace) {
       final todoMap = await database.query(S.databaseName);
-      final listObject=
-          todoMap.map((todo) => Todo.fromJson(todo)).toList();
-        listResponce = TodoList.fromJson({'status': 'ok', 'revision': 1, 'list': listObject});
+      final listObject = todoMap.map((todo) => Todo.fromJson(todo)).toList();
+      listResponce = TodoList.fromJson(
+          {'status': 'ok', 'revision': 1, 'list': listObject});
       //throw Exception('Data not found / Connection issue');
     }
     return listResponce;
   }
 
-
   Future<Todo> fetchOneTodo(String id) async {
     try {
-      Response response = await _dio.get('$_baseUrl/list/$id',
-          options: Options(headers: {'Authorization': 'Bearer $_token'}),);
+      Response response = await _dio.get(
+        '$_baseUrl/list/$id',
+        options: Options(headers: {'Authorization': 'Bearer $_token'}),
+      );
       if (response.statusCode == 200) {
         return TodoElement.fromJson(response.data).element;
-      } else {
-        print(
-          'fetchOneTodoResponce:'
-          '${response.statusCode} : ${response.data.toString()}',
-        );
       }
       return TodoElement.fromJson(response.data).element;
     } catch (error, stacktrace) {
-      print(
-        'Exception occurred: '
-        ' $error stackTrace: $stacktrace',
-      );
       throw Exception('Data not found / Connection issue');
     }
   }
 
   Future<void> changeTodo(Map bodyRequest, String? id, int revision) async {
     try {
-      Response response = await _dio.put('$_baseUrl/list/$id',
-          data: bodyRequest,
-          options: Options(headers: {
+      Response response = await _dio.put(
+        '$_baseUrl/list/$id',
+        data: bodyRequest,
+        options: Options(
+          headers: {
             'Authorization': 'Bearer $_token',
             'Content-Type': 'application/json',
             'X-Last-Known-Revision': '$revision'
-          },),);
+          },
+        ),
+      );
       if (response.statusCode == 200) {
-        print(
+        logger.info(
           'Success changed!',
-        );
-      } else {
-        print(
-          'fetchOneTodoResponse:'
-          '${response.statusCode} : ${response.data.toString()}',
         );
       }
     } catch (e) {
-      print(
+      logger.info(
         'Error updating todo: $e',
       );
     }
   }
 
   Future<Todo> addTodo(Map bodyRequest, int revision) async {
-    print('bodyRequest: $bodyRequest, revision: $revision');
     try {
-      Response response = await _dio.post('$_baseUrl/list/',
-          data: bodyRequest,
-          options: Options(headers: {
+      Response response = await _dio.post(
+        '$_baseUrl/list/',
+        data: bodyRequest,
+        options: Options(
+          headers: {
             'Authorization': 'Bearer $_token',
             'Content-Type': 'application/json',
             'X-Last-Known-Revision': '$revision'
-          },),);
+          },
+        ),
+      );
       if (response.statusCode == 200) {
         return TodoElement.fromJson(response.data).element;
       } else {
-        print(
-          'fetchOneTodoResponce:'
-          '${response.statusCode} : ${response.data.toString()}',
-        );
         return Todo.fromJson(bodyRequest['list']);
       }
     } catch (e) {
-      print(
-        'Error adding todo: $e',
-      );
       throw Exception("Cannot add / Connection issue");
     }
   }
 
   Future<void> deleteTodo(String id, int revision) async {
     try {
-      Response response = await _dio.delete('$_baseUrl/list/$id',
-          options: Options(headers: {
+      Response response = await _dio.delete(
+        '$_baseUrl/list/$id',
+        options: Options(
+          headers: {
             'Authorization': 'Bearer $_token',
             'Content-Type': 'application/json',
             'X-Last-Known-Revision': '$revision'
-          },),);
+          },
+        ),
+      );
       if (response.statusCode == 200) {
-        print(
+        logger.info(
           'Todo deleted! - ${TodoElement.fromJson(response.data)}',
-        );
-      } else {
-        print(
-          'fetchOneTodoResponce:'
-          '${response.statusCode} : ${response.data.toString()}',
         );
       }
     } catch (e) {
-      print(
+      logger.info(
         'Error deleting todo: $e',
       );
     }

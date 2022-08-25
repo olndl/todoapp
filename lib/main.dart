@@ -13,23 +13,25 @@ import 'core/theme/app_theme.dart';
 import 'firebase_options.dart';
 
 void main() {
-  runZonedGuarded(() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform);
+  runZonedGuarded(
+    () async {
+      WidgetsFlutterBinding.ensureInitialized();
+      await Firebase.initializeApp(
+          options: DefaultFirebaseOptions.currentPlatform);
 
-    initLogger();
-    logger.info('Start main');
-    runApp(
-      ProviderScope(
-        child: TodoApp(
-          router: AppRouter(),
+      initLogger();
+      logger.info('Start main');
+      runApp(
+        ProviderScope(
+          child: TodoApp(
+            router: AppRouter(),
+          ),
         ),
-      ),
-    );
-  },
-      (error, stack) =>
-          FirebaseCrashlytics.instance.recordError(error, stack, fatal: true));
+      );
+    },
+    (error, stack) =>
+        FirebaseCrashlytics.instance.recordError(error, stack, fatal: true),
+  );
 }
 
 class TodoApp extends StatelessWidget {
