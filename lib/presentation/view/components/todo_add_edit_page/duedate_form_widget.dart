@@ -17,7 +17,10 @@ class DueDateFormWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final toSwitch = ref.watch(switcherProvider(todo));
+    final toSwitch = viewModel.shouldShowSwitchOn();
+    final toDeadline = viewModel.initialDueDateValue();
+    ref.watch(displayDateStateProvider(todo)).isSwitch;
+    ref.watch(displayDateStateProvider(todo)).deadline;
     return Container(
       margin: EdgeInsets.all(Dim.width(context) / 25),
       child: Row(
@@ -30,23 +33,26 @@ class DueDateFormWidget extends ConsumerWidget {
                 AllLocale.of(context).completeDate,
                 textAlign: TextAlign.left,
               ),
-              todo?.deadline != null
+              toDeadline != null
                   ? Text(
                       DateFormat.yMMMMd(Platform.localeName).format(
                         DateTime.fromMillisecondsSinceEpoch(
-                          todo?.deadline ?? 0,
+                          toDeadline,
                         ),
                       ),
                       textAlign: TextAlign.left,
                       style: Theme.of(context).textTheme.button,
                     )
-                  : const SizedBox.shrink()
+                  : const SizedBox.shrink(),
             ],
           ),
           Switch(
             value: toSwitch,
             onChanged: (value) {
-              ref.read(switcherProvider(todo).notifier).toggleCalendar(value);
+              ref
+                  .read(displayDateStateProvider(todo).notifier)
+                  .isSwitchSet(value);
+              //ref.read(switcherProvider(todo).notifier).toggleCalendar(value);
               if (value) {
                 toSetDeadline(context, ref);
               } else {
@@ -68,8 +74,12 @@ class DueDateFormWidget extends ConsumerWidget {
     );
     if (pickedDate != null) {
       viewModel.setDueDate(pickedDate.millisecondsSinceEpoch);
+      ref
+          .read(displayDateStateProvider(todo).notifier)
+          .deadlineSet(pickedDate.millisecondsSinceEpoch);
     } else {
-      ref.read(switcherProvider(todo).notifier).toggleCalendar(false);
+      ref.read(displayDateStateProvider(todo).notifier).isSwitchSet(false);
+      ref.read(displayDateStateProvider(todo).notifier).deadlineSet(null);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(AllLocale.of(context).incorrectDate),

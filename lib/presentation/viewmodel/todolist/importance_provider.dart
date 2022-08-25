@@ -5,7 +5,7 @@ import '../../../domain/model/todo.dart';
 
 final todoImportanceProvider =
     ChangeNotifierProvider.family<TodoImportanceProvider, Todo?>(
-        (_, todo) => TodoImportanceProvider(todo));
+        (_, todo) => TodoImportanceProvider(todo),);
 
 class TodoImportanceProvider extends ChangeNotifier {
   final Todo? todo;

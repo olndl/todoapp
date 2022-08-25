@@ -1,16 +1,46 @@
+import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import 'package:intl/intl.dart';
 import '../../../domain/model/todo.dart';
 
-final switcherProvider =
-    StateNotifierProvider.autoDispose.family<SwitcherProvider, bool, Todo?>(
-  (_, todo) => SwitcherProvider(todo?.deadline != null ? true : false),
+final displayDateStateProvider =
+    ChangeNotifierProvider.family<DisplayDateState, Todo?>(
+  (_, todo) => DisplayDateState(
+    todo != null ? (todo.deadline != null ? true : false) : false,
+    todo?.deadline,
+  ),
 );
 
-class SwitcherProvider extends StateNotifier<bool> {
-  SwitcherProvider(state) : super(state);
+class DisplayDateState with ChangeNotifier {
+  bool _isSwitch;
+  int? _deadline;
 
-  toggleCalendar(bool value) {
-    state = value;
+  DisplayDateState(this._isSwitch, this._deadline);
+
+  bool get isSwitch => _isSwitch;
+
+  int? get deadline => _deadline;
+
+  isSwitchSet(bool val) {
+    _isSwitch = val;
+    notifyListeners();
+  }
+
+  deadlineSet(int? val) {
+    _deadline = val;
+    notifyListeners();
+  }
+
+  displayDate() {
+    if (_isSwitch && _deadline != null) {
+      return DateFormat.yMMMMd(Platform.localeName).format(
+        DateTime.fromMillisecondsSinceEpoch(
+          _deadline!,
+        ),
+      );
+    } else {
+      return null;
+    }
   }
 }
