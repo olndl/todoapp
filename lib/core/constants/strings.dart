@@ -1,6 +1,10 @@
 class S {
   static const token = 'Anehull';
   static const baseUrl = 'https://beta.mrdekk.ru/todobackend';
+  static const revisionHeader = 'X-Last-Known-Revision';
+  static const authHeader = 'Authorization';
+  static const authValue = 'Bearer $token';
+  static const contentType = 'application/json';
   static const String low = 'low';
   static const String basic = 'basic';
   static const String important = 'important';

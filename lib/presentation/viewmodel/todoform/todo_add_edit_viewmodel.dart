@@ -6,30 +6,28 @@ import '../../../core/constants/strings.dart';
 import '../../../domain/model/todo.dart';
 import '../todolist/todo_list_viewmodel.dart';
 
-final todoFormViewModelProvider = Provider.autoDispose.family<TodoFormViewModel, Todo?>((ref, todo) {
+final todoFormViewModelProvider =
+    Provider.autoDispose.family<TodoFormViewModel, Todo?>((ref, todo) {
   return TodoFormViewModel(ref.read, todo);
 });
 
 class TodoFormViewModel {
   late final TodoListViewModel _todoListViewModel;
   late String _id;
-  var _createdAt = 0;
-  var _title = '';
-  var _lastUpdatedBy= '';
-  var _changedAt = 0;
+  int _createdAt = DateTime.now().millisecondsSinceEpoch;
+  String _title = '';
+  String _lastUpdatedBy = '';
+  int _changedAt = DateTime.now().millisecondsSinceEpoch;
   var _dueDate;
   var _color;
   var _isCompleted = false;
   var _importance = 'low';
   var _isNewTodo = false;
 
-
   TodoFormViewModel(final Reader read, final Todo? todo) {
     _todoListViewModel = read(todoListViewModelStateNotifierProvider.notifier);
     _initTodo(todo);
   }
-
-
 
   _initTodo(final Todo? todo) {
     if (todo == null) {
@@ -50,21 +48,22 @@ class TodoFormViewModel {
   createOrUpdateTodo() {
     if (_isNewTodo) {
       _todoListViewModel.addTodo(
-          _title,
-          _dueDate,
-          _importance,
+        _title,
+        _dueDate,
+        _importance,
       );
     } else {
       final newTodo = Todo(
-          id: _id,
-          createdAt: _createdAt,
-          text: _title,
-          lastUpdatedBy: _lastUpdatedBy,
-          changedAt: _changedAt,
-          deadline: _dueDate,
-          color: _color,
-          done: _isCompleted,
-          importance: _importance,);
+        id: _id,
+        createdAt: _createdAt,
+        text: _title,
+        lastUpdatedBy: _lastUpdatedBy,
+        changedAt: _changedAt,
+        deadline: _dueDate,
+        color: _color,
+        done: _isCompleted,
+        importance: _importance,
+      );
       _todoListViewModel.updateTodo(newTodo);
     }
   }
@@ -94,5 +93,4 @@ class TodoFormViewModel {
   setDueDate(final int? value) => _dueDate = value;
 
   setImportance(final String value) => _importance = value;
-
 }

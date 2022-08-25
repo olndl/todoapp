@@ -59,19 +59,21 @@ class TodoListViewModel extends StateNotifier<State<TodoList>> {
     this._createTodoUseCase,
     this._updateTodoUseCase,
     this._deleteTodoUseCase,
-      this._patchTodoUseCase,
+    this._patchTodoUseCase,
   ) : super(const State.init()) {
     _getTodoList();
     getCountComplete();
   }
 
   completeTodo(final Todo todo) {
-    final newTodo = todo.copyWith(done: true);
+    final newTodo = todo.copyWith(
+        done: true, changedAt: DateTime.now().millisecondsSinceEpoch);
     updateTodo(newTodo);
   }
 
   undoTodo(final Todo todo) {
-    final newTodo = todo.copyWith(done: false);
+    final newTodo = todo.copyWith(
+        done: false, changedAt: DateTime.now().millisecondsSinceEpoch);
     updateTodo(newTodo);
   }
 

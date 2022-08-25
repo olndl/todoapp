@@ -27,8 +27,16 @@ class AppBarFormWidget extends StatelessWidget {
       actions: [
         InkWell(
           onTap: () {
-            viewModel.createOrUpdateTodo();
-            Navigator.pop(context);
+            if (viewModel.initialTitleValue().isNotEmpty) {
+              viewModel.createOrUpdateTodo();
+              Navigator.pop(context);
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(AllLocale.of(context).emptyInput),
+                ),
+              );
+            }
           },
           child: Padding(
             padding: const EdgeInsets.only(right: 15, top: 15),
