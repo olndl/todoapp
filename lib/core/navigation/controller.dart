@@ -14,4 +14,7 @@ class NavigationController {
     _key.currentState?.pop(result);
   }
 
+  Future<T> pushDialog<T>(RawDialogRoute<T> route) async {
+    return _key.currentState?.push<T>(route) as Future<T>;
+  }
 }

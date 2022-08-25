@@ -22,6 +22,7 @@
     "low": "Low",
     "basic": "Basic",
     "important": "Important",
-    "emptyInput": "Error: - message is empty"
+    "emptyInput": "Error: - message is empty",
+    "loading": "loading..."
 
 }
