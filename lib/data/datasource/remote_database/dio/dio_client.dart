@@ -94,7 +94,7 @@ class DioClient {
   Future<void> changeTodo(Map bodyRequest, String? id, int revision) async {
     try {
       _dio.options.headers[S.revisionHeader] = '$revision';
-      Response response = await _dio.put(
+     await _dio.put(
         '/list/$id',
         data: bodyRequest,
       );
@@ -131,7 +131,7 @@ class DioClient {
   Future<void> deleteTodo(String id, int revision) async {
     try {
       _dio.options.headers[S.revisionHeader] = '$revision';
-      Response response = await _dio.delete(
+      await _dio.delete(
         '/list/$id',
       );
     } on DioError catch (err) {

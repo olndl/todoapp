@@ -1,3 +1,5 @@
+import 'package:todoapp/domain/model/todo_list.dart';
+
 import '../model/todo.dart';
 
 class TodoMapper {
@@ -14,9 +16,17 @@ class TodoMapper {
     );
   }
 
-  // int? transformToSyncAtParameter(Map<String, dynamic> entity) {
-  //   return entity['sync_at'];
-  // }
+  TodoList transformListToModel(Map<String, dynamic> entity) {
+    return TodoList(
+      revision: entity['revision'],
+      status: entity['status'],
+      list: entity['list'],
+    );
+  }
+
+  Map<String, dynamic> transformListToMap(List<Todo> model) {
+    return {'revision': 1, 'status': 'ok', 'list': model};
+  }
 
   Map<String, dynamic> transformToMap(Todo model) {
     return {
@@ -29,7 +39,6 @@ class TodoMapper {
       'color': model.color,
       'done': model.done ? 1 : 0,
       'importance': model.importance,
-      //'sync_at': syncAt
     };
   }
 }

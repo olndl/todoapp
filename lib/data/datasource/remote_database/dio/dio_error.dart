@@ -36,7 +36,7 @@ class DioException implements Exception {
   String _handleStatusCode(int? statusCode) {
     switch (statusCode) {
       case 400:
-        return 'Bad request.';
+        return 'Bad request. Revision conflict';
       case 401:
         return 'Authentication failed.';
       case 403:

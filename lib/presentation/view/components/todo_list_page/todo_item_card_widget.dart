@@ -1,8 +1,6 @@
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:todoapp/presentation/view/components/todo_list_page/priority_icon_widget.dart';
@@ -133,10 +131,11 @@ class TodoItemCardWidget extends ConsumerWidget {
                       flex: 1,
                       child: IconButton(
                         onPressed: () => Navigator.pushNamed(
-                            context, Routes.VIEW_TODO_ROUTE,
-                            arguments: todo),
+                            context, Routes.viewTodoRoute,
+                            arguments: todo,),
                         icon: SvgPicture.asset(
                           S.iconInfoOutline,
+                          color: Theme.of(context).disabledColor,
                         ),
                       ),
                     )
@@ -164,8 +163,8 @@ class TodoItemCardWidget extends ConsumerWidget {
               ],
             ),
           ),
-          onTap: () => Navigator.pushNamed(context, Routes.EDIT_TODO_ROUTE,
-              arguments: todo),
+          onTap: () => Navigator.pushNamed(context, Routes.editTodoRoute,
+              arguments: todo,),
         ),
       ),
     );

@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -52,7 +51,6 @@ class DueDateFormWidget extends ConsumerWidget {
               ref
                   .read(displayDateStateProvider(todo).notifier)
                   .isSwitchSet(value);
-              //ref.read(switcherProvider(todo).notifier).toggleCalendar(value);
               if (value) {
                 toSetDeadline(context, ref);
               } else {

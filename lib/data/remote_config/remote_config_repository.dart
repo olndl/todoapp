@@ -7,11 +7,11 @@ class RemoteConfigRepository {
 
   final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
 
-  static String defaultImportanceColor = "red";
+  static String defaultImportanceColor = 'red';
 
   static Map<String, dynamic> defaultRemoteConfigColors = {
-    "purple": ColorApp.lightTheme.colorSpecial,
-    "red": ColorApp.lightTheme.colorRed,
+    'purple': ColorApp.lightTheme.colorSpecial,
+    'red': ColorApp.lightTheme.colorRed,
   };
 
   String get getColorValue => remoteConfig.getString(remoteColor);

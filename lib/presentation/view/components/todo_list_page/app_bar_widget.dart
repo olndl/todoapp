@@ -10,6 +10,8 @@ class AppBarWidget extends StatelessWidget {
   final _provider = filterKindViewModelStateNotifierProvider;
   final _listprovider = todoListViewModelStateNotifierProvider;
 
+  AppBarWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(final BuildContext context) {
     return Consumer(

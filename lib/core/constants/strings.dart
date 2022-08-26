@@ -25,6 +25,6 @@ class S {
   static const String iconClose =  'assets/icons/close.svg';
   static const String deviceId = 'olndlDevice';
   static const String errorEmptyMessage = 'Message is empty';
-  //static const String databaseTable = 'offline_first.db';
-  static const String databaseName = 'offline_database';
+  static const String databaseName = 'data';
+  static const String host = 'example.com';
 }

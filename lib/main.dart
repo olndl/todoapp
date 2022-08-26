@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todoapp/core/constants/dimension.dart';
 import 'core/errors/logger.dart';
 import 'core/navigation/router.dart';
 import 'core/localization/l10n/all_locales.dart';
@@ -17,7 +18,8 @@ void main() {
     () async {
       WidgetsFlutterBinding.ensureInitialized();
       await Firebase.initializeApp(
-          options: DefaultFirebaseOptions.currentPlatform);
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
 
       initLogger();
       logger.info('Start main');
@@ -34,13 +36,13 @@ void main() {
   );
 }
 
-class TodoApp extends StatelessWidget {
+class TodoApp extends ConsumerWidget {
   final AppRouter router;
 
   const TodoApp({Key? key, required this.router}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       localizationsDelegates: const [
@@ -51,7 +53,7 @@ class TodoApp extends StatelessWidget {
       ],
       supportedLocales: AllLocale.supportedLocales,
       theme: CustomTheme.lightTheme,
-      initialRoute: Routes.LIST_TODO_ROUTE,
+      initialRoute: Routes.listTodoRoute,
       onGenerateRoute: router.generateRoute,
     );
   }

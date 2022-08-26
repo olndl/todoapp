@@ -1,5 +1,4 @@
 import '../../domain/model/todo.dart';
-import '../../domain/model/todo_element.dart';
 import '../../domain/model/todo_list.dart';
 
 abstract class TodosDatabase {
@@ -8,5 +7,4 @@ abstract class TodosDatabase {
   Future<Todo> insertTodo(Todo todo, int revision);
   Future<void> updateTodo(Todo todo, int revision);
   Future<void> deleteTodo(String id, int revision);
-  Future<Todo> getTodo(String id);
 }

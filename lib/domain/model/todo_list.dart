@@ -1,6 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:todoapp/domain/model/todo.dart';
-import 'package:todoapp/domain/model/todo_element.dart';
 
 part 'todo_list.freezed.dart';
 part 'todo_list.g.dart';
@@ -10,7 +9,7 @@ class TodoList with _$TodoList {
   const factory TodoList({
     @JsonKey(name: 'revision') required int revision,
     @JsonKey(name: 'status') required String status,
-    @JsonKey(name: 'list') required List<Todo> list
+    @JsonKey(name: 'list') required List<Todo> list,
   }) = _TodoList;
 
   factory TodoList.fromJson(Map<String, dynamic> json) => _$TodoListFromJson(json);

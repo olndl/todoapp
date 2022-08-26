@@ -35,7 +35,7 @@ class TodosRepositoryImpl implements TodosRepository {
     final String importance,
   ) async {
     final todo = Todo(
-        id: Uuid().v4(),
+        id: const Uuid().v4(),
         createdAt: DateTime.now().millisecondsSinceEpoch,
         text: title,
         lastUpdatedBy: await DeviceId().deviceId,
@@ -78,9 +78,4 @@ class TodosRepositoryImpl implements TodosRepository {
   Future<void> deleteTodo(String id, int revision) async =>
       await database.deleteTodo(id, revision);
 
-  @override
-  Future<Todo> getTodo(String id) async {
-    final todoElement = await database.getTodo(id);
-    return todoElement;
-  }
 }

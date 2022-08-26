@@ -1,5 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todoapp/core/constants/colors.dart';
@@ -9,6 +7,8 @@ import 'components/todo_list_page/app_bar_widget.dart';
 import 'components/todo_list_page/home_widget.dart';
 
 class TodoListPage extends StatelessWidget {
+  const TodoListPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

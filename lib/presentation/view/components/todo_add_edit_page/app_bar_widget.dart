@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../core/constants/strings.dart';
@@ -22,6 +21,7 @@ class AppBarFormWidget extends StatelessWidget {
         },
         icon: SvgPicture.asset(
           S.iconClose,
+          color: Theme.of(context).disabledColor,
         ),
       ),
       actions: [

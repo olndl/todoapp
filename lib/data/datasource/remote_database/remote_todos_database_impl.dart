@@ -33,12 +33,6 @@ class RemoteTodosDatabaseImpl implements TodosDatabase {
   }
 
   @override
-  Future<Todo> getTodo(String id) async {
-    final todoElement = await dioClient.fetchOneTodo(id);
-    return todoElement;
-  }
-
-  @override
   Future<TodoList> patchTodos(TodoList todoList, int revision) async {
     final bodyRequest = {'status': 'ok', 'list': todoList.list};
     final fetchedTodos =

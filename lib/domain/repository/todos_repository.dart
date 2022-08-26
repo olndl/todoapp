@@ -27,5 +27,4 @@ abstract class TodosRepository {
   );
   Future<void> deleteTodo(final String id, final int revision);
 
-  Future<Todo> getTodo(final String id);
 }

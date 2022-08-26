@@ -67,7 +67,7 @@ class TodoViewScreen extends StatelessWidget {
                           AllLocale.of(context).changedAt,
                           textScaleFactor: 1.2,
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Expanded(
                           child: Text(
@@ -93,7 +93,7 @@ class TodoViewScreen extends StatelessWidget {
                   ],
                 ),
               ),
-            ]),
+            ],),
           )
         ],
       ),

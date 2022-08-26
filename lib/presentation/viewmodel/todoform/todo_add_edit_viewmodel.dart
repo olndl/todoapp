@@ -1,8 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
-
-import '../../../core/constants/strings.dart';
 import '../../../domain/model/todo.dart';
 import '../todolist/todo_list_viewmodel.dart';
 
@@ -18,11 +14,11 @@ class TodoFormViewModel {
   String _title = '';
   String _lastUpdatedBy = '';
   int _changedAt = DateTime.now().millisecondsSinceEpoch;
-  var _dueDate;
-  var _color;
-  var _isCompleted = false;
-  var _importance = 'low';
-  var _isNewTodo = false;
+  int? _dueDate;
+  String? _color;
+  bool _isCompleted = false;
+  String _importance = 'low';
+  bool _isNewTodo = false;
 
   TodoFormViewModel(final Reader read, final Todo? todo) {
     _todoListViewModel = read(todoListViewModelStateNotifierProvider.notifier);

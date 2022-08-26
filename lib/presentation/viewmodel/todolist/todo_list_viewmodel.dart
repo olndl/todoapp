@@ -67,13 +67,13 @@ class TodoListViewModel extends StateNotifier<State<TodoList>> {
 
   completeTodo(final Todo todo) {
     final newTodo = todo.copyWith(
-        done: true, changedAt: DateTime.now().millisecondsSinceEpoch);
+        done: true, changedAt: DateTime.now().millisecondsSinceEpoch,);
     updateTodo(newTodo);
   }
 
   undoTodo(final Todo todo) {
     final newTodo = todo.copyWith(
-        done: false, changedAt: DateTime.now().millisecondsSinceEpoch);
+        done: false, changedAt: DateTime.now().millisecondsSinceEpoch,);
     updateTodo(newTodo);
   }
 

@@ -1,6 +1,6 @@
 class Routes {
-  static const LIST_TODO_ROUTE = '/list_todo';
-  static const ADD_TODO_ROUTE = '/add_todo';
-  static const EDIT_TODO_ROUTE = '/edit_todo';
-  static const VIEW_TODO_ROUTE = '/view_todo';
+  static const listTodoRoute = '/list_todo';
+  static const addTodoRoute = '/add_todo';
+  static const editTodoRoute = '/edit_todo';
+  static const viewTodoRoute = '/view_todo';
 }

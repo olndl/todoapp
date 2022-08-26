@@ -1,28 +1,29 @@
 import 'package:sqflite/sqflite.dart';
-import 'package:todoapp/core/errors/logger.dart';
+import 'package:todoapp/data/datasource/remote_database/dio/dio_client.dart';
 import 'package:todoapp/domain/mapper/mapper.dart';
 import 'package:todoapp/domain/model/todo.dart';
 import 'package:todoapp/domain/model/todo_list.dart';
 import '../../../core/constants/strings.dart';
+import '../remote_database/remote_todos_database_impl.dart';
 import '../todos_database.dart';
 import 'database_helper.dart';
 
 class LocalTodosDatabaseImpl implements TodosDatabase {
   var databaseFuture = DatabaseHelper.db.database;
+  final RemoteTodosDatabaseImpl remoteTodos =
+      RemoteTodosDatabaseImpl(dioClient: DioClient());
 
   @override
   Future<TodoList> allTodos() async {
+    TodoList currantTodos;
     final Database database = await databaseFuture;
     final todoMap = await database.query(S.databaseName);
-    final List<Todo> todoList =
-        List<Todo>.from(todoMap.map((todo) => Todo.fromJson(todo)));
-    Map<String, dynamic> todoObject = {
-      'revision': 1,
-      'status': 'ok',
-      'list': todoList
-    };
-    await database.close();
-    return TodoList.fromJson(todoObject);
+    final List<Todo> todoList = List<Todo>.from(
+      todoMap.map((todo) => TodoMapper().transformToModel(todo)),
+    );
+    Map<String, dynamic> todoObject = TodoMapper().transformListToMap(todoList);
+    currantTodos = TodoMapper().transformListToModel(todoObject);
+    return currantTodos;
   }
 
   @override
@@ -44,7 +45,6 @@ class LocalTodosDatabaseImpl implements TodosDatabase {
         todoEntity = TodoMapper().transformToModel(results.first);
       },
     );
-    await database.close();
     return todoEntity;
   }
 
@@ -58,7 +58,6 @@ class LocalTodosDatabaseImpl implements TodosDatabase {
       where: '${DatabaseHelper.columnId} = ?',
       whereArgs: [id],
     );
-    await database.close();
   }
 
   @override
@@ -69,31 +68,10 @@ class LocalTodosDatabaseImpl implements TodosDatabase {
       where: '${DatabaseHelper.columnId} = ?',
       whereArgs: [id],
     );
-    await database.close();
-  }
-
-  // Future<void> updateLocalTodoDatatable(List<Todo> todoList) async {
-  //   final Database database = await databaseFuture;
-  //   Batch batch = database.batch();
-  //   for (var todo in todoList) {
-  //     batch.insert(
-  //       S.databaseName,
-  //       TodoMapper().transformToMap(todo),
-  //       conflictAlgorithm: ConflictAlgorithm.replace,
-  //     );
-  //   }
-  //   await batch.commit();
-  // }
-
-  @override
-  Future<Todo> getTodo(String id) {
-    // TODO: implement getTodo
-    throw UnimplementedError();
   }
 
   @override
-  Future<TodoList> patchTodos(TodoList todoList, int revision) {
-    // TODO: implement getTodo
-    throw UnimplementedError();
+  Future<TodoList> patchTodos(TodoList todoList, int revision) async {
+    return todoList;
   }
 }

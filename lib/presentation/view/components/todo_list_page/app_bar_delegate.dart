@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../core/constants/colors.dart';
@@ -29,16 +28,13 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
       clipBehavior: Clip.none,
       fit: StackFit.expand,
       children: [
-        ColoredBox(
-          color: ColorApp.lightTheme.backPrimary,
-        ),
         AnimatedOpacity(
           opacity: shrinkOffset / expandedHeight,
           duration: const Duration(milliseconds: 150),
           child: PhysicalModel(
             shadowColor: Colors.grey,
             elevation: 2,
-            color: ColorApp.lightTheme.backPrimary,
+            color: Theme.of(context).primaryColor,
             child: Row(
               children: [
                 Padding(
@@ -88,19 +84,19 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
             ),
             duration: const Duration(microseconds: 10),
             child: InputChip(
-              label: viewModel.isFilteredByAll()
-                  ? SvgPicture.asset(S.iconVisibility)
-                  : SvgPicture.asset(S.iconVisibilityOff),
-              selected: viewModel.isFilteredByAll(),
-              onSelected: (val) => val
-                  ? viewModel.filterByAll()
-                  : viewModel.filterByIncomplete(),
-              selectedColor: Colors.transparent,
-              backgroundColor: Colors.transparent,
-              showCheckmark: false,
+                  label: viewModel.isFilteredByAll()
+                      ? SvgPicture.asset(S.iconVisibility)
+                      : SvgPicture.asset(S.iconVisibilityOff),
+                  selected: viewModel.isFilteredByAll(),
+                  onSelected: (val) => val
+                      ? viewModel.filterByAll()
+                      : viewModel.filterByIncomplete(),
+                  selectedColor: Theme.of(context).primaryColor,
+                  backgroundColor: Theme.of(context).primaryColor,
+                  showCheckmark: false,
+                ),
             ),
           ),
-        ),
       ],
     );
   }

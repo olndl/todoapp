@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todoapp/presentation/view/components/todo_list_page/todo_list_widget.dart';
@@ -6,10 +5,10 @@ import 'package:todoapp/presentation/view/components/todo_list_page/todo_list_wi
 import '../../../../core/constants/dimension.dart';
 import '../../../../domain/model/todo_list.dart';
 
-class TodoListContainerWidget extends ConsumerWidget {
+class TodoListCardWidget extends ConsumerWidget {
   final TodoList todoList;
 
-  const TodoListContainerWidget({
+  const TodoListCardWidget({
     Key? key,
     required this.todoList,
   }) : super(key: key);

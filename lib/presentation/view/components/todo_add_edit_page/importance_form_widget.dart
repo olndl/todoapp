@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todoapp/core/errors/logger.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/dimension.dart';
 import '../../../../core/constants/strings.dart';
@@ -14,7 +12,7 @@ class ImportanceFormWidget extends ConsumerWidget {
   final Todo? _todo;
   final TodoFormViewModel viewModel;
 
-  ImportanceFormWidget(this.viewModel, this._todo, {Key? key})
+  const ImportanceFormWidget(this.viewModel, this._todo, {Key? key})
       : super(key: key);
 
   @override
@@ -41,12 +39,12 @@ class ImportanceFormWidget extends ConsumerWidget {
                     items: [
                       DropdownMenuItem(
                         value: S.low,
-                        child: Text(AllLocale.of(context).low),
+                        child: Text(AllLocale.of(context).low, style: TextStyle(color: Theme.of(context).disabledColor),),
                         onTap: () => S.low,
                       ),
                       DropdownMenuItem(
                         value: S.basic,
-                        child: Text(AllLocale.of(context).basic),
+                        child: Text(AllLocale.of(context).basic, style: TextStyle(color: Theme.of(context).disabledColor),),
                         onTap: () => S.basic,
                       ),
                       DropdownMenuItem(
@@ -65,7 +63,7 @@ class ImportanceFormWidget extends ConsumerWidget {
                           .read(todoImportanceProvider(_todo))
                           .categoryOnChanged(newImportance!, _todo);
                       viewModel.setImportance(newImportance);
-                    }),
+                    },),
               ),
             ),
           ),
