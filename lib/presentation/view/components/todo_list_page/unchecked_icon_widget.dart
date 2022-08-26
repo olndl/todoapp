@@ -20,12 +20,12 @@ class UncheckedIconWidget extends ConsumerWidget {
     return InkResponse(
       onTap: () => ref.read(_todoListProvider.notifier).completeTodo(todo),
       splashColor: Colors.transparent,
-      child: SvgPicture.asset(
-        todo.importance == S.important
-            ? S.iconUncheckedHighTile
-            : S.iconUncheckedNormTile,
-        color: Theme.of(context).disabledColor,
-      ),
+      child: todo.importance == S.important
+          ? SvgPicture.asset(S.iconUncheckedHighTile)
+          : SvgPicture.asset(
+              S.iconUncheckedNormTile,
+              color: Theme.of(context).disabledColor,
+            ),
     );
   }
 }

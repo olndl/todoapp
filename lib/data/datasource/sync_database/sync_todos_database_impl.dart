@@ -21,11 +21,6 @@ class SyncTodosDatabaseImpl extends TodosDatabase {
     } catch (e) {
       logger.info(e);
     }
-    try {
-      currantTodos = await remoteTodos.allTodos();
-    } catch (e) {
-      logger.info(e);
-    }
     return patchTodos(currantTodos, currantTodos.revision);
   }
 
@@ -37,7 +32,7 @@ class SyncTodosDatabaseImpl extends TodosDatabase {
       logger.info(e);
     }
     try {
-      await remoteTodos.deleteTodo(id, revision);
+      remoteTodos.deleteTodo(id, revision);
     } catch (e) {
       logger.info(e);
     }
@@ -52,7 +47,7 @@ class SyncTodosDatabaseImpl extends TodosDatabase {
       logger.info(e);
     }
     try {
-      await remoteTodos.insertTodo(todo, revision);
+      remoteTodos.insertTodo(todo, revision);
     } catch (e) {
       logger.info(e);
     }
@@ -83,7 +78,7 @@ class SyncTodosDatabaseImpl extends TodosDatabase {
       logger.info(e);
     }
     try {
-      await remoteTodos.updateTodo(todo, revision);
+      remoteTodos.updateTodo(todo, revision);
     } catch (e) {
       logger.info(e);
     }

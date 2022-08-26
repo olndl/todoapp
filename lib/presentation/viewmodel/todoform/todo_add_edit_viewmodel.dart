@@ -35,7 +35,7 @@ class TodoFormViewModel {
       _lastUpdatedBy = todo.lastUpdatedBy;
       _changedAt = todo.changedAt;
       _dueDate = todo.deadline;
-      _color = todo.color!;
+      _color = todo.color;
       _isCompleted = todo.done;
       _importance = todo.importance;
     }

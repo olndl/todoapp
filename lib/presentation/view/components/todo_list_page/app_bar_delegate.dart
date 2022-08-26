@@ -28,6 +28,7 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
       clipBehavior: Clip.none,
       fit: StackFit.expand,
       children: [
+        Container(),
         AnimatedOpacity(
           opacity: shrinkOffset / expandedHeight,
           duration: const Duration(milliseconds: 150),

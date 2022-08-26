@@ -94,7 +94,7 @@ class DioClient {
   Future<void> changeTodo(Map bodyRequest, String? id, int revision) async {
     try {
       _dio.options.headers[S.revisionHeader] = '$revision';
-     await _dio.put(
+      await _dio.put(
         '/list/$id',
         data: bodyRequest,
       );
