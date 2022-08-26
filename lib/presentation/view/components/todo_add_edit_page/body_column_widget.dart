@@ -7,11 +7,11 @@ import 'delete_button_widget.dart';
 import 'duedate_form_widget.dart';
 import 'importance_form_widget.dart';
 
-class BodyFormWidget extends StatelessWidget {
+class BodyColumnWidget extends StatelessWidget {
   final Todo? todo;
   final TodoFormViewModel viewModel;
 
-  const BodyFormWidget({Key? key, required this.viewModel, this.todo}) : super(key: key);
+  const BodyColumnWidget({Key? key, required this.viewModel, this.todo}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

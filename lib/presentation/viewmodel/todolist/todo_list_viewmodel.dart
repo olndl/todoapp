@@ -8,7 +8,7 @@ import '../../../domain/usecase/delete_todo_usecase.dart';
 import '../../../domain/usecase/get_todo_list_usecase.dart';
 import '../../../domain/usecase/update_todo_usecase.dart';
 import '../../state/state.dart';
-import 'filter_todo_viewmodel.dart';
+import 'filter_todo_provider.dart';
 
 final filteredTodoListProvider = Provider.autoDispose<State<TodoList>>((ref) {
   final filterKind = ref.watch(filterKindViewModelStateNotifierProvider);
@@ -136,8 +136,8 @@ class TodoListViewModel extends StateNotifier<State<TodoList>> {
         newTodo.text,
         newTodo.lastUpdatedBy,
         newTodo.changedAt,
-        newTodo.deadline ?? 0,
-        newTodo.color ?? '',
+        newTodo.deadline,
+        newTodo.color,
         newTodo.done,
         newTodo.importance,
       );

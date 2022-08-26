@@ -4,7 +4,7 @@ import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/dimension.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/localization/l10n/all_locales.dart';
-import '../../../viewmodel/todolist/filter_todo_viewmodel.dart';
+import '../../../viewmodel/todolist/filter_todo_provider.dart';
 
 class MySliverAppBar extends SliverPersistentHeaderDelegate {
   final FilterKindViewModel viewModel;

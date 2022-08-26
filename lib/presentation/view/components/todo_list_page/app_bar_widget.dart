@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/localization/l10n/all_locales.dart';
-import '../../../viewmodel/todolist/filter_todo_viewmodel.dart';
+import '../../../viewmodel/todolist/filter_todo_provider.dart';
 import '../../../viewmodel/todolist/todo_list_viewmodel.dart';
 import 'app_bar_delegate.dart';
 

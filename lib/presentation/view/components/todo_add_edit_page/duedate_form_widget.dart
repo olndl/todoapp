@@ -6,7 +6,7 @@ import '../../../../core/constants/dimension.dart';
 import '../../../../core/localization/l10n/all_locales.dart';
 import '../../../../domain/model/todo.dart';
 import '../../../viewmodel/todoform/todo_add_edit_viewmodel.dart';
-import '../../../viewmodel/todolist/switcher_provider.dart';
+import '../../../viewmodel/todoform/switcher_provider.dart';
 
 class DueDateFormWidget extends ConsumerWidget {
   final Todo? todo;
@@ -67,8 +67,8 @@ class DueDateFormWidget extends ConsumerWidget {
     DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2222),
+      firstDate: viewModel.datePickerFirstDate(),
+      lastDate: viewModel.datePickerLastDate(),
     );
     if (pickedDate != null) {
       viewModel.setDueDate(pickedDate.millisecondsSinceEpoch);

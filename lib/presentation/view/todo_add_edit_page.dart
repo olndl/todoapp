@@ -31,7 +31,7 @@ class TodoFormPageState extends ConsumerState<TodoFormPage> {
   Widget build(final BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: BodyWidget(viewModel: _viewModel,),
+        body: BodyScrollWidget(viewModel: _viewModel,),
       ),
     );
   }

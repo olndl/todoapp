@@ -3,10 +3,10 @@ import '../../../viewmodel/todoform/todo_add_edit_viewmodel.dart';
 import 'app_bar_widget.dart';
 import 'body_column_widget.dart';
 
-class BodyWidget extends StatelessWidget {
+class BodyScrollWidget extends StatelessWidget {
   final TodoFormViewModel viewModel;
 
-  BodyWidget({Key? key, required this.viewModel}) : super(key: key);
+  const BodyScrollWidget({Key? key, required this.viewModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class BodyWidget extends StatelessWidget {
           viewModel: viewModel,
         ),
         SliverToBoxAdapter(
-          child: BodyFormWidget(
+          child: BodyColumnWidget(
             viewModel: viewModel,
           ),
         )
