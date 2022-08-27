@@ -24,5 +24,4 @@ class Todo with _$Todo {
   Todo complete() => copyWith(done: true);
 
   Todo incomplete() => copyWith(done: false);
-
 }

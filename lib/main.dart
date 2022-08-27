@@ -52,5 +52,6 @@ class TodoApp extends ConsumerWidget {
         ],
         supportedLocales: AllLocale.supportedLocales,
         theme: CustomTheme.lightTheme,
+        darkTheme: CustomTheme.darkTheme,
       );
 }
