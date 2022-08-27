@@ -8,6 +8,9 @@ import 'package:todoapp/presentation/view/components/todo_list_page/unchecked_ic
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/localization/l10n/all_locales.dart';
+import '../../../../core/navigation/delegate.dart';
+import '../../../../core/navigation/model.dart';
+import '../../../../core/navigation/provider.dart';
 import '../../../../core/navigation/routes.dart';
 import '../../../../domain/model/todo.dart';
 import '../../../viewmodel/todolist/todo_list_viewmodel.dart';
@@ -163,8 +166,16 @@ class TodoItemCardWidget extends ConsumerWidget {
               ],
             ),
           ),
-          onTap: () => Navigator.pushNamed(context, Routes.editTodoRoute,
-              arguments: todo,),
+          onTap: () =>
+          {
+            ref.read(routerDelegateProvider).navigate([
+            HomeSegment(),
+            BookSegment(todo: todo),])
+          //(Router.of(context).routerDelegate as BookshelfRouterDelegate).gotEditTodo(todo)
+        },
+              
+              // Navigator.pushNamed(context, Routes.editTodoRoute,
+              // arguments: todo,),
         ),
       ),
     );

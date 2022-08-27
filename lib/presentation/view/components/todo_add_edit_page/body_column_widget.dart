@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:todoapp/presentation/view/components/todo_add_edit_page/text_form_widget.dart';
 import '../../../../domain/model/todo.dart';
-import '../../../viewmodel/todoform/todo_add_edit_viewmodel.dart';
+import '../../../viewmodel/todo_add_edit/todo_add_edit_viewmodel.dart';
 import 'delete_button_widget.dart';
 import 'duedate_form_widget.dart';
 import 'importance_form_widget.dart';

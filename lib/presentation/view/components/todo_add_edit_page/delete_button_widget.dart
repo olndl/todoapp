@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/dimension.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/localization/l10n/all_locales.dart';
-import '../../../viewmodel/todoform/todo_add_edit_viewmodel.dart';
+import '../../../../core/navigation/model.dart';
+import '../../../../core/navigation/provider.dart';
+import '../../../viewmodel/todo_add_edit/todo_add_edit_viewmodel.dart';
 
-class DeleteTodoIconWidget extends StatelessWidget {
+class DeleteTodoIconWidget extends ConsumerWidget {
   final TodoFormViewModel viewModel;
 
   const DeleteTodoIconWidget({Key? key, required this.viewModel})
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return InkWell(
       onTap: () => viewModel.shouldShowDeleteTodoIcon()
-          ? _showConfirmDeleteTodoDialog(context)
+          ? _showConfirmDeleteTodoDialog(context, ref)
           : {},
       child: Container(
         margin: EdgeInsets.all(Dim.width(context) / 25),
@@ -44,7 +47,7 @@ class DeleteTodoIconWidget extends StatelessWidget {
     );
   }
 
-  _showConfirmDeleteTodoDialog(BuildContext context) async {
+  _showConfirmDeleteTodoDialog(BuildContext context, WidgetRef ref) async {
     final bool result = await showDialog(
       context: context,
       builder: (_) {
@@ -65,7 +68,7 @@ class DeleteTodoIconWidget extends StatelessWidget {
     );
     if (result) {
       viewModel.deleteTodo();
-      Navigator.pop(context);
+      ref.read(routerDelegateProvider).navigate([HomeSegment()]);
     }
   }
 }

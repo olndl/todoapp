@@ -5,8 +5,9 @@ import 'package:intl/intl.dart';
 import '../../../../core/constants/dimension.dart';
 import '../../../../core/localization/l10n/all_locales.dart';
 import '../../../../domain/model/todo.dart';
-import '../../../viewmodel/todoform/todo_add_edit_viewmodel.dart';
-import '../../../viewmodel/todoform/switcher_provider.dart';
+import '../../../viewmodel/todo_add_edit/switcher_provider.dart';
+import '../../../viewmodel/todo_add_edit/todo_add_edit_viewmodel.dart';
+
 
 class DueDateFormWidget extends ConsumerWidget {
   final Todo? todo;

@@ -5,8 +5,9 @@ import '../../../../core/constants/dimension.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/localization/l10n/all_locales.dart';
 import '../../../../domain/model/todo.dart';
-import '../../../viewmodel/todoform/todo_add_edit_viewmodel.dart';
-import '../../../viewmodel/todoform/importance_provider.dart';
+import '../../../viewmodel/todo_add_edit/importance_provider.dart';
+import '../../../viewmodel/todo_add_edit/todo_add_edit_viewmodel.dart';
+
 
 class ImportanceFormWidget extends ConsumerWidget {
   final Todo? _todo;
