@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../../domain/model/todo.dart';
 import '../todolist/todo_list_viewmodel.dart';
 
@@ -76,7 +77,9 @@ class TodoFormViewModel {
 
   DateTime datePickerFirstDate() => DateTime.now();
 
-  DateTime datePickerLastDate() => DateTime(2101);
+  DateTime datePickerLastDate() => DateTime.now().add(
+        const Duration(days: 100),
+      );
 
   bool shouldShowDeleteTodoIcon() => !_isNewTodo;
 

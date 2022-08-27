@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../constants/colors.dart';
 
 class CustomTheme {
@@ -182,7 +183,10 @@ class CustomTheme {
       cardTheme: CardTheme(
         color: ColorApp.darkTheme.backSecondary,
         shape: RoundedRectangleBorder(
-          side: BorderSide(color: ColorApp.darkTheme.backSecondary, width: 1),
+          side: BorderSide(
+            color: ColorApp.darkTheme.backSecondary,
+            width: 1,
+          ),
         ),
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(

@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/dimension.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/localization/l10n/all_locales.dart';
 import '../../../../core/navigation/model.dart';
 import '../../../../core/navigation/provider.dart';
+import '../../../../domain/model/todo.dart';
 import '../../../viewmodel/todo_add_edit/todo_add_edit_viewmodel.dart';
 
 class DeleteTodoIconWidget extends ConsumerWidget {
   final TodoFormViewModel viewModel;
+  final Todo? todo;
 
-  const DeleteTodoIconWidget({Key? key, required this.viewModel})
+  const DeleteTodoIconWidget(
+      {Key? key, required this.viewModel, required this.todo})
       : super(key: key);
 
   @override
@@ -37,9 +41,10 @@ class DeleteTodoIconWidget extends ConsumerWidget {
             Text(
               AllLocale.of(context).delete,
               style: TextStyle(
-                  color: viewModel.shouldShowDeleteTodoIcon()
-                      ? ColorApp.lightTheme.colorRed
-                      : ColorApp.lightTheme.colorGrey,),
+                color: viewModel.shouldShowDeleteTodoIcon()
+                    ? ColorApp.lightTheme.colorRed
+                    : ColorApp.lightTheme.colorGrey,
+              ),
             )
           ],
         ),
@@ -55,11 +60,11 @@ class DeleteTodoIconWidget extends ConsumerWidget {
           content: const Text('Delete ToDo?'),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(context, false),
+              onPressed: () => ref.read(routerDelegateProvider).pop(false),
               child: const Text('CANCEL'),
             ),
             TextButton(
-              onPressed: () => Navigator.pop(context, true),
+              onPressed: () => ref.read(routerDelegateProvider).pop(true),
               child: const Text('DELETE'),
             ),
           ],

@@ -5,6 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todoapp/core/navigation/provider.dart';
 import 'package:todoapp/presentation/view/todo_add_edit_page.dart';
 import 'package:todoapp/presentation/view/todo_list_page.dart';
+import 'package:todoapp/presentation/view/view_todo_page.dart';
+
 import 'model.dart';
 
 class TodoRouterDelegate extends RouterDelegate<TypedPath>
@@ -31,7 +33,12 @@ class TodoRouterDelegate extends RouterDelegate<TypedPath>
 
     Widget screenBuilder(TypedSegment segment) {
       if (segment is HomeSegment) return const TodoListPage();
-      if (segment is BookSegment) return TodoFormPage(segment.todo);
+      if (segment is TodoSegment) return TodoFormPage(segment.todo);
+      if (segment is ViewSegment) {
+        return TodoViewScreen(
+          todo: segment.todo,
+        );
+      }
       throw UnimplementedError();
     }
 
@@ -66,4 +73,6 @@ class TodoRouterDelegate extends RouterDelegate<TypedPath>
 
   void navigate(TypedPath newPath) =>
       ref.read(navigationStackProvider.notifier).state = newPath;
+
+  void pop([Object? result]) => navigatorKey.currentState?.pop(result);
 }

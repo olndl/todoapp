@@ -1,17 +1,17 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:todoapp/presentation/view/components/todo_list_page/priority_icon_widget.dart';
 import 'package:todoapp/presentation/view/components/todo_list_page/unchecked_icon_widget.dart';
+
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/localization/l10n/all_locales.dart';
-import '../../../../core/navigation/delegate.dart';
 import '../../../../core/navigation/model.dart';
 import '../../../../core/navigation/provider.dart';
-import '../../../../core/navigation/routes.dart';
 import '../../../../domain/model/todo.dart';
 import '../../../viewmodel/todolist/todo_list_viewmodel.dart';
 import 'checked_icon_widget.dart';
@@ -133,9 +133,9 @@ class TodoItemCardWidget extends ConsumerWidget {
                     Expanded(
                       flex: 1,
                       child: IconButton(
-                        onPressed: () => Navigator.pushNamed(
-                            context, Routes.viewTodoRoute,
-                            arguments: todo,),
+                        onPressed: () => ref
+                            .read(routerDelegateProvider)
+                            .navigate([HomeSegment(), ViewSegment(todo: todo)]),
                         icon: SvgPicture.asset(
                           S.iconInfoOutline,
                           color: Theme.of(context).disabledColor,
@@ -166,16 +166,12 @@ class TodoItemCardWidget extends ConsumerWidget {
               ],
             ),
           ),
-          onTap: () =>
-          {
+          onTap: () => {
             ref.read(routerDelegateProvider).navigate([
-            HomeSegment(),
-            BookSegment(todo: todo),])
-          //(Router.of(context).routerDelegate as BookshelfRouterDelegate).gotEditTodo(todo)
-        },
-              
-              // Navigator.pushNamed(context, Routes.editTodoRoute,
-              // arguments: todo,),
+              HomeSegment(),
+              TodoSegment(todo: todo),
+            ])
+          },
         ),
       ),
     );
