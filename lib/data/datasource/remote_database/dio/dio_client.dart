@@ -7,6 +7,7 @@ import '../../../../domain/model/todo.dart';
 import '../../../../domain/model/todo_element.dart';
 import '../../../../domain/model/todo_list.dart';
 import '../../local_database/database_helper.dart';
+import '../../requests/todo_list_responce.dart';
 import 'authorization_interceptor.dart';
 import 'dio_error.dart';
 
@@ -60,9 +61,7 @@ class DioClient {
       final errorMessage = DioException.fromDioError(err).toString();
       final todoMap = await database.query(S.sqflite.databaseName);
       final listObject = todoMap.map((todo) => Todo.fromJson(todo)).toList();
-      listResponce = TodoList.fromJson(
-        {'status': 'ok', 'revision': 1, 'list': listObject},
-      );
+      listResponce = TodoListResponce(listObject).getResponce();
       throw errorMessage;
     } catch (e) {
       logger.info(e);

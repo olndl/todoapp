@@ -17,9 +17,7 @@ class CustomTheme {
           color: ColorApp.lightTheme.colorBlue,
         ),
       ),
-
       fontFamily: 'Roboto',
-
       textTheme: TextTheme(
         // Large title 32/38
         headline5: const TextStyle(
@@ -112,9 +110,7 @@ class CustomTheme {
           color: ColorApp.darkTheme.colorBlue,
         ),
       ),
-
       fontFamily: 'Roboto',
-
       textTheme: TextTheme(
         // Large title 32/38
         headline5: const TextStyle(
@@ -178,8 +174,6 @@ class CustomTheme {
           letterSpacing: 0,
         ),
       ),
-      // listTileTheme: (),
-
       cardTheme: CardTheme(
         color: ColorApp.darkTheme.backSecondary,
         shape: RoundedRectangleBorder(

@@ -109,9 +109,9 @@ class TodoItemCardWidget extends ConsumerWidget {
                               children: [
                                 Expanded(
                                   child: Text(
-                                    todo.text.length > 86
-                                        ? '${todo.text.substring(0, 86)}...'
-                                        : todo.text,
+                                    todo.text,
+                                    maxLines: 3,
+                                    overflow: TextOverflow.ellipsis,
                                     style:
                                         Theme.of(context).textTheme.headline1,
                                   ),
@@ -123,9 +123,9 @@ class TodoItemCardWidget extends ConsumerWidget {
                                 PriorityIconWidget(importance: todo.importance),
                                 Expanded(
                                   child: Text(
-                                    todo.text.length > 86
-                                        ? '${todo.text.substring(0, 86)}...'
-                                        : todo.text,
+                                    todo.text,
+                                    maxLines: 3,
+                                    overflow: TextOverflow.ellipsis,
                                     style:
                                         Theme.of(context).textTheme.bodyText1,
                                   ),

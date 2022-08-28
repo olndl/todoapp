@@ -38,11 +38,15 @@ void firebaseLogger(String event, String title) {
       break;
     case deleteLog:
       FirebaseAnalytics.instance.logEvent(
-          name: S.firebase.deleteLog, parameters: {'full_text': title});
+        name: S.firebase.deleteLog,
+        parameters: {'full_text': title},
+      );
       break;
     case completeLog:
       FirebaseAnalytics.instance.logEvent(
-          name: S.firebase.completeLog, parameters: {'full_text': title});
+        name: S.firebase.completeLog,
+        parameters: {'full_text': title},
+      );
       break;
   }
 }
