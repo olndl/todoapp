@@ -18,7 +18,7 @@
 - [ ] Divided into features and layers
 
 ## APK
-- [Download the latest version of the app](https://disk.yandex.ru/d/-VEH9JkVb3oDgQ)
+- [Download the latest version of the app]()
 
 
 ## Screenshots
@@ -81,8 +81,8 @@
 
 - `dio` to work with Http client.
 - `freezed` - code generator for data-classes
--  `flutter_bloc` for state management.
-- `hive_flutter` and `path_provider` to support local storage.
+- `flutter_riverpod` for state management.
+- `sqflite` and `path_provider` to support local storage.
 - `firebase_crashlytics` and `firebase_analytics` to monitor failures in runtime.
 - `firebase_remote_config` lets change the behavior and appearance of app
 - more at `pubspec.yaml`
