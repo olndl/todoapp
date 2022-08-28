@@ -88,7 +88,6 @@ class CustomTheme {
           side: BorderSide(color: ColorApp.lightTheme.backSecondary, width: 1),
         ),
       ),
-
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: ColorApp.lightTheme.colorBlue,
         foregroundColor: ColorApp.lightTheme.colorWhite,
