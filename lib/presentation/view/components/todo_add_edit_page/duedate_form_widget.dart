@@ -1,22 +1,26 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+
 import '../../../../core/constants/dimension.dart';
 import '../../../../core/localization/l10n/all_locales.dart';
 import '../../../../domain/model/todo.dart';
 import '../../../viewmodel/todo_add_edit/switcher_provider.dart';
 import '../../../viewmodel/todo_add_edit/todo_add_edit_viewmodel.dart';
 
-
 class DueDateFormWidget extends ConsumerWidget {
   final Todo? todo;
   final TodoFormViewModel viewModel;
 
-  const DueDateFormWidget(this.viewModel, this.todo, {Key? key});
+  const DueDateFormWidget(this.viewModel, this.todo, {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final snackBar = ScaffoldMessenger.of(context);
+    final localStr = AllLocale.of(context);
     final toSwitch = viewModel.shouldShowSwitchOn();
     final toDeadline = viewModel.initialDueDateValue();
     ref.watch(displayDateStateProvider(todo)).isSwitch;
@@ -53,7 +57,7 @@ class DueDateFormWidget extends ConsumerWidget {
                   .read(displayDateStateProvider(todo).notifier)
                   .isSwitchSet(value);
               if (value) {
-                toSetDeadline(context, ref);
+                toSetDeadline(context, ref, snackBar, localStr);
               } else {
                 viewModel.setDueDate(null);
               }
@@ -64,7 +68,12 @@ class DueDateFormWidget extends ConsumerWidget {
     );
   }
 
-  Future<void> toSetDeadline(BuildContext context, WidgetRef ref) async {
+  Future<void> toSetDeadline(
+    BuildContext context,
+    WidgetRef ref,
+    ScaffoldMessengerState snackBar,
+    localStr,
+  ) async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -79,9 +88,9 @@ class DueDateFormWidget extends ConsumerWidget {
     } else {
       ref.read(displayDateStateProvider(todo).notifier).isSwitchSet(false);
       ref.read(displayDateStateProvider(todo).notifier).deadlineSet(null);
-      ScaffoldMessenger.of(context).showSnackBar(
+      snackBar.showSnackBar(
         SnackBar(
-          content: Text(AllLocale.of(context).incorrectDate),
+          content: Text(localStr.incorrectDate),
         ),
       );
     }

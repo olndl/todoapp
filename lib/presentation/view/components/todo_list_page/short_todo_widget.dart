@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../../../core/constants/strings.dart';
+import '../../../../core/errors/logger.dart';
 import '../../../../core/localization/l10n/all_locales.dart';
 import '../../../viewmodel/todolist/todo_list_viewmodel.dart';
 
@@ -26,17 +28,20 @@ class ShortTodoWidget extends ConsumerWidget {
                 child: TextField(
                   controller: _shortTodoController,
                   onSubmitted: (text) {
-                    text.isNotEmpty
-                        ? ref.read(_todoListProvider.notifier).addTodo(
-                              text,
-                              null,
-                              S.low,
-                            )
-                        : ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(AllLocale.of(context).emptyInput),
-                            ),
+                    if (text.isNotEmpty) {
+                      ref.read(_todoListProvider.notifier).addTodo(
+                            text,
+                            null,
+                            S.low,
                           );
+                      firebaseLogger(S.deleteLog, text);
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(AllLocale.of(context).emptyInput),
+                        ),
+                      );
+                    }
                     _shortTodoController.clear();
                   },
                   style: Theme.of(context).textTheme.bodyText1,

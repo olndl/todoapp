@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/dimension.dart';
 import '../../../../core/constants/strings.dart';
+import '../../../../core/errors/logger.dart';
 import '../../../../core/localization/l10n/all_locales.dart';
 import '../../../../core/navigation/model.dart';
 import '../../../../core/navigation/provider.dart';
@@ -15,9 +16,11 @@ class DeleteTodoIconWidget extends ConsumerWidget {
   final TodoFormViewModel viewModel;
   final Todo? todo;
 
-  const DeleteTodoIconWidget(
-      {Key? key, required this.viewModel, required this.todo})
-      : super(key: key);
+  const DeleteTodoIconWidget({
+    Key? key,
+    required this.viewModel,
+    required this.todo,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -57,15 +60,15 @@ class DeleteTodoIconWidget extends ConsumerWidget {
       context: context,
       builder: (_) {
         return AlertDialog(
-          content: const Text('Delete ToDo?'),
+          content: Text(AllLocale.of(context).deleteConfirm),
           actions: [
             TextButton(
               onPressed: () => ref.read(routerDelegateProvider).pop(false),
-              child: const Text('CANCEL'),
+              child: Text(AllLocale.of(context).cancel.toUpperCase()),
             ),
             TextButton(
               onPressed: () => ref.read(routerDelegateProvider).pop(true),
-              child: const Text('DELETE'),
+              child: Text(AllLocale.of(context).delete.toUpperCase()),
             ),
           ],
         );
@@ -73,7 +76,8 @@ class DeleteTodoIconWidget extends ConsumerWidget {
     );
     if (result) {
       viewModel.deleteTodo();
-      ref.read(routerDelegateProvider).navigate([HomeSegment()]);
+      firebaseLogger(S.deleteLog, viewModel.initialTitleValue());
+      ref.read(routerDelegateProvider).navigate([ListTodoSegment()]);
     }
   }
 }

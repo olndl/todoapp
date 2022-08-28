@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'model.dart';
@@ -13,9 +14,14 @@ class RouteInformationParserImpl implements RouteInformationParser<TypedPath> {
   RouteInformation restoreRouteInformation(TypedPath configuration) =>
       RouteInformation(location: typedPath2Path(configuration));
 
-  static String typedPath2Path(TypedPath typedPath) => typedPath
-      .map((s) => Uri.encodeComponent(jsonEncode(s.toJson())))
-      .join('/');
+  static String typedPath2Path(TypedPath typedPath) {
+    FirebaseAnalytics.instance.logEvent(
+      name: 'route_${typedPath.map((s) => s.toJson()['path']).join('_')}',
+    );
+    return typedPath
+        .map((s) => Uri.encodeComponent(jsonEncode(s.toJson())))
+        .join('/');
+  }
 
   static TypedPath path2TypedPath(String? path) {
     if (path == null || path.isEmpty) return [];

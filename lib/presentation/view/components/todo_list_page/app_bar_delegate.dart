@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../../../core/constants/colors.dart';
+
 import '../../../../core/constants/dimension.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/localization/l10n/all_locales.dart';
@@ -39,7 +39,8 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
             child: Row(
               children: [
                 Padding(
-                  padding: EdgeInsets.fromLTRB(Dim.width(context) / 40, 0, 0, 0),
+                  padding:
+                      EdgeInsets.fromLTRB(Dim.width(context) / 40, 0, 0, 0),
                   child: Text(
                     AllLocale.of(context).title,
                     style: Theme.of(context).textTheme.headline6,
@@ -85,19 +86,19 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
             ),
             duration: const Duration(microseconds: 10),
             child: InputChip(
-                  label: viewModel.isFilteredByAll()
-                      ? SvgPicture.asset(S.iconVisibility)
-                      : SvgPicture.asset(S.iconVisibilityOff),
-                  selected: viewModel.isFilteredByAll(),
-                  onSelected: (val) => val
-                      ? viewModel.filterByAll()
-                      : viewModel.filterByIncomplete(),
-                  selectedColor: Theme.of(context).primaryColor,
-                  backgroundColor: Theme.of(context).primaryColor,
-                  showCheckmark: false,
-                ),
+              label: viewModel.isFilteredByAll()
+                  ? SvgPicture.asset(S.iconVisibility)
+                  : SvgPicture.asset(S.iconVisibilityOff),
+              selected: viewModel.isFilteredByAll(),
+              onSelected: (val) => val
+                  ? viewModel.filterByAll()
+                  : viewModel.filterByIncomplete(),
+              selectedColor: Theme.of(context).primaryColor,
+              backgroundColor: Theme.of(context).primaryColor,
+              showCheckmark: false,
             ),
           ),
+        ),
       ],
     );
   }

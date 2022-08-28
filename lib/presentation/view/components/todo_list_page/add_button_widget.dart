@@ -12,8 +12,8 @@ class AddTodoButtonWidget extends ConsumerWidget {
     return FloatingActionButton(
       onPressed: () => {
         ref.read(routerDelegateProvider).navigate([
-          HomeSegment(),
-          TodoSegment(todo: null),
+          ListTodoSegment(),
+          CreateTodoSegment(todo: null),
         ])
       },
       child: const Icon(Icons.add),

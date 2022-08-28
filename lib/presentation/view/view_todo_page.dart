@@ -93,7 +93,7 @@ class TodoViewScreen extends ConsumerWidget {
                       TextButton(
                         onPressed: () => ref
                             .read(routerDelegateProvider)
-                            .navigate([HomeSegment()]),
+                            .navigate([ListTodoSegment()]),
                         child: Text(AllLocale.of(context).ok),
                       )
                     ],

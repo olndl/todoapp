@@ -1,6 +1,8 @@
 import 'dart:io';
+
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
+
 import '../../../core/constants/strings.dart';
 
 class DatabaseHelper {
@@ -12,10 +14,9 @@ class DatabaseHelper {
   static const columnLastUpdatedBy = 'last_updated_by';
   static const columnChangeAt = 'changed_at';
   static const columnColor = 'color';
-  static const columnDone= 'done';
+  static const columnDone = 'done';
   static const columnDeadline = 'deadline';
   static const columnImportance = 'importance';
-  //static const columnSyncAt = 'sync_at';
 
   DatabaseHelper._instance();
 
@@ -32,12 +33,14 @@ class DatabaseHelper {
     Directory directory = await getApplicationDocumentsDirectory();
     String databasePath = directory.path + S.databaseName;
 
-    var db = await openDatabase(databasePath, version: databaseVersion, onCreate: _onCreate);
+    var db = await openDatabase(databasePath,
+        version: databaseVersion, onCreate: _onCreate);
     return db;
   }
 
   Future<void> _onCreate(Database db, int newVersion) async {
-    await db.execute('''
+    await db.execute(
+      '''
           CREATE TABLE ${S.databaseName}(
             $columnAutoId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             $columnId STRING NOT NULL,
@@ -50,7 +53,8 @@ class DatabaseHelper {
             $columnDeadline INTEGER,
             $columnImportance TEXT NOT NULL
           )
-        ''',);
+        ''',
+    );
   }
 
   Future close() async {

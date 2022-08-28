@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -32,9 +31,10 @@ class TodoRouterDelegate extends RouterDelegate<TypedPath>
     if (navigationStack.isEmpty) return const SizedBox();
 
     Widget screenBuilder(TypedSegment segment) {
-      if (segment is HomeSegment) return const TodoListPage();
-      if (segment is TodoSegment) return TodoFormPage(segment.todo);
-      if (segment is ViewSegment) {
+      if (segment is ListTodoSegment) return const TodoListPage();
+      if (segment is CreateTodoSegment) return const TodoFormPage(null);
+      if (segment is EditTodoSegment) return TodoFormPage(segment.todo);
+      if (segment is ViewTodoSegment) {
         return TodoViewScreen(
           todo: segment.todo,
         );

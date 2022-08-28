@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:todoapp/core/errors/logger.dart';
+
 import '../../../../core/constants/strings.dart';
 import '../../../../core/localization/l10n/all_locales.dart';
 import '../../../../core/navigation/model.dart';
@@ -20,8 +22,7 @@ class AppBarFormWidget extends ConsumerWidget {
       floating: true,
       leading: IconButton(
         onPressed: () {
-          ref.read(routerDelegateProvider).navigate([HomeSegment()]);
-         // Navigator.pop(context);
+          ref.read(routerDelegateProvider).navigate([ListTodoSegment()]);
         },
         icon: SvgPicture.asset(
           S.iconClose,
@@ -33,8 +34,8 @@ class AppBarFormWidget extends ConsumerWidget {
           onTap: () {
             if (viewModel.initialTitleValue().isNotEmpty) {
               viewModel.createOrUpdateTodo();
-              ref.read(routerDelegateProvider).navigate([HomeSegment()]);
-              //Navigator.pop(context);
+              firebaseLogger(S.addLog, viewModel.initialTitleValue());
+              ref.read(routerDelegateProvider).navigate([ListTodoSegment()]);
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(

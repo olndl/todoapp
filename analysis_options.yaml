@@ -8,6 +8,7 @@ analyzer:
   errors:
     missing_required_param: warning
     missing_return: warning
+    invalid_annotation_target: ignore  #Обоснование:  https://github.com/rrousselGit/freezed/issues/488
 linter:
   rules:
       avoid_print: true

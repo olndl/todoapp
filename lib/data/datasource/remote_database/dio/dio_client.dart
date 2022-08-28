@@ -1,12 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:sqflite/sqflite.dart';
+
 import '../../../../core/constants/strings.dart';
 import '../../../../core/errors/logger.dart';
 import '../../../../domain/model/todo.dart';
 import '../../../../domain/model/todo_element.dart';
 import '../../../../domain/model/todo_list.dart';
 import '../../local_database/database_helper.dart';
-import 'authorization_Interceptor.dart';
+import 'authorization_interceptor.dart';
 import 'dio_error.dart';
 
 class DioClient {

@@ -9,6 +9,7 @@ import 'package:todoapp/presentation/view/components/todo_list_page/unchecked_ic
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/strings.dart';
+import '../../../../core/errors/logger.dart';
 import '../../../../core/localization/l10n/all_locales.dart';
 import '../../../../core/navigation/model.dart';
 import '../../../../core/navigation/provider.dart';
@@ -62,6 +63,7 @@ class TodoItemCardWidget extends ConsumerWidget {
         confirmDismiss: (direction) async {
           if (direction == DismissDirection.startToEnd) {
             ref.read(_todoListProvider.notifier).completeTodo(todo);
+            firebaseLogger(S.completeLog, todo.text);
             return false;
           } else {
             bool delete = true;
@@ -84,6 +86,7 @@ class TodoItemCardWidget extends ConsumerWidget {
         onDismissed: (direction) {
           if (direction == DismissDirection.endToStart) {
             ref.read(_todoListProvider.notifier).deleteTodo(todo.id);
+            firebaseLogger(S.deleteLog, todo.text);
           }
         },
         child: InkWell(
@@ -135,7 +138,10 @@ class TodoItemCardWidget extends ConsumerWidget {
                       child: IconButton(
                         onPressed: () => ref
                             .read(routerDelegateProvider)
-                            .navigate([HomeSegment(), ViewSegment(todo: todo)]),
+                            .navigate([
+                          ListTodoSegment(),
+                          ViewTodoSegment(todo: todo)
+                        ]),
                         icon: SvgPicture.asset(
                           S.iconInfoOutline,
                           color: Theme.of(context).disabledColor,
@@ -168,8 +174,8 @@ class TodoItemCardWidget extends ConsumerWidget {
           ),
           onTap: () => {
             ref.read(routerDelegateProvider).navigate([
-              HomeSegment(),
-              TodoSegment(todo: todo),
+              ListTodoSegment(),
+              EditTodoSegment(todo: todo),
             ])
           },
         ),

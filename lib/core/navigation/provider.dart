@@ -4,8 +4,8 @@ import 'delegate.dart';
 import 'model.dart';
 
 final routerDelegateProvider = Provider<TodoRouterDelegate>(
-  (ref) => TodoRouterDelegate(ref, [HomeSegment()]),
+  (ref) => TodoRouterDelegate(ref, [ListTodoSegment()]),
 );
 
 final navigationStackProvider =
-    StateProvider<TypedPath>((_) => [HomeSegment()]);
+    StateProvider<TypedPath>((_) => [ListTodoSegment()]);

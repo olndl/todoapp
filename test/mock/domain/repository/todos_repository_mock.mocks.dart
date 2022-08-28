@@ -95,10 +95,4 @@ class MockTodosRepository extends _i1.Mock implements _i4.TodosRepository {
       Invocation.method(#deleteTodo, [id, revision]),
       returnValue: _i5.Future<void>.value(),
       returnValueForMissingStub: _i5.Future<void>.value()) as _i5.Future<void>);
-  @override
-  _i5.Future<_i3.Todo> getTodo(String? id) =>
-      (super.noSuchMethod(Invocation.method(#getTodo, [id]),
-              returnValue: _i5.Future<_i3.Todo>.value(
-                  _FakeTodo_1(this, Invocation.method(#getTodo, [id]))))
-          as _i5.Future<_i3.Todo>);
 }
