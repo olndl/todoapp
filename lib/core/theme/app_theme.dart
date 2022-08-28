@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../constants/colors.dart';
 
 class CustomTheme {
@@ -16,9 +17,7 @@ class CustomTheme {
           color: ColorApp.lightTheme.colorBlue,
         ),
       ),
-
       fontFamily: 'Roboto',
-
       textTheme: TextTheme(
         // Large title 32/38
         headline5: const TextStyle(
@@ -111,9 +110,7 @@ class CustomTheme {
           color: ColorApp.darkTheme.colorBlue,
         ),
       ),
-
       fontFamily: 'Roboto',
-
       textTheme: TextTheme(
         // Large title 32/38
         headline5: const TextStyle(
@@ -177,12 +174,13 @@ class CustomTheme {
           letterSpacing: 0,
         ),
       ),
-      // listTileTheme: (),
-
       cardTheme: CardTheme(
         color: ColorApp.darkTheme.backSecondary,
         shape: RoundedRectangleBorder(
-          side: BorderSide(color: ColorApp.darkTheme.backSecondary, width: 1),
+          side: BorderSide(
+            color: ColorApp.darkTheme.backSecondary,
+            width: 1,
+          ),
         ),
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(

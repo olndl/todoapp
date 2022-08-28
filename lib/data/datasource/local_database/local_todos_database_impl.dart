@@ -3,6 +3,7 @@ import 'package:todoapp/data/datasource/remote_database/dio/dio_client.dart';
 import 'package:todoapp/domain/mapper/mapper.dart';
 import 'package:todoapp/domain/model/todo.dart';
 import 'package:todoapp/domain/model/todo_list.dart';
+
 import '../../../core/constants/strings.dart';
 import '../remote_database/remote_todos_database_impl.dart';
 import '../todos_database.dart';
@@ -17,7 +18,7 @@ class LocalTodosDatabaseImpl implements TodosDatabase {
   Future<TodoList> allTodos() async {
     TodoList currantTodos;
     final Database database = await databaseFuture;
-    final todoMap = await database.query(S.databaseName);
+    final todoMap = await database.query(S.sqflite.databaseName);
     final List<Todo> todoList = List<Todo>.from(
       todoMap.map((todo) => TodoMapper().transformToModel(todo)),
     );
@@ -33,12 +34,12 @@ class LocalTodosDatabaseImpl implements TodosDatabase {
     await database.transaction(
       (txn) async {
         final id = await txn.insert(
-          S.databaseName,
+          S.sqflite.databaseName,
           TodoMapper().transformToMap(todo),
           conflictAlgorithm: ConflictAlgorithm.replace,
         );
         final results = await txn.query(
-          S.databaseName,
+          S.sqflite.databaseName,
           where: '${DatabaseHelper.columnAutoId} = ?',
           whereArgs: [id],
         );
@@ -53,7 +54,7 @@ class LocalTodosDatabaseImpl implements TodosDatabase {
     final Database database = await databaseFuture;
     final String id = todo.id;
     await database.update(
-      S.databaseName,
+      S.sqflite.databaseName,
       TodoMapper().transformToMap(todo),
       where: '${DatabaseHelper.columnId} = ?',
       whereArgs: [id],
@@ -64,7 +65,7 @@ class LocalTodosDatabaseImpl implements TodosDatabase {
   Future<void> deleteTodo(String id, int revision) async {
     final Database database = await databaseFuture;
     await database.delete(
-      S.databaseName,
+      S.sqflite.databaseName,
       where: '${DatabaseHelper.columnId} = ?',
       whereArgs: [id],
     );

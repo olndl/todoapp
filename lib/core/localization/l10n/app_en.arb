@@ -23,6 +23,8 @@
     "basic": "Basic",
     "important": "Important",
     "emptyInput": "Error: - message is empty",
-    "loading": "loading..."
+    "loading": "loading...",
+    "cancel": "cancel",
+    "deleteConfirm": "Delete?"
 
 }

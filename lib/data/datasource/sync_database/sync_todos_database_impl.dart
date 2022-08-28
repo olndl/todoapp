@@ -1,7 +1,9 @@
 import 'dart:io';
+
 import 'package:todoapp/data/datasource/todos_database.dart';
 import 'package:todoapp/domain/model/todo.dart';
 import 'package:todoapp/domain/model/todo_list.dart';
+
 import '../../../core/constants/strings.dart';
 import '../../../core/errors/logger.dart';
 import '../local_database/local_todos_database_impl.dart';
@@ -87,7 +89,7 @@ class SyncTodosDatabaseImpl extends TodosDatabase {
 
 Future<bool> hasNetwork() async {
   try {
-    final result = await InternetAddress.lookup(S.host);
+    final result = await InternetAddress.lookup(S.api.host);
     return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
   } on SocketException catch (_) {
     return false;

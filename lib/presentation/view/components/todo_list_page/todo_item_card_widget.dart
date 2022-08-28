@@ -1,14 +1,18 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:todoapp/presentation/view/components/todo_list_page/priority_icon_widget.dart';
 import 'package:todoapp/presentation/view/components/todo_list_page/unchecked_icon_widget.dart';
+
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/strings.dart';
+import '../../../../core/errors/logger.dart';
 import '../../../../core/localization/l10n/all_locales.dart';
-import '../../../../core/navigation/routes.dart';
+import '../../../../core/navigation/model.dart';
+import '../../../../core/navigation/provider.dart';
 import '../../../../domain/model/todo.dart';
 import '../../../viewmodel/todolist/todo_list_viewmodel.dart';
 import 'checked_icon_widget.dart';
@@ -36,7 +40,7 @@ class TodoItemCardWidget extends ConsumerWidget {
           child: Padding(
             padding: const EdgeInsets.all(15),
             child: SvgPicture.asset(
-              S.iconCheck,
+              S.appIcons.iconCheck,
               color: ColorApp.lightTheme.colorWhite,
             ),
           ),
@@ -51,7 +55,7 @@ class TodoItemCardWidget extends ConsumerWidget {
           child: Padding(
             padding: const EdgeInsets.all(15),
             child: SvgPicture.asset(
-              S.iconDelete,
+              S.appIcons.iconDelete,
               color: ColorApp.lightTheme.colorWhite,
             ),
           ),
@@ -59,6 +63,7 @@ class TodoItemCardWidget extends ConsumerWidget {
         confirmDismiss: (direction) async {
           if (direction == DismissDirection.startToEnd) {
             ref.read(_todoListProvider.notifier).completeTodo(todo);
+            firebaseLogger(S.firebase.completeLog, todo.text);
             return false;
           } else {
             bool delete = true;
@@ -81,6 +86,7 @@ class TodoItemCardWidget extends ConsumerWidget {
         onDismissed: (direction) {
           if (direction == DismissDirection.endToStart) {
             ref.read(_todoListProvider.notifier).deleteTodo(todo.id);
+            firebaseLogger(S.firebase.deleteLog, todo.text);
           }
         },
         child: InkWell(
@@ -103,9 +109,9 @@ class TodoItemCardWidget extends ConsumerWidget {
                               children: [
                                 Expanded(
                                   child: Text(
-                                    todo.text.length > 86
-                                        ? '${todo.text.substring(0, 86)}...'
-                                        : todo.text,
+                                    todo.text,
+                                    maxLines: 3,
+                                    overflow: TextOverflow.ellipsis,
                                     style:
                                         Theme.of(context).textTheme.headline1,
                                   ),
@@ -117,9 +123,9 @@ class TodoItemCardWidget extends ConsumerWidget {
                                 PriorityIconWidget(importance: todo.importance),
                                 Expanded(
                                   child: Text(
-                                    todo.text.length > 86
-                                        ? '${todo.text.substring(0, 86)}...'
-                                        : todo.text,
+                                    todo.text,
+                                    maxLines: 3,
+                                    overflow: TextOverflow.ellipsis,
                                     style:
                                         Theme.of(context).textTheme.bodyText1,
                                   ),
@@ -130,11 +136,14 @@ class TodoItemCardWidget extends ConsumerWidget {
                     Expanded(
                       flex: 1,
                       child: IconButton(
-                        onPressed: () => Navigator.pushNamed(
-                            context, Routes.viewTodoRoute,
-                            arguments: todo,),
+                        onPressed: () => ref
+                            .read(routerDelegateProvider)
+                            .navigate([
+                          ListTodoSegment(),
+                          ViewTodoSegment(todo: todo)
+                        ]),
                         icon: SvgPicture.asset(
-                          S.iconInfoOutline,
+                          S.appIcons.iconInfoOutline,
                           color: Theme.of(context).disabledColor,
                         ),
                       ),
@@ -163,8 +172,12 @@ class TodoItemCardWidget extends ConsumerWidget {
               ],
             ),
           ),
-          onTap: () => Navigator.pushNamed(context, Routes.editTodoRoute,
-              arguments: todo,),
+          onTap: () => {
+            ref.read(routerDelegateProvider).navigate([
+              ListTodoSegment(),
+              EditTodoSegment(todo: todo),
+            ])
+          },
         ),
       ),
     );

@@ -1,26 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:todoapp/core/errors/logger.dart';
+
 import '../../../../core/constants/strings.dart';
 import '../../../../core/localization/l10n/all_locales.dart';
-import '../../../viewmodel/todoform/todo_add_edit_viewmodel.dart';
+import '../../../../core/navigation/model.dart';
+import '../../../../core/navigation/provider.dart';
+import '../../../viewmodel/todo_add_edit/todo_add_edit_viewmodel.dart';
 
-class AppBarFormWidget extends StatelessWidget {
+class AppBarFormWidget extends ConsumerWidget {
   final TodoFormViewModel viewModel;
 
   const AppBarFormWidget({Key? key, required this.viewModel}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SliverAppBar(
       pinned: true,
       snap: true,
       floating: true,
       leading: IconButton(
         onPressed: () {
-          Navigator.pop(context);
+          ref.read(routerDelegateProvider).navigate([ListTodoSegment()]);
         },
         icon: SvgPicture.asset(
-          S.iconClose,
+          S.appIcons.iconClose,
           color: Theme.of(context).disabledColor,
         ),
       ),
@@ -29,7 +34,8 @@ class AppBarFormWidget extends StatelessWidget {
           onTap: () {
             if (viewModel.initialTitleValue().isNotEmpty) {
               viewModel.createOrUpdateTodo();
-              Navigator.pop(context);
+              firebaseLogger(S.firebase.addLog, viewModel.initialTitleValue());
+              ref.read(routerDelegateProvider).navigate([ListTodoSegment()]);
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
