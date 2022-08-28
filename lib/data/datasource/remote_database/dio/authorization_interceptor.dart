@@ -1,12 +1,12 @@
 import 'package:dio/dio.dart';
+
 import '../../../../core/constants/strings.dart';
 
 class AuthorizationInterceptor extends Interceptor {
-
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     if (_needAuthorizationHeader(options)) {
-      options.headers[S.authHeader] = S.authValue;
+      options.headers[S.api.authHeader] = S.api.authValue;
     }
     super.onRequest(options, handler);
   }

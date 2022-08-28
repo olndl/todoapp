@@ -40,7 +40,7 @@ class TodoItemCardWidget extends ConsumerWidget {
           child: Padding(
             padding: const EdgeInsets.all(15),
             child: SvgPicture.asset(
-              S.iconCheck,
+              S.appIcons.iconCheck,
               color: ColorApp.lightTheme.colorWhite,
             ),
           ),
@@ -55,7 +55,7 @@ class TodoItemCardWidget extends ConsumerWidget {
           child: Padding(
             padding: const EdgeInsets.all(15),
             child: SvgPicture.asset(
-              S.iconDelete,
+              S.appIcons.iconDelete,
               color: ColorApp.lightTheme.colorWhite,
             ),
           ),
@@ -63,7 +63,7 @@ class TodoItemCardWidget extends ConsumerWidget {
         confirmDismiss: (direction) async {
           if (direction == DismissDirection.startToEnd) {
             ref.read(_todoListProvider.notifier).completeTodo(todo);
-            firebaseLogger(S.completeLog, todo.text);
+            firebaseLogger(S.firebase.completeLog, todo.text);
             return false;
           } else {
             bool delete = true;
@@ -86,7 +86,7 @@ class TodoItemCardWidget extends ConsumerWidget {
         onDismissed: (direction) {
           if (direction == DismissDirection.endToStart) {
             ref.read(_todoListProvider.notifier).deleteTodo(todo.id);
-            firebaseLogger(S.deleteLog, todo.text);
+            firebaseLogger(S.firebase.deleteLog, todo.text);
           }
         },
         child: InkWell(
@@ -143,7 +143,7 @@ class TodoItemCardWidget extends ConsumerWidget {
                           ViewTodoSegment(todo: todo)
                         ]),
                         icon: SvgPicture.asset(
-                          S.iconInfoOutline,
+                          S.appIcons.iconInfoOutline,
                           color: Theme.of(context).disabledColor,
                         ),
                       ),

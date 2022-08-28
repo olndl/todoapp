@@ -50,7 +50,21 @@ class TodoApp extends ConsumerWidget {
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: AllLocale.supportedLocales,
-        theme: CustomTheme.lightTheme,
-        darkTheme: CustomTheme.darkTheme,
+        theme: CustomTheme.lightTheme.copyWith(
+          pageTransitionsTheme: const PageTransitionsTheme(
+            builders: {
+              TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+              TargetPlatform.iOS: OpenUpwardsPageTransitionsBuilder(),
+            },
+          ),
+        ),
+        darkTheme: CustomTheme.darkTheme.copyWith(
+          pageTransitionsTheme: const PageTransitionsTheme(
+            builders: {
+              TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+              TargetPlatform.iOS: OpenUpwardsPageTransitionsBuilder(),
+            },
+          ),
+        ),
       );
 }

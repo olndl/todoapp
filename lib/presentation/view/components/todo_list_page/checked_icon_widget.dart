@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../domain/model/todo.dart';
@@ -22,7 +23,7 @@ class CheckedIconWidget extends ConsumerWidget {
       onTap: () => ref.read(_todoListProvider.notifier).undoTodo(todo),
       splashColor: Colors.transparent,
       child: SvgPicture.asset(
-        S.iconCheckedTile,
+        S.appIcons.iconCheckedTile,
         color: ColorApp.lightTheme.colorGreen,
       ),
     );

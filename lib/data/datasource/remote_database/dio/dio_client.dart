@@ -14,12 +14,12 @@ class DioClient {
   DioClient()
       : _dio = Dio(
           BaseOptions(
-            baseUrl: S.baseUrl,
+            baseUrl: S.api.baseUrl,
             connectTimeout: 3000,
             receiveTimeout: 3000,
-            contentType: S.contentType,
+            contentType: S.api.contentType,
             headers: {
-              S.authHeader: S.authValue,
+              S.api.authHeader: S.api.authValue,
             },
             responseType: ResponseType.json,
           ),
@@ -31,7 +31,7 @@ class DioClient {
 
   Future<TodoList> fetchTodosOnServer(Map bodyRequest, int revision) async {
     try {
-      _dio.options.headers[S.revisionHeader] = '$revision';
+      _dio.options.headers[S.api.revisionHeader] = '$revision';
       Response response = await _dio.patch(
         '/list',
         data: bodyRequest,
@@ -58,7 +58,7 @@ class DioClient {
       }
     } on DioError catch (err) {
       final errorMessage = DioException.fromDioError(err).toString();
-      final todoMap = await database.query(S.databaseName);
+      final todoMap = await database.query(S.sqflite.databaseName);
       final listObject = todoMap.map((todo) => Todo.fromJson(todo)).toList();
       listResponce = TodoList.fromJson(
         {'status': 'ok', 'revision': 1, 'list': listObject},
@@ -88,7 +88,7 @@ class DioClient {
 
   Future<void> changeTodo(Map bodyRequest, String? id, int revision) async {
     try {
-      _dio.options.headers[S.revisionHeader] = '$revision';
+      _dio.options.headers[S.api.revisionHeader] = '$revision';
       await _dio.put(
         '/list/$id',
         data: bodyRequest,
@@ -104,7 +104,7 @@ class DioClient {
 
   Future<Todo> addTodo(Map bodyRequest, int revision) async {
     try {
-      _dio.options.headers[S.revisionHeader] = '$revision';
+      _dio.options.headers[S.api.revisionHeader] = '$revision';
       Response response = await _dio.post(
         '/list/',
         data: bodyRequest,
@@ -121,7 +121,7 @@ class DioClient {
 
   Future<void> deleteTodo(String id, int revision) async {
     try {
-      _dio.options.headers[S.revisionHeader] = '$revision';
+      _dio.options.headers[S.api.revisionHeader] = '$revision';
       await _dio.delete(
         '/list/$id',
       );

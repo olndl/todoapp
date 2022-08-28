@@ -32,9 +32,9 @@ class ShortTodoWidget extends ConsumerWidget {
                       ref.read(_todoListProvider.notifier).addTodo(
                             text,
                             null,
-                            S.low,
+                            S.api.low,
                           );
-                      firebaseLogger(S.deleteLog, text);
+                      firebaseLogger(S.firebase.deleteLog, text);
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(

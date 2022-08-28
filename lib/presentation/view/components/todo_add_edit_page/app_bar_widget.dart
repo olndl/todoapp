@@ -25,7 +25,7 @@ class AppBarFormWidget extends ConsumerWidget {
           ref.read(routerDelegateProvider).navigate([ListTodoSegment()]);
         },
         icon: SvgPicture.asset(
-          S.iconClose,
+          S.appIcons.iconClose,
           color: Theme.of(context).disabledColor,
         ),
       ),
@@ -34,7 +34,7 @@ class AppBarFormWidget extends ConsumerWidget {
           onTap: () {
             if (viewModel.initialTitleValue().isNotEmpty) {
               viewModel.createOrUpdateTodo();
-              firebaseLogger(S.addLog, viewModel.initialTitleValue());
+              firebaseLogger(S.firebase.addLog, viewModel.initialTitleValue());
               ref.read(routerDelegateProvider).navigate([ListTodoSegment()]);
             } else {
               ScaffoldMessenger.of(context).showSnackBar(

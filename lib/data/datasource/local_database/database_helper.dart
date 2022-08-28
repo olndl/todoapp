@@ -31,17 +31,20 @@ class DatabaseHelper {
 
   Future<Database> _initDB() async {
     Directory directory = await getApplicationDocumentsDirectory();
-    String databasePath = directory.path + S.databaseName;
+    String databasePath = directory.path + S.sqflite.databaseName;
 
-    var db = await openDatabase(databasePath,
-        version: databaseVersion, onCreate: _onCreate);
+    var db = await openDatabase(
+      databasePath,
+      version: databaseVersion,
+      onCreate: _onCreate,
+    );
     return db;
   }
 
   Future<void> _onCreate(Database db, int newVersion) async {
     await db.execute(
       '''
-          CREATE TABLE ${S.databaseName}(
+          CREATE TABLE ${S.sqflite.databaseName}(
             $columnAutoId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             $columnId STRING NOT NULL,
             $columnCreatedAt INTEGER NOT NULL,

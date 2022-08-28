@@ -8,6 +8,10 @@ import '../constants/strings.dart';
 
 final logger = Logger('');
 
+const deleteLog = 'delete_todo';
+const addLog = 'add_todo';
+const completeLog = 'complete_todo';
+
 void initLogger() {
   if (kDebugMode) {
     Logger.root.level = Level.ALL;
@@ -28,17 +32,17 @@ void initLogger() {
 
 void firebaseLogger(String event, String title) {
   switch (event) {
-    case S.addLog:
+    case addLog:
       FirebaseAnalytics.instance
-          .logEvent(name: S.addLog, parameters: {'full_text': title});
+          .logEvent(name: S.firebase.addLog, parameters: {'full_text': title});
       break;
-    case S.deleteLog:
-      FirebaseAnalytics.instance
-          .logEvent(name: S.deleteLog, parameters: {'full_text': title});
+    case deleteLog:
+      FirebaseAnalytics.instance.logEvent(
+          name: S.firebase.deleteLog, parameters: {'full_text': title});
       break;
-    case S.completeLog:
-      FirebaseAnalytics.instance
-          .logEvent(name: S.completeLog, parameters: {'full_text': title});
+    case completeLog:
+      FirebaseAnalytics.instance.logEvent(
+          name: S.firebase.completeLog, parameters: {'full_text': title});
       break;
   }
 }

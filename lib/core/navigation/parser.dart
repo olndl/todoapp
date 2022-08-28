@@ -20,9 +20,7 @@ class RouteInformationParserImpl implements RouteInformationParser<TypedPath> {
       name: 'route_${typedPath.map((s) => s.toJson()['path']).join('_')}',
     );
     logger.info(
-      typedPath
-          .map((s) => Uri.encodeComponent(jsonEncode(s.toJson())))
-          .join('/'),
+      typedPath.map((s) => jsonEncode(s.toJson())).join('/'),
     );
     return typedPath
         .map((s) => Uri.encodeComponent(jsonEncode(s.toJson())))

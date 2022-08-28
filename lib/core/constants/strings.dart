@@ -1,34 +1,48 @@
-class S {
+abstract class S {
+  static final appIcons = AppIcons();
+  static final api = Api();
+  static final firebase = Firebase();
+  static final sqflite = Sqflite();
+}
+
+class AppIcons {
+  final String iconVisibilityOff = 'assets/icons/visibility_off.svg';
+  final String iconVisibility = 'assets/icons/visibility.svg';
+  final String iconCheck = 'assets/icons/check.svg';
+  final String iconDelete = 'assets/icons/delete.svg';
+  final String iconInfoOutline = 'assets/icons/info_outline.svg';
+  final String iconAdd = 'assets/icons/add.svg';
+  final String iconArrow = 'assets/icons/arrow.svg';
+  final String iconPriority = 'assets/icons/priority.svg';
+  final String iconCheckedTile = 'assets/icons/checked.svg';
+  final String iconUncheckedNormTile = 'assets/icons/unchecked-normal.svg';
+  final String iconUncheckedHighTile = 'assets/icons/unchecked-high.svg';
+  final String iconSwitchOn = 'assets/icons/switch-on.svg';
+  final String iconSwitchOff = 'assets/icons/switch-off.svg';
+  final String iconClose = 'assets/icons/close.svg';
+}
+
+class Api {
   static const token = 'Anehull';
-  static const baseUrl = 'https://beta.mrdekk.ru/todobackend';
-  static const revisionHeader = 'X-Last-Known-Revision';
-  static const authHeader = 'Authorization';
-  static const authValue = 'Bearer $token';
-  static const contentType = 'application/json';
-  static const String low = 'low';
-  static const String basic = 'basic';
-  static const String important = 'important';
-  static const String dateFormat = 'dd MMMM yyy';
-  static const String iconVisibilityOff = 'assets/icons/visibility_off.svg';
-  static const String iconVisibility = 'assets/icons/visibility.svg';
-  static const String iconCheck = 'assets/icons/check.svg';
-  static const String iconDelete = 'assets/icons/delete.svg';
-  static const String iconInfoOutline = 'assets/icons/info_outline.svg';
-  static const String iconAdd = 'assets/icons/add.svg';
-  static const String iconArrow = 'assets/icons/arrow.svg';
-  static const String iconPriority = 'assets/icons/priority.svg';
-  static const String iconCheckedTile = 'assets/icons/checked.svg';
-  static const String iconUncheckedNormTile =
-      'assets/icons/unchecked-normal.svg';
-  static const String iconUncheckedHighTile = 'assets/icons/unchecked-high.svg';
-  static const String iconSwitchOn = 'assets/icons/switch-on.svg';
-  static const String iconSwitchOff = 'assets/icons/switch-off.svg';
-  static const String iconClose = 'assets/icons/close.svg';
-  static const String deviceId = 'olndlDevice';
-  static const String errorEmptyMessage = 'Message is empty';
-  static const String databaseName = 'data';
-  static const String host = 'example.com';
-  static const String deleteLog = 'delete_todo';
-  static const String addLog = 'add_todo';
-  static const String completeLog = 'complete_todo';
+  final String baseUrl = 'https://beta.mrdekk.ru/todobackend';
+  final String revisionHeader = 'X-Last-Known-Revision';
+  final String authHeader = 'Authorization';
+  final String authValue = 'Bearer $token';
+  final String contentType = 'application/json';
+  final String host = 'example.com';
+  final String low = 'low';
+  final String basic = 'basic';
+  final String important = 'important';
+  final String dateFormat = 'dd MMMM yyy';
+}
+
+class Firebase {
+  final String deleteLog = 'delete_todo';
+  final String addLog = 'add_todo';
+  final String completeLog = 'complete_todo';
+}
+
+class Sqflite {
+  final String databaseName = 'data';
+  final String host = 'example.com';
 }

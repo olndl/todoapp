@@ -33,7 +33,7 @@ class DeleteTodoIconWidget extends ConsumerWidget {
         child: Row(
           children: [
             SvgPicture.asset(
-              S.iconDelete,
+              S.appIcons.iconDelete,
               color: viewModel.shouldShowDeleteTodoIcon()
                   ? ColorApp.lightTheme.colorRed
                   : ColorApp.lightTheme.colorGrey,
@@ -76,7 +76,7 @@ class DeleteTodoIconWidget extends ConsumerWidget {
     );
     if (result) {
       viewModel.deleteTodo();
-      firebaseLogger(S.deleteLog, viewModel.initialTitleValue());
+      firebaseLogger(S.firebase.deleteLog, viewModel.initialTitleValue());
       ref.read(routerDelegateProvider).navigate([ListTodoSegment()]);
     }
   }

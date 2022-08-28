@@ -20,18 +20,18 @@ void main() {
     createdAt: date,
     lastUpdatedBy: 'test',
     changedAt: date,
-    importance: S.low,
+    importance: S.api.low,
   );
 
   setUp(() {
-    when(repository.createTodo(1, 'text', date, S.low))
+    when(repository.createTodo(1, 'text', date, S.api.low))
         .thenAnswer((_) async => todo);
   });
 
   test('should return Todo', () async {
-    final expected = await usecase.execute(1, 'text', date, S.low);
+    final expected = await usecase.execute(1, 'text', date, S.api.low);
     final actual = todo;
     expect(expected, actual);
-    verify(repository.createTodo(1, 'text', date, S.low));
+    verify(repository.createTodo(1, 'text', date, S.api.low));
   });
 }

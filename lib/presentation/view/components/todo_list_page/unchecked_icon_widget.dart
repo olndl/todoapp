@@ -23,13 +23,13 @@ class UncheckedIconWidget extends ConsumerWidget {
       key: const Key('complete_todo'),
       onTap: () {
         ref.read(_todoListProvider.notifier).completeTodo(todo);
-        firebaseLogger(S.completeLog, todo.text);
+        firebaseLogger(S.firebase.completeLog, todo.text);
       },
       splashColor: Colors.transparent,
-      child: todo.importance == S.important
-          ? SvgPicture.asset(S.iconUncheckedHighTile)
+      child: todo.importance == S.api.important
+          ? SvgPicture.asset(S.appIcons.iconUncheckedHighTile)
           : SvgPicture.asset(
-              S.iconUncheckedNormTile,
+              S.appIcons.iconUncheckedNormTile,
               color: Theme.of(context).disabledColor,
             ),
     );
