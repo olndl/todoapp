@@ -2,6 +2,8 @@ import 'package:todoapp/domain/model/todo_list.dart';
 
 import '../model/todo.dart';
 
+//отдельный маппер нужен для работы c sqflite
+
 class TodoMapper {
   Todo transformToModel(Map<String, dynamic> entity) {
     return Todo(

@@ -20,6 +20,7 @@ class UncheckedIconWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return InkResponse(
+      key: const Key('complete_todo'),
       onTap: () {
         ref.read(_todoListProvider.notifier).completeTodo(todo);
         firebaseLogger(S.completeLog, todo.text);

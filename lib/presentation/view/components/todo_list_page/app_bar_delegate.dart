@@ -86,6 +86,7 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
             ),
             duration: const Duration(microseconds: 10),
             child: InputChip(
+              key: const ValueKey('eye'),
               label: viewModel.isFilteredByAll()
                   ? SvgPicture.asset(S.iconVisibility)
                   : SvgPicture.asset(S.iconVisibilityOff),

@@ -36,9 +36,6 @@ class DioClient {
         '/list',
         data: bodyRequest,
       );
-      if (response.statusCode == 200) {
-        return TodoList.fromJson(response.data);
-      }
       return TodoList.fromJson(response.data);
     } on DioError catch (err) {
       final errorMessage = DioException.fromDioError(err).toString();
@@ -79,9 +76,6 @@ class DioClient {
       Response response = await _dio.get(
         '/list/$id',
       );
-      if (response.statusCode == 200) {
-        return TodoElement.fromJson(response.data).element;
-      }
       return TodoElement.fromJson(response.data).element;
     } on DioError catch (err) {
       final errorMessage = DioException.fromDioError(err).toString();
@@ -115,11 +109,7 @@ class DioClient {
         '/list/',
         data: bodyRequest,
       );
-      if (response.statusCode == 200) {
-        return TodoElement.fromJson(response.data).element;
-      } else {
-        return Todo.fromJson(bodyRequest['element']);
-      }
+      return TodoElement.fromJson(response.data).element;
     } on DioError catch (err) {
       final errorMessage = DioException.fromDioError(err).toString();
       throw errorMessage;
