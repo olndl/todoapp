@@ -58,7 +58,7 @@ class SyncTodosDatabaseImpl extends TodosDatabase {
 
   @override
   Future<TodoList> patchTodos(TodoList todoList, int revision) async {
-    late TodoList mergedList;
+    TodoList mergedList = TodoList(revision: revision, status: 'ok', list: []);
     bool isOnline = await hasNetwork();
     if (isOnline) {
       try {
