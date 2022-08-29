@@ -12,8 +12,8 @@ dependencies:
   flutter:
     sdk: flutter
   firebase_core: ^1.20.0
-  cupertino_icons: ^1.0.2
-  linter: ^1.26.0
+  cupertino_icons: ^1.0.5
+  linter: ^1.27.0
   logger: ^1.1.0
 
   flutter_localizations:
@@ -26,15 +26,15 @@ dependencies:
   uuid: ^3.0.6
   path_provider: ^2.0.11
   logging: ^1.0.2
-  firebase_crashlytics: ^2.8.6
-  firebase_analytics: ^9.3.0
-  firebase_remote_config: ^2.0.13
+  firebase_crashlytics: ^2.8.9
+  firebase_analytics: ^9.3.3
+  firebase_remote_config: ^2.0.16
   flutter_riverpod: ^1.0.4
   sqflite: ^2.0.3+1
   state_notifier: ^0.7.2+1
   device_info: ^2.0.3
   provider: ^6.0.3
-  flutter_svg: ^1.1.2
+  flutter_svg: ^1.1.4
 
 
 
@@ -46,7 +46,7 @@ dev_dependencies:
   build_runner: ^2.2.0
   json_serializable: ^6.3.1
   freezed: ^2.1.0+1
-  mockito: ^5.0.10
+  mockito: ^5.3.0
 
 
   flutter_lints: ^2.0.1
