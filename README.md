@@ -19,7 +19,6 @@
 - [X] Supported deeplink that opens the screen for adding a new case ->
 `adb shell am start -a android.intent.action.VIEW     -c android.intent.category.BROWSABLE     -d "http://example.olndl.com/%7B%22path%22%3A%22ListTodoSegment%22%7D/%7B%22path%22%3A%22CreateTodoSegment%22%7D" com.olndl.todoapp`
 - [X] Night theme support
-- [X] Unit-tests
 
 ## APK
 - [Download the latest version of the app]()
