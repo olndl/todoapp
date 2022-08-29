@@ -28,7 +28,6 @@ class AppBarFormWidget extends ConsumerWidget {
         icon: Padding(
           padding: EdgeInsets.only(
             left: Dim.width(context) / 30,
-            top: Dim.height(context) / 38,
           ),
           child: SvgPicture.asset(
             S.appIcons.iconClose,
@@ -54,7 +53,7 @@ class AppBarFormWidget extends ConsumerWidget {
           child: Padding(
             padding: EdgeInsets.only(
               right: Dim.width(context) / 25,
-              top: Dim.height(context) / 38,
+              top: Dim.height(context) / 47,
             ),
             child: Text(
               AllLocale.of(context).save,
