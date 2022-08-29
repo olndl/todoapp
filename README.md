@@ -17,7 +17,8 @@
 - [x] App icon added <img src="https://github.com/olndl/todoapp/blob/develop/assets/icons/icon.png" width="25" />
 - [X] Implemented Navigator 2.0
 - [X] Supported deeplink that opens the screen for adding a new case ->
-`adb shell am start -a android.intent.action.VIEW     -c android.intent.category.BROWSABLE     -d "http://example.olndl.com/%7B%22path%22%3A%22ListTodoSegment%22%7D/%7B%22path%22%3A%22CreateTodoSegment%22%7D" com.olndl.todoapp`
+      
+    -  `adb shell am start -a android.intent.action.VIEW     -c android.intent.category.BROWSABLE     -d "http://example.olndl.com/%7B%22path%22%3A%22ListTodoSegment%22%7D/%7B%22path%22%3A%22CreateTodoSegment%22%7D" com.olndl.todoapp`
 - [X] Night theme support
 
 ## APK
