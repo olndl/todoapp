@@ -21,7 +21,8 @@
 - [X] Night theme support
 
 ## APK
-- [Download the latest version of the app]()
+- [Download the latest version of the app](https://drive.google.com/file/d/1NNp9IHfDmwbn3mig7HAAgHomRPQEoNFh/view?usp=sharing)
+- [Firebase App Distribution](https://appdistribution.firebase.google.com/testerapps/1:976874723104:android:0cafecc61fdd6cb4496945/releases/1pf2vu47da8jo)
 
 
 ## Screenshots
