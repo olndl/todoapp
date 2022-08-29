@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:todoapp/core/errors/logger.dart';
 
+import '../../../../core/constants/dimension.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/localization/l10n/all_locales.dart';
 import '../../../../core/navigation/model.dart';
@@ -24,9 +25,15 @@ class AppBarFormWidget extends ConsumerWidget {
         onPressed: () {
           ref.read(routerDelegateProvider).navigate([ListTodoSegment()]);
         },
-        icon: SvgPicture.asset(
-          S.appIcons.iconClose,
-          color: Theme.of(context).disabledColor,
+        icon: Padding(
+          padding: EdgeInsets.only(
+            left: Dim.width(context) / 30,
+            top: Dim.height(context) / 38,
+          ),
+          child: SvgPicture.asset(
+            S.appIcons.iconClose,
+            color: Theme.of(context).disabledColor,
+          ),
         ),
       ),
       actions: [
@@ -45,7 +52,10 @@ class AppBarFormWidget extends ConsumerWidget {
             }
           },
           child: Padding(
-            padding: const EdgeInsets.only(right: 15, top: 15),
+            padding: EdgeInsets.only(
+              right: Dim.width(context) / 25,
+              top: Dim.height(context) / 38,
+            ),
             child: Text(
               AllLocale.of(context).save,
               style: Theme.of(context).textTheme.button,
