@@ -30,7 +30,7 @@ dependencies:
   firebase_analytics: ^9.3.3
   firebase_remote_config: ^2.0.16
   flutter_riverpod: ^1.0.4
-  sqflite: ^2.0.3+1
+  sqflite: ^1.2.1
   state_notifier: ^0.7.2+1
   device_info: ^2.0.3
   provider: ^6.0.3
