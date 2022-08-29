@@ -12,7 +12,6 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           flutter-version: '2.10.5'
-      - run: flutter pub get
       - run: flutter format --dry-run
       - run: flutter analyze --no-pub --no-congratulate --no-fatal-infos
       - run: flutter test
