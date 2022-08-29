@@ -11,7 +11,7 @@ jobs:
           java-version: '12.x'
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: '2.15.5'
+          flutter-version: '2.10.5'
       - run: flutter pub get
       - run: flutter format --dry-run
       - run: flutter analyze --no-pub --no-congratulate --no-fatal-infos
